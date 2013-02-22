@@ -1,3 +1,5 @@
+(provide 'key-bindings)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;          Key bindings             ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -80,5 +82,3 @@
 ;; Update TAGS file with F9
 (global-set-key (kbd "<f9>") 'gtags-update)
 
-
-(provide 'key-bindings)

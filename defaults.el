@@ -1,3 +1,5 @@
+(provide 'defaults)
+
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
@@ -116,5 +118,3 @@
       ad-do-it)
     (dotimes (i 10)
       (when (= p (point)) ad-do-it))))
-
-(provide 'defaults)

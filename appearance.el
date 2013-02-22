@@ -1,3 +1,5 @@
+(provide 'appearance)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;      Color settings     ;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -22,4 +24,3 @@
  '(pointer ((t (:foreground "magenta"))) t)
 )
 
-(provide 'appearance)

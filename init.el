@@ -25,16 +25,29 @@
     (add-to-list 'load-path project)))
 
 ;; Functions (load all files in defuns-dir)
-(setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
-(dolist (file (directory-files defuns-dir t "\\w+"))
-  (when (file-regular-p file)
-    (load file)))
+;(setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
+;(dolist (file (directory-files defuns-dir t "\\w+"))
+;  (when (file-regular-p file)
+;    (load file)))
+
+(defun load_libs (dir)
+  "Load the files in dir"
+  (message "hello")
+  ;; Load all files in dir
+  (setq path (expand-file-name dir user-emacs-directory))
+  (dolist (file (directory-files path t "\\w+"))
+	(when (file-regular-p file)
+	  (load file)))
+)
+
+(load_libs "setup")
+(load_libs "defuns")
 
 (require 'defaults)
 (require 'mode-mappings)
 (require 'key-bindings)
 (require 'appearance)
-(require 'setup-lang)
+(require 'lang)
 (require 'setup-gtags)
 
 (require 'setup-smooth-scrolling)
@@ -52,5 +65,5 @@
 (setq vc-make-backup-files t)
 
 ;; Conclude init by setting up specifics for the current user
-(when (file-exists-p user-settings-dir)
-  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+;(when (file-exists-p user-settings-dir)
+;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))

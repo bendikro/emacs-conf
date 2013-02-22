@@ -2,6 +2,7 @@
 ;;;;;;;;;;;;;;; GLOBAL (GTAGS)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(provide 'setup-gtags)
 (require 'gtags)
 
 ; Autoload gtags-mode on c-mode
@@ -90,6 +91,3 @@
     (setq gtags-last-token tagname)
     (gtags-push-context)
     (gtags-goto-tag tagname "" other-win)))
-
-
-(provide 'setup-gtags)

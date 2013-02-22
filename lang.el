@@ -1,3 +1,5 @@
+(provide 'lang)
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Python
 ;;;;;;;;;;;;;;;;;;;;;
@@ -54,5 +56,3 @@
 
 ;; If you want Emacs to defer loading the JDE until you open a java file
 (setq defer-loading-jde t)
-
-(provide 'setup-lang)
