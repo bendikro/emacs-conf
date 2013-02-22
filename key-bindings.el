@@ -17,6 +17,9 @@
 (global-set-key "\M-[1;5C"    'forward-word)         ; Ctrl + right
 (global-set-key "\M-[1;5D"    'backward-word)        ; Ctrl + left
 
+; This is for CTRL-del inside screen
+(global-set-key "\M-[3;5~" 'kill-word)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll up/down and keep cursor position
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
