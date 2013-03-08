@@ -13,18 +13,19 @@
 ;;;;  Update GTAGS for entire project with "gtags-update-all"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gtags-root-dir ()
+(defun gtags-root-dir()
   "Returns GTAGS root directory or nil if doesn't exist."
   (with-temp-buffer
     (if (zerop (call-process "global" nil t nil "-pr"))
         (buffer-substring (point-min) (1- (point-max)))
       nil)))
 
-(defun gtags-update ()
+(defun gtags-update()
   "Make GTAGS incremental update"
+  (interactive)
   (call-process "global" nil nil nil "-u"))
 
-(defun gtags-update-all ()
+(defun gtags-update-all()
   (when (gtags-root-dir)
     (gtags-update)))
 
@@ -47,14 +48,14 @@
   (gtags-update-single filename)
   (message "Gtags updated for %s" filename))
 
-(defun gtags-update()
+(defun gtags-update-on-save()
   "Update GTAGS file incrementally upon saving a file"
   (when gtags-mode
     (when (gtags-root-dir)
       (gtags-update-current-file))))
 
 ;; Automatically call gtags-update on save
-;;(add-hook 'after-save-hook 'gtags-update)
+;;(add-hook 'after-save-hook 'gtags-update-on-save)
 
 (defun ww-next-gtag ()
   "Find next matching tag, for GTAGS."
