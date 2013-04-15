@@ -7,18 +7,19 @@
 ;; Fix delete character
 (global-set-key [delete] 'delete-char)
 
-;; Make CTRL-del and ALT-backspace delete words without copying text til kill-ring
-(global-set-key [C-delete] 'delete-word-no-copy)
-(global-set-key "\M-\d" 'backward-delete-word-no-copy)
+;; Make ALT-backspace and ALT-del delete words without copying text til kill-ring
+(global-set-key (read-kbd-macro "<M-delete>") 'delete-word-no-copy) ; ALT-del
+(global-set-key "\M-\d" 'backward-delete-word-no-copy)              ; ALT-backspace
+
+; This is for CTRL-del and ALT-del inside screen
+(global-set-key "\M-[3;5~" 'kill-word)           ; CTRL-del
+(global-set-key "\M-[3;3~" 'delete-word-no-copy) ; ALT-del
 
 ;; Fix CTRL + arrow keys inside screen
 (global-set-key "\M-[1;5A"    'backward-paragraph)   ; Ctrl + up
 (global-set-key "\M-[1;5B"    'forward-paragraph)    ; Ctrl + down
 (global-set-key "\M-[1;5C"    'forward-word)         ; Ctrl + right
 (global-set-key "\M-[1;5D"    'backward-word)        ; Ctrl + left
-
-; This is for CTRL-del inside screen
-(global-set-key "\M-[3;5~" 'kill-word)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll up/down and keep cursor position
