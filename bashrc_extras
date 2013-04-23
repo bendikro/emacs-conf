@@ -1,8 +1,8 @@
 # -*- mode: shell-script -*-
 
 # Add to ~/.bashrc
-#if [ -f ~/.emacs.d/bash_extras ]; then
-#    . ~/.emacs.d/bash_extras
+#if [ -f ~/.emacs.d/bashrc_extras ]; then
+#    . ~/.emacs.d/bashrc_extras
 #fi
 
 # Clear screen properly
