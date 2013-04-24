@@ -11,6 +11,8 @@
 (global-set-key (read-kbd-macro "<M-delete>") 'delete-word-no-copy) ; ALT-del
 (global-set-key "\M-\d" 'backward-delete-word-no-copy)              ; ALT-backspace
 
+;(global-set-key (kbd "<C-backspace>") 'backward-kill-word)
+
 ; This is for CTRL-del and ALT-del inside screen
 (global-set-key "\M-[3;5~" 'kill-word)           ; CTRL-del
 (global-set-key "\M-[3;3~" 'delete-word-no-copy) ; ALT-del
@@ -84,5 +86,5 @@
 (global-set-key [(control meta ,)] 'gtags-find-symbol) ;; C-M-, find all usages of symbol.
 
 ;; Update TAGS file with F9
-(global-set-key (kbd "<f9>") 'gtags-update)
+(global-set-key (kbd "<f9>") 'gtags-update-current-file)
 
