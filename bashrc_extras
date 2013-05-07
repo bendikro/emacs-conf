@@ -8,6 +8,16 @@
 # Clear screen properly
 alias cl='printf "\033c"'
 
+function grep_kill() {
+	ret=`ps aux | grep $@`
+	array=($ret);
+	echo "Found: $ret"
+	echo "Killing pid: ${array[1]}";
+	kill -9 ${array[1]};
+}
+
+alias gkill="grep_kill"
+
 # Git aliases
 alias ga='git add'
 alias gp='git push'
