@@ -24,15 +24,10 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-;; Functions (load all files in defuns-dir)
-;(setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
-;(dolist (file (directory-files defuns-dir t "\\w+"))
-;  (when (file-regular-p file)
-;    (load file)))
-
+;; Load all files in the dir
 (defun load_libs (dir)
   "Load the files in dir"
-  (message "hello")
+  (message "Loading file in directory '%s'" dir)
   ;; Load all files in dir
   (setq path (expand-file-name dir user-emacs-directory))
   (dolist (file (directory-files path t "\\w+"))
