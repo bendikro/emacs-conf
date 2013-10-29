@@ -1,0 +1,34 @@
+############################
+# GIT
+############################
+
+export PATH=$PATH:/home/bro/programmer/git/contrib/workdir
+export PATH=$PATH:/home/bro/programmer/git/contrib/remote-helpers/
+
+if [ -f ~/bin/git-completion.bash ]; then
+    . ~/bin/git-completion.bash
+    __git_complete gb _git_branch
+    __git_complete gc _git_checkout
+fi
+
+
+# Git aliases
+alias ga='git add'
+alias gp='git push'
+alias gl='git log'
+alias gs='git status'
+alias gh='git show'
+alias gd='git diff'
+alias gdt='git difftool'
+alias gm='git commit -m'
+alias gma='git commit -am'
+alias gb='git branch'
+alias gc='git checkout'
+alias gr='git remote'
+alias gra='git remote add'
+alias grr='git remote rm'
+alias gpu='git pull'
+alias gcl='git clone'
+
+
+

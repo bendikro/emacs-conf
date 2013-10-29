@@ -5,8 +5,13 @@
 #    . ~/.emacs.d/bashrc_extras
 #fi
 
+if [ -f ~/.emacs.d/bashrc_git ]; then
+    . ~/.emacs.d/bashrc_git
+fi
+
 # Clear screen properly
 alias cl='printf "\033c"'
+alias em='emacs -nw'
 
 function grep_kill() {
 	ret=`ps aux | grep $@`
@@ -18,20 +23,6 @@ function grep_kill() {
 
 alias gkill="grep_kill"
 
-# Git aliases
-alias ga='git add'
-alias gp='git push'
-alias gl='git log'
-alias gs='git status'
-alias gd='git diff'
-alias gdt='git difftool'
-alias gco='git commit -m'
-alias gcoa='git commit -am'
-alias gb='git branch'
-alias gc='git checkout'
-alias gpu='git pull'
-alias gr='git remote'
-alias gh='git show'
 
 #if [ -f /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash ]; then
 #    . /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash
