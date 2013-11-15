@@ -3,15 +3,25 @@
 ;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+;; uptimes
+(setq emacs-load-start-time (current-time))
+(global-linum-mode t)
+
 ;; No splash screen please
 (setq inhibit-startup-message t)
 
+; user-init-file: /home/bro/.emacs.d/init.el
+
+; Get the base directory of the emacs config
+;(setq emacs-config-basedir (file-name-directory "/home/bro/.emacs.d/init.el"))
+(setq emacs-config-basedir (file-name-directory user-init-file))
+(message "emacs-config-basedir: %s" emacs-config-basedir)
+
 ;; Set path to dependencies
-(setq site-lisp-dir
-      (expand-file-name "site-lisp" user-emacs-directory))
+(setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
 
 ;; Set up load path
-(add-to-list 'load-path user-emacs-directory)
+(add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
 
 ;; Settings for currently logged in user
@@ -27,9 +37,9 @@
 ;; Load all files in the dir
 (defun load_libs (dir)
   "Load the files in dir"
-  (message "Loading file in directory '%s'" dir)
+  (message "Loading files in directory '%s'" dir)
   ;; Load all files in dir
-  (setq path (expand-file-name dir user-emacs-directory))
+  (setq path (expand-file-name dir emacs-config-basedir))
   (dolist (file (directory-files path t "\\w+"))
 	(when (file-regular-p file)
 	  (load file)))
@@ -49,9 +59,12 @@
 (require 'show-wspace)
 (require 'gpicker)
 
+(unless (require 'ps-ccrypt nil 'noerror)
+  (message "ps-ccrypt not installed!"))
+
 (eval-after-load 'shell '(require 'setup-shell))
 
-;; Write backup files to own directory
+;; Write backup files to users directory
 (setq backup-directory-alist
       `(("." . ,(expand-file-name
                  (concat user-emacs-directory "backups")))))
@@ -62,3 +75,6 @@
 ;; Conclude init by setting up specifics for the current user
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+
+(message "Emacs startup time: %d seconds."
+         (time-to-seconds (time-since emacs-load-start-time)))
