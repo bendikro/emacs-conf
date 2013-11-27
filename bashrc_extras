@@ -21,8 +21,19 @@ function grep_kill() {
 	kill -9 ${array[1]};
 }
 
-alias gkill="grep_kill"
+# Print the number of newlines in the shell
+function newlines() {
+    count=10
+    if [ $# -eq 1 ]; then
+        count=$1
+    fi
+    for ((c=1; c <= $count; c++)); do
+        echo ""
+    done
+}
 
+alias gkill="grep_kill"
+alias nl='newlines'
 
 #if [ -f /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash ]; then
 #    . /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash
