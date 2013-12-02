@@ -20,10 +20,6 @@
 
 (require 'cc-mode)
 
-;; Fix indent in c-mode
-(setq c-default-style "bsd"
-      c-basic-offset 4)
-
 ;; Set indent level of left curl to 0 instead of default 2
 (setq c-offsets-alist
       '((substatement-open . 0)))
@@ -37,13 +33,33 @@
 	  (setq counter (1+ counter)))
 	(set (make-local-variable 'tab-stop-list) (nreverse ls))))
 
+;; Fix indent in c-mode
 (defun my-c-mode-common-hook ()
-  (setq tab-width 8) ;; change this to taste, this is what K&R uses :)
+  (setq tab-width 4) ;; change this to taste, this is what K&R uses :)
   (my-build-tab-stop-list tab-width)
-  (setq c-basic-offset tab-width))
+  (setq c-default-style "bsd")
+  (setq c-basic-offset tab-width)
+)
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
+
+;;;;;;;;;;;;;;;;;;;;;
+;;;; C++
+;;;;;;;;;;;;;;;;;;;;;
+
+;; function decides whether .h file is C or C++ header, sets C++ by
+;; default because there's more chance of there being a .h without a
+;; .cc than a .h without a .c (ie. for C++ template files)
+(defun c-c++-header ()
+  "sets either c-mode or c++-mode, whichever is appropriate for
+header"
+  (interactive)
+  (let ((c-file (concat (substring (buffer-file-name) 0 -1) "c")))
+    (if (file-exists-p c-file)
+        (c-mode)
+      (c++-mode))))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c-c++-header))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Java
