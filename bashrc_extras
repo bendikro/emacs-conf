@@ -13,6 +13,10 @@ if [ -f ~/.emacs.d/bashrc_git ]; then
     . ~/.emacs.d/bashrc_git
 fi
 
+if [ -f ~/.emacs.d/bashrc_extras_local ]; then
+    . ~/.emacs.d/bashrc_extras_local
+fi
+
 # Clear screen properly
 alias cl='printf "\033c"'
 alias em='emacs -nw'
