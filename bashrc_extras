@@ -59,3 +59,9 @@ stty -ctlecho
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
+
+if [ -d $HOME/.cask/bin ]; then
+	export PATH=$HOME/.cask/bin:$PATH
+fi
+
+

@@ -48,6 +48,25 @@
 (load_libs "setup")
 (load_libs "defuns")
 
+;; Package Manager
+;; See ~Cask~ file for its configuration
+;; https://github.com/cask/cask
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
+;; Keeps ~Cask~ file in sync with the packages
+;; that you install/uninstall via ~M-x list-packages~
+;; https://github.com/rdallasgray/pallet
+;;(require 'pallet)
+
+;; Show keystrokes
+(setq echo-keystrokes 0.02)
+
+;; Path
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
 (require 'defaults)
 (require 'mode-mappings)
 (require 'key-bindings)
@@ -58,6 +77,13 @@
 (require 'setup-smooth-scrolling)
 (require 'show-wspace)
 (require 'gpicker)
+(require 'magit) ;; Git
+
+(require 'python-pep8)
+(require 'python-pylint)
+(require 'python-flake8)
+
+(require 'flycheck)
 
 (unless (require 'ps-ccrypt nil 'noerror)
   (message "ps-ccrypt not installed!"))
