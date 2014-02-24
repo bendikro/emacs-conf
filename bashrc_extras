@@ -5,6 +5,10 @@
 #    . ~/.emacs.d/bashrc_extras
 #fi
 
+if [ -f ~/.emacs.d/bash_funcs ]; then
+    . ~/.emacs.d/bash_funcs
+fi
+
 if [ -f ~/.emacs.d/bashrc_git ]; then
     . ~/.emacs.d/bashrc_git
 fi

@@ -11,6 +11,7 @@ if [ -f ~/bin/git-completion.bash ]; then
     __git_complete gc _git_checkout
 fi
 
+alias g='git'
 
 # Git aliases
 alias ga='git add'
