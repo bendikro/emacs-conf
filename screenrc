@@ -1,0 +1,10 @@
+hardstatus alwayslastline
+
+# Get sesson name (-S) and store in %5`
+backtick 5 60 60 /root/get_sessionname
+hardstatus string '%{= kG}[ %{G}%H %{g}]%5`[%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+defutf8 on
+defscrollback 20000
+bind '/' eval "clear" "scrollback 0" "scrollback 20000"
+shell -bash
