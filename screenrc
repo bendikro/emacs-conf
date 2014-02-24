@@ -1,7 +1,7 @@
 hardstatus alwayslastline
 
 # Get sesson name (-S) and store in %5`
-backtick 5 60 60 /root/get_sessionname
+backtick 5 60 60 bash -c "source .emacs.d/bash_funcs && get_sessionname_func"
 hardstatus string '%{= kG}[ %{G}%H %{g}]%5`[%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
 defutf8 on
