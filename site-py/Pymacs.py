@@ -468,7 +468,7 @@ def pymacs_load_helper(file_without_extension, prefix, noerror=None):
 def doc_string(function):
     import inspect
     return inspect.getdoc(function)
-
+
 ## Garbage collection matters.
 
 # Many Python types do not have direct Lisp equivalents, and may not be
