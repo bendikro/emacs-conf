@@ -4,6 +4,8 @@
 ;;;; Python
 ;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+
 ;; Set python tab width to 4 && Only spaces
 (defun py-indent ()
   (setq indent-tabs-mode nil)
@@ -13,6 +15,16 @@
         py-smart-indentation nil))
 (add-hook 'python-mode-hook 'py-indent)
 
+(defun python-setup-hook ()
+  ;; The following two lines of code is run from the mode hook.
+  ;; These are for buffer-specific things.
+  ;; In this setup, you want to enable flyspell-mode
+  ;; and run org-reveal for every org buffer.
+  (require 'python-pep8 nil 'noerror)
+  (require 'python-pylint nil 'noerror)
+  (require 'python-flake8 nil 'noerror)
+  (require 'flycheck nil 'noerror))
+(add-hook 'python-mode-hook 'python-setup-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; C

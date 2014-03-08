@@ -2,3 +2,7 @@ backups
 auto-save-list
 bashrc_extras_local
 *~
+*.elc
+*.pyc
+.cask/
+elpa

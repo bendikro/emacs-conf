@@ -24,6 +24,23 @@
 (add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
 
+;; Package Manager
+;; See ~Cask~ file for its configuration
+;; https://github.com/cask/cask
+(if (require 'cask "~/.cask/cask.el" 'noerror)
+;(when (require 'cask "cask.el" 'noerror)
+	(cask-initialize)
+  (message "cask is not installed!"))
+
+
+(unless (require 'ps-ccrypt nil 'noerror)
+  (message "ps-ccrypt not installed!"))
+
+;; Keeps ~Cask~ file in sync with the packages
+;; that you install/uninstall via ~M-x list-packages~
+;; https://github.com/rdallasgray/pallet
+(require 'pallet nil 'noerror)
+
 ;; Settings for currently logged in user
 ;(setq user-settings-dir
 ;      (concat user-emacs-directory "users/" user-login-name))
@@ -45,50 +62,32 @@
 	  (load file)))
 )
 
-(load_libs "setup")
 (load_libs "defuns")
 
-;; Package Manager
-;; See ~Cask~ file for its configuration
-;; https://github.com/cask/cask
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
+; Path
+(when (require 'exec-path-from-shell nil 'noerror)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
 
-;; Keeps ~Cask~ file in sync with the packages
-;; that you install/uninstall via ~M-x list-packages~
-;; https://github.com/rdallasgray/pallet
-;;(require 'pallet)
-
-;; Show keystrokes
-(setq echo-keystrokes 0.02)
-
-;; Path
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
 
 (require 'defaults)
 (require 'mode-mappings)
 (require 'key-bindings)
 (require 'appearance)
 (require 'lang)
-(require 'setup-gtags)
 
+(load_libs "setup")
+
+(require 'setup-gtags)
 (require 'setup-smooth-scrolling)
 (require 'show-wspace)
-(require 'gpicker)
-(require 'magit) ;; Git
-
-(require 'python-pep8)
-(require 'python-pylint)
-(require 'python-flake8)
-
-(require 'flycheck)
+(autoload 'gpicker "gpicker" "Gpicker mode" t)
 
 (unless (require 'ps-ccrypt nil 'noerror)
   (message "ps-ccrypt not installed!"))
 
-(eval-after-load 'shell '(require 'setup-shell))
+;(eval-after-load 'shell '(require 'setup-shell))
+
 
 ;; Write backup files to users directory
 (setq backup-directory-alist
@@ -102,5 +101,17 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
+;; auto compile elisp files after save
+(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
+
+;(defun auto-recompile-el-buffer ()
+;  (interactive)
+;  (when (and (eq major-mode 'emacs-lisp-mode)
+;             (file-exists-p (byte-compile-dest-file buffer-file-name)))
+;    (byte-compile-file buffer-file-name)))
+;(add-hook 'after-save-hook 'auto-recompile-el-buffer)
+
+
 (message "Emacs startup time: %d seconds."
-         (time-to-seconds (time-since emacs-load-start-time)))
+         (float-time (time-since emacs-load-start-time)))
+

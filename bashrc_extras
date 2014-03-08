@@ -64,4 +64,8 @@ if [ -d $HOME/.cask/bin ]; then
 	export PATH=$HOME/.cask/bin:$PATH
 fi
 
+if [ -d $HOME/.emacs.d/site-py ]; then
+	export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
+fi
+
 
