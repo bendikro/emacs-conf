@@ -1,6 +1,18 @@
-
+;;
+;; To set up pyflakes with pep8:
+;;
+;; Install python-flake8 package
 ;;
 ;; Install cask from home root
 ;; $ curl -fsSkL https://raw.github.com/cask/cask/master/go | python
 ;; Download packages:
 ;; ~/.emacs.d]$ cask install
+;;
+;;
+;; Step through error in current file:
+:; M-x flycheck-mode RET
+;; C-f C-n
+;;
+;; List all errors in current file:
+;; M-x python-flake8 RET
+;;

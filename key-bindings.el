@@ -93,3 +93,25 @@
 
 ;; Update TAGS file with F9
 (global-set-key (kbd "<f9>") 'gtags-update-current-file)
+
+;C-M-f8
+
+;;(global-set-key (kbd "<C-M-up>") 'shrink-window)
+;;(global-set-key (kbd "<C-M-down>") 'enlarge-window)
+;;(global-set-key (kbd "<C-M-left>") 'shrink-window-horizontally)
+;;(global-set-key (kbd "<C-M-right>") 'enlarge-window-horizontally)
+
+; (define-key local-function-key-map [M-kp-2] [?\C-2])
+
+; C-S-<kp-2>
+
+
+(global-set-key (kbd "S-<kp-8>") 'shrink-window)
+(global-set-key (kbd "S-<kp-2>") 'enlarge-window)
+(global-set-key (kbd "S-<kp-4>") 'shrink-window-horizontally)
+(global-set-key (kbd "S-<kp-6>") 'enlarge-window-horizontally)
+
+;;(global-set-key (kbd "<kp-1>") 'recentf-open-files) ; numberic keypad 1
+;;(global-set-key (kbd "<kp-2>") 'bookmark-bmenu-list)
+;;(global-set-key (kbd "<kp-3>") 'ibuffer)
+

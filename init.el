@@ -24,6 +24,8 @@
 (add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
 
+(setq flymake-run-in-place nil) ; nice default when using tramp
+
 ;; Package Manager
 ;; See ~Cask~ file for its configuration
 ;; https://github.com/cask/cask
@@ -51,13 +53,16 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
+(defun get-ext (file-name)
+  (car (cdr (split-string file-name "\\."))))
+
 ;; Load all files in the dir
 (defun load_libs (dir)
   "Load the files in dir"
   (message "Loading files in directory '%s'" dir)
   ;; Load all files in dir
   (setq path (expand-file-name dir emacs-config-basedir))
-  (dolist (file (directory-files path t "\\w+"))
+  (dolist (file (directory-files path t "\\w+\.elc?$"))
 	(when (file-regular-p file)
 	  (load file)))
 )
@@ -88,6 +93,7 @@
 
 ;(eval-after-load 'shell '(require 'setup-shell))
 
+(require 'sudo)
 
 ;; Write backup files to users directory
 (setq backup-directory-alist

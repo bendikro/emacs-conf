@@ -1,14 +1,12 @@
 
-(require 'python-mode nil 'noerror)
-
-
+;(require 'python-mode nil 'noerror)
+(require 'tramp)
 (require 'python-pep8 nil 'noerror)
 (require 'python-pylint nil 'noerror)
 (require 'python-flake8 nil 'noerror)
 (require 'flycheck nil 'noerror)
 
-
-;;;; python
+;; python
 ;(add-font-lock-numbers 'python-mode)
 
 
@@ -56,7 +54,6 @@
 (autoload 'pymacs-autoload "pymacs")
 (eval-after-load "pymacs"
   '(add-to-list 'pymacs-load-path "/home/bro/.emacs.d/site-py/"))
-  ;'(add-to-list 'pymacs-load-path "site-py/"))
 
 (pymacs-load "pyfuncs")
 (global-set-key [f7] 'pyfuncs-break-on-whitespace)

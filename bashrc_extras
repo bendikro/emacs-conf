@@ -42,6 +42,7 @@ function newlines() {
 
 alias gkill="grep_kill"
 alias nl='newlines'
+alias sbsh='source ~/.bashrc'
 
 #if [ -f /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash ]; then
 #    . /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash
