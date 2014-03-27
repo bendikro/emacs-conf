@@ -93,8 +93,6 @@
 
 ;(eval-after-load 'shell '(require 'setup-shell))
 
-(require 'sudo)
-
 ;; Write backup files to users directory
 (setq backup-directory-alist
       `(("." . ,(expand-file-name

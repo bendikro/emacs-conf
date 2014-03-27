@@ -54,8 +54,8 @@
 
 ;;; Code:
 
-(require 'tex-buf)
-(require 'latex)
+(require 'tex-buf  nil 'noerror)
+(require 'latex  nil 'noerror)
 
 ;(message (format "Defining TeX-build-dir!"))
 (defvar TeX-build-dir ".")

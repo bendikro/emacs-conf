@@ -1,4 +1,4 @@
-(load "auctex.el" nil t t)
+(ignore-errors (load "auctex.el" nil t t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Activate RefTex and wire it into AucTex ;;
@@ -55,7 +55,7 @@
 (require 'flymake)
 
 (require 'auctex-latexmk)
-(auctex-latexmk-setup2)
+(add-hook 'tex 'auctex-latexmk-setup2)
 
 
 ;(defun demolish-tex-help ()
