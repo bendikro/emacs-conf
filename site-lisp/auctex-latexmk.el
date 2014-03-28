@@ -58,7 +58,7 @@
 (require 'latex  nil 'noerror)
 
 ;(message (format "Defining TeX-build-dir!"))
-(defvar TeX-build-dir ".")
+(defvar TeX-build-dir "")
 
 
 
@@ -79,7 +79,14 @@
   "Encoding mapping for platex."
   :group 'auctex-latexmk)
 
+(defun print-list (x)                   ; For simple iter across list elems, DOLIST is nice shortcut
+  (dolist (cur x) (print cur)))
+
 (defun TeX-run-latexmk (name command file)
+;  (message (format "TeX-check-path : %s" TeX-check-path))
+  ;(pyfuncs-set-makeindex-nomencl TeX-command-list)
+  ;(print-list TeX-command-list)
+
   (let ((TeX-sentinel-default-function 'Latexmk-sentinel)
         (pair (assq buffer-file-coding-system auctex-latexmk-encoding-alist)))
     (unless (null pair)
@@ -102,8 +109,8 @@
 (defun Latexmk-sentinel (process name)
   (save-excursion
     (goto-char (point-max))
-	(message (format "Latexmk-sentinel : %s" name))
-	(message (format "TeX-check-path : %s" TeX-check-path))
+	;(message (format "Latexmk-sentinel : %s" name))
+	;(message (format "TeX-check-path : %s" TeX-check-path))
 
     (cond
       ((re-search-backward (format "^%s finished at" name) nil t)

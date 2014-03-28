@@ -19,54 +19,32 @@ fi
 
 # Clear screen properly
 alias cl='printf "\033c"'
-alias em='emacs -nw'
-
-function grep_kill() {
-	ret=`ps aux | grep $@`
-	array=($ret);
-	echo "Found: $ret"
-	echo "Killing pid: ${array[1]}";
-	kill -9 ${array[1]};
-}
-
-# Print the number of newlines in the shell
-function newlines() {
-    count=10
-    if [ $# -eq 1 ]; then
-        count=$1
-    fi
-    for ((c=1; c <= $count; c++)); do
-        echo ""
-    done
-}
-
 alias gkill="grep_kill"
 alias nl='newlines'
 alias sbsh='source ~/.bashrc'
+alias em='emacs -nw'
 
-#if [ -f /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash ]; then
-#    . /home/bendiko/programmer/git-contrib/git/contrib/completion/git-completion.bash
-#    __git_complete gb _git_branch
-#    __git_complete gc _git_checkout
-#fi
-
-
-# Bind CTRL-del to delete forward word
-bind '"\e[3;5~":kill-word'
-
-# turn off displaying ^C when pressing CTRL-C in terminal.
-stty -ctlecho
+# Only apply when we have a proper terminal
+case "$TERM" in
+    xterm*|rxvt*)
+    # Bind CTRL-del to delete forward word
+    bind '"\e[3;5~":kill-word'
+    # turn off displaying ^C when pressing CTRL-C in terminal.
+    stty -ctlecho
+    ;;
+esac
 
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
 if [ -d $HOME/.cask/bin ]; then
-	export PATH=$HOME/.cask/bin:$PATH
+    export PATH=$HOME/.cask/bin:$PATH
 fi
 
+# Add emacs python functions to PYTHONPATH
 if [ -d $HOME/.emacs.d/site-py ]; then
-	export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
+    export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
 fi
 
 
