@@ -26,7 +26,7 @@ alias em='emacs -nw'
 
 # Only apply when we have a proper terminal
 case "$TERM" in
-    xterm*|rxvt*)
+    xterm*|rxvt*|screen*)
     # Bind CTRL-del to delete forward word
     bind '"\e[3;5~":kill-word'
     # turn off displaying ^C when pressing CTRL-C in terminal.
