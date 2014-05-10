@@ -54,13 +54,10 @@
 
 ;;; Code:
 
-(require 'tex-buf  nil 'noerror)
+(require 'tex-buf nil 'noerror)
 (require 'latex  nil 'noerror)
 
-;(message (format "Defining TeX-build-dir!"))
-(defvar TeX-build-dir "")
-
-
+(defvar Latexmk-command "latexmk %t")
 
 (defgroup auctex-latexmk nil
   "Add LatexMk support to AUCTeX."
@@ -83,10 +80,6 @@
   (dolist (cur x) (print cur)))
 
 (defun TeX-run-latexmk (name command file)
-;  (message (format "TeX-check-path : %s" TeX-check-path))
-  ;(pyfuncs-set-makeindex-nomencl TeX-command-list)
-  ;(print-list TeX-command-list)
-
   (let ((TeX-sentinel-default-function 'Latexmk-sentinel)
         (pair (assq buffer-file-coding-system auctex-latexmk-encoding-alist)))
     (unless (null pair)
@@ -95,12 +88,12 @@
     (setenv "LATEXENC" nil)))
 
 ;;;###autoload
-(defun auctex-latexmk-setup ()
-  "Add LatexMk command to TeX-command-list."
+(defun auctex-latexmk-setup()
+  "Add Latexmk command to TeX-command-list."
   (setq-default TeX-command-list
                 (cons
-                 '("LatexMk" "latexmk %t" TeX-run-latexmk nil
-                   (plain-tex-mode latex-mode doctex-mode) :help "Run LatexMk")
+                 `("Latexmk" ,Latexmk-command TeX-run-latexmk nil
+                   (plain-tex-mode latex-mode doctex-mode) :help "Run Latexmk")
                  TeX-command-list)
                 LaTeX-clean-intermediate-suffixes
                 (append LaTeX-clean-intermediate-suffixes
@@ -109,9 +102,6 @@
 (defun Latexmk-sentinel (process name)
   (save-excursion
     (goto-char (point-max))
-	;(message (format "Latexmk-sentinel : %s" name))
-	;(message (format "TeX-check-path : %s" TeX-check-path))
-
     (cond
       ((re-search-backward (format "^%s finished at" name) nil t)
        (if (re-search-backward "^Run number [0-9]+ of rule '\\(pdf\\|lua\\|xe\\)?latex'" nil t)

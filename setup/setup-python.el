@@ -1,4 +1,5 @@
 
+;(setq py-load-pymacs-p nil)
 ;(require 'python-mode nil 'noerror)
 (require 'tramp)
 (require 'python-pep8 nil 'noerror)

@@ -29,6 +29,11 @@ case "$TERM" in
     xterm*|rxvt*|screen*)
     # Bind CTRL-del to delete forward word
     bind '"\e[3;5~":kill-word'
+
+	# CTRL+ left/right
+    bind '"\e[1;5D":backward-word'
+    bind '"\e[1;5C":forward-word'
+
     # turn off displaying ^C when pressing CTRL-C in terminal.
     stty -ctlecho
     ;;

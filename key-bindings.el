@@ -60,14 +60,6 @@
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
 
-(define-prefix-command 'flycheck-map)
-(global-set-key (kbd "C-f") 'flycheck-map)
-(define-key flycheck-map (kbd "C-n") 'flycheck-next-error)
-(define-key flycheck-map (kbd "C-p") 'flycheck-previous-error)
-
-;(global-set-key "\C-fn" 'flycheck-next-error)
-;(global-set-key "\C-fp" 'flycheck-previous-error)
-
 ;; Rectangle settings
 ; (global-set-key [f5] 'copy-region-as-kill)   ; Copy
 ; (global-set-key [f6] 'kill-rectangle)        ; Cut
@@ -115,3 +107,5 @@
 ;;(global-set-key (kbd "<kp-2>") 'bookmark-bmenu-list)
 ;;(global-set-key (kbd "<kp-3>") 'ibuffer)
 
+(global-set-key (kbd "C-M-x C-M-r") #'resize-mode)
+(global-set-key (kbd "C-M-x C-M-f") #'flycheck-now-mode)
