@@ -1,21 +1,24 @@
 # -*- mode: shell-script -*-
 
 # Add to ~/.bashrc
-#if [ -f ~/.emacs.d/bashrc_extras ]; then
-#    . ~/.emacs.d/bashrc_extras
+#if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
+#    . ~/.emacs.d/bash/bashrc_extras
 #fi
 
-if [ -f ~/.emacs.d/bash_funcs ]; then
-    . ~/.emacs.d/bash_funcs
+if [ -f ~/.emacs.d/bash/bash_funcs ]; then
+    . ~/.emacs.d/bash/bash_funcs
 fi
 
-if [ -f ~/.emacs.d/bashrc_git ]; then
-    . ~/.emacs.d/bashrc_git
+if [ -f ~/.emacs.d/bash/bashrc_git ]; then
+    . ~/.emacs.d/bash/bashrc_git
 fi
 
-if [ -f ~/.emacs.d/bashrc_extras_local ]; then
-    . ~/.emacs.d/bashrc_extras_local
+if [ -f ~/.emacs.d/bash/bashrc_extras_local ]; then
+    . ~/.emacs.d/bash/bashrc_extras_local
 fi
+
+# Add the bin dir to PATH
+export PATH=$PATH:~/.emacs.d/bin/
 
 # Clear screen properly
 alias cl='printf "\033c"'

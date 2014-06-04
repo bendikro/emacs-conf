@@ -19,6 +19,7 @@
 (setq TeX-save-query nil)
 
 (setq TeX-show-compilation nil)
+(setq reftex-plug-into-AUCTeX t)
 
 (defun setup-custom-latexmk-cmd()
   "Set custom Latexmk command."
@@ -73,6 +74,7 @@
 
 (add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c C-d") 'demolish-tex-compile-buffer)))
 (add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c C-r") 'resize-mode)))
+(add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c b") 'ispell-word)))
 
 (defun set-window-width(n)
   "Set the selected window's width."
@@ -94,7 +96,7 @@
 
 ;:; Sets this as the default pdf view command
 (defun setup-qpdfview()
-  (setq TeX-view-program-list '(("qpdfview" "qpdfview --unique \"\"%o\"#src:%(buffer-name):%n:0\"")))
+  (setq TeX-view-program-list '(("qpdfview" "qpdfview --instance emacsauxtex --unique \"\"%o\"#src:%(buffer-name):%n:0\"")))
   (setq TeX-view-program-selection '((output-pdf "qpdfview")))
   )
 (add-hook 'LaTeX-mode-hook 'setup-qpdfview)
