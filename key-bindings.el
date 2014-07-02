@@ -8,25 +8,27 @@
 (global-set-key [delete] 'delete-char)
 
 ;; Make ALT-backspace and ALT-del delete words without copying text til kill-ring
-(global-set-key (read-kbd-macro "<M-delete>") 'delete-word-no-copy) ; ALT-del
-(global-set-key "\M-\d" 'backward-delete-word-no-copy)              ; ALT-backspace
+(define-key input-decode-map "\e[3;3~" [M-del]) ; Make in work in tmux and screen
+(global-set-key [M-del] 'delete-word-no-copy)
 
-;(global-set-key (kbd "<C-backspace>") 'backward-kill-word)
+;; CTRL-del delete word
+(define-key input-decode-map "\e[3;5~" [C-del]) ; Make in work in tmux and screen
+(global-set-key [C-del] 'kill-word)
 
-; This is for CTRL-del and ALT-del inside screen
-(global-set-key "\M-[3;5~" 'kill-word)           ; CTRL-del
-(global-set-key "\M-[3;3~" 'delete-word-no-copy) ; ALT-del
+;; ALT-backspace delete word backwards
+(global-set-key [?\M-\d] 'backward-delete-word-no-copy)
 
-;; Fix CTRL + arrow keys inside screen
-(global-set-key "\M-[1;5A"    'backward-paragraph)   ; Ctrl + up
-(global-set-key "\M-[1;5B"    'forward-paragraph)    ; Ctrl + down
-(global-set-key "\M-[1;5C"    'forward-word)         ; Ctrl + right
-(global-set-key "\M-[1;5D"    'backward-word)        ; Ctrl + left
+;; Fix CTRL + arrow keys inside screen/tmux
+(define-key input-decode-map "\e[1;5A" [C-up])
+(define-key input-decode-map "\e[1;5B" [C-down])
+(define-key input-decode-map "\e[1;5C" [C-right])
+(define-key input-decode-map "\e[1;5D" [C-left])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scroll up/down and keep cursor position
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; This is for ALT + up/down/right/left to work when running inside screen/tmux
 ;; Scroll the text one line down while keeping the cursor
 (defun scroll-down-keep-cursor ()
    (interactive)
@@ -45,11 +47,11 @@
 (global-set-key [M-right] 'move-end-of-line)
 (global-set-key [M-left]  'move-beginning-of-line)
 
-;; This is for ALT + up/down/right/left to work when running inside screen
-(global-set-key "\M-[1;3A"    'scroll-down-keep-cursor)    ; Alt + up
-(global-set-key "\M-[1;3B"    'scroll-up-keep-cursor)      ; Alt + down
-(global-set-key "\M-[1;3C"    'move-end-of-line)           ; Alt+right
-(global-set-key "\M-[1;3D"    'move-beginning-of-line)     ; Alt+left
+;; Fix ALT + arrow keys inside screen/tmux
+(define-key input-decode-map "\e[1;3A" [M-up])
+(define-key input-decode-map "\e[1;3B" [M-down])
+(define-key input-decode-map "\e[1;3C" [M-right])
+(define-key input-decode-map "\e[1;3D" [M-left])
 
 ;;;;;;;;;;;;;;
 ;; Misc

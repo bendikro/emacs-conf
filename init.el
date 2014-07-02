@@ -11,11 +11,9 @@
 (setq inhibit-startup-message t)
 
 ; user-init-file: /home/bro/.emacs.d/init.el
-
 ; Get the base directory of the emacs config
-;(setq emacs-config-basedir (file-name-directory "/home/bro/.emacs.d/init.el"))
 (setq emacs-config-basedir (file-name-directory user-init-file))
-(message "emacs-config-basedir: %s" emacs-config-basedir)
+;(message "emacs-config-basedir: %s" emacs-config-basedir)
 
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
@@ -107,14 +105,6 @@
 
 ;; auto compile elisp files after save
 (add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
-
-;(defun auto-recompile-el-buffer ()
-;  (interactive)
-;  (when (and (eq major-mode 'emacs-lisp-mode)
-;             (file-exists-p (byte-compile-dest-file buffer-file-name)))
-;    (byte-compile-file buffer-file-name)))
-;(add-hook 'after-save-hook 'auto-recompile-el-buffer)
-
 
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))

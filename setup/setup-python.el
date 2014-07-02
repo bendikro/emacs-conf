@@ -53,8 +53,10 @@
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
 (autoload 'pymacs-autoload "pymacs")
+
+(setq site-py-dir (expand-file-name "site-py" emacs-config-basedir))
 (eval-after-load "pymacs"
-  '(add-to-list 'pymacs-load-path "/home/bro/.emacs.d/site-py/"))
+  '(add-to-list 'pymacs-load-path site-py-dir))
 
 (pymacs-load "pyfuncs")
 (global-set-key [f7] 'pyfuncs-break-on-whitespace)
