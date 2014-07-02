@@ -17,6 +17,10 @@ if [ -f ~/.emacs.d/bash/bashrc_extras_local ]; then
     . ~/.emacs.d/bash/bashrc_extras_local
 fi
 
+if [ -f ~/.emacs.d/bash/tmux_completion.sh ]; then
+    . ~/.emacs.d/bash/tmux_completion.sh
+fi
+
 # Add the bin dir to PATH
 export PATH=$PATH:~/.emacs.d/bin/
 
@@ -26,6 +30,7 @@ alias gkill="grep_kill"
 alias nl='newlines'
 alias sbsh='source ~/.bashrc'
 alias em='emacs -nw'
+alias tmuxr='tmux source-file ~/.tmux.conf'
 
 # Only apply when we have a proper terminal
 case "$TERM" in
@@ -54,5 +59,3 @@ fi
 if [ -d $HOME/.emacs.d/site-py ]; then
     export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
 fi
-
-
