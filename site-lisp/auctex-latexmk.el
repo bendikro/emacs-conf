@@ -92,7 +92,7 @@
   "Add Latexmk command to TeX-command-list."
   (setq-default TeX-command-list
                 (cons
-                 `("Latexmk" ,Latexmk-command TeX-run-latexmk nil
+                 `("Latexmk", Latexmk-command TeX-run-latexmk nil
                    (plain-tex-mode latex-mode doctex-mode) :help "Run Latexmk")
                  TeX-command-list)
                 LaTeX-clean-intermediate-suffixes

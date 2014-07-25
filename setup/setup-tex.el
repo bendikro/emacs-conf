@@ -10,6 +10,9 @@
 (add-hook 'latex-mode-hook 'turn-on-reftex)
 
 (defvar TeX-build-dir "")
+(defcustom resize-compile-window-width 75
+       "*The width of the compile window. -1 to disable resizing"
+	    :group 'setuptex)
 
 (add-hook 'LaTeX-mode-hook 'flyspell-mode nil)
 (add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -19,7 +22,6 @@
 (setq TeX-save-query nil)
 
 (setq TeX-show-compilation nil)
-(setq reftex-plug-into-AUCTeX t)
 
 (defun setup-custom-latexmk-cmd()
   "Set custom Latexmk command."
@@ -32,13 +34,15 @@
   (add-to-list 'TeX-expand-list (list "%(-PDF)" '(lambda ()  (if (or TeX-PDF-mode TeX-DVI-via-PDFTeX) "-pdf" ""))))
   (add-to-list 'TeX-expand-list (list "%(pdflatex-args)"
 									  '(lambda () (if (or TeX-PDF-mode TeX-DVI-via-PDFTeX)
-													  "-pdflatex='pdflatex -synctex=1 -file-line-error -shell-escape' "))))
+													  "-pdflatex='pdflatex -synctex=1 -file-line-error -shell-escape'"))))
+  (add-to-list 'TeX-expand-list (list "%(misc-args)" '(lambda () "-g")))
   )
 
 (defvar get-custom-latexmk-cmd
   (concat "cd ..; echo $PWD; "     ; Move out of the build directory
 		  "latexmk "
-		  "%(pdflatex-args) "       ; Extra arguments to pdflatex
+		  "%(misc-args) "          ; Extra arguments to latexmk
+		  "%(pdflatex-args) "      ; Extra arguments to pdflatex
 		  "%(-PDF) "               ; Produce pdf (set TeX-PDF-mode to true)
 		  "-bibtex "               ; Do bibtex
 		  "%(aux-dir) %(out-dir) " ; Used if TeX-build-dir is not an empty string
@@ -82,11 +86,12 @@
 
 (defun rezize-tex-compile-buffer()
   (interactive)
-  (if (get-buffer-window (TeX-process-buffer-name "main")) ;; Test if the window exists
-	  (with-selected-window (get-buffer-window (TeX-process-buffer-name "main"))
-		(set-window-width 75)
-		)
-	))
+  (if (/= resize-compile-window-width -1)
+	  (if (get-buffer-window (TeX-process-buffer-name "main")) ;; Test if the window exists
+		  (with-selected-window (get-buffer-window (TeX-process-buffer-name "main"))
+			(set-window-width resize-compile-window-width)
+			)
+		)))
 
 ;; Wrappes around Latexmk-sentinel in auctex-latexmk and resizes the output buffer before the function is called
 (defadvice Latexmk-sentinel (around resize-output-window activate)
