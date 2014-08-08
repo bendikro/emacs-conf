@@ -9,6 +9,10 @@
 ;; Python mode for .py files
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 
+;; Auctex mode for .tex files
+(setq auto-mode-alist (cons '("\\.tex$" . LaTeX-mode) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.tikz\\'" . Latex-mode)) auto-mode-alist))
+
 ;; Assembly settings
 (require 'asm-mode)
 (setq auto-mode-alist (append '(("\\.s$" . asm-mode) ("\\.S$" . asm-mode)) auto-mode-alist))

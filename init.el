@@ -10,10 +10,13 @@
 ;; No splash screen please
 (setq inhibit-startup-message t)
 
+(setq inhibit-startup-message t)
+(setq debug-on-error t)
+
 ; user-init-file: /home/bro/.emacs.d/init.el
 ; Get the base directory of the emacs config
 (setq emacs-config-basedir (file-name-directory user-init-file))
-;(message "emacs-config-basedir: %s" emacs-config-basedir)
+(message "emacs-config-basedir: %s" emacs-config-basedir)
 
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
@@ -21,6 +24,8 @@
 ;; Set up load path
 (add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
+
+(message "emacs-config-basedir: %s" '(expand-file-name "init-local.el" emacs-config-basedir))
 
 (setq flymake-run-in-place nil) ; nice default when using tramp
 
@@ -73,6 +78,8 @@
     (exec-path-from-shell-initialize)))
 
 
+(load_libs "emacs-conf")
+
 (require 'defaults)
 (require 'mode-mappings)
 (require 'key-bindings)
@@ -104,8 +111,24 @@
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
 ;; auto compile elisp files after save
-(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
+;(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
 
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((setq reftex-texpath-environment-variables (quote (".:include/customtex/"))) (default-directory "~/master/master_opp/oppgave/")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:foreground "white" :background "black"))))
+ '(pointer ((t (:foreground "magenta"))) t)
+ '(text-cursor ((t (:foreground "black" :background "deeppink"))) t))
+
+(load-file (expand-file-name "init-local.el" emacs-config-basedir))

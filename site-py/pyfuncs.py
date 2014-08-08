@@ -13,7 +13,8 @@ def break_on_whitespace():
 
 def byte_compile_el_files():
     dirs = [".emacs.d/", ".emacs.d/site-lisp/",
-            ".emacs.d/setup/", ".emacs.d/defuns/"]
+            ".emacs.d/setup/", ".emacs.d/defuns/",
+            "/home/bro/programmer/emacs/predictive/predictive/"]
 
     home = os.environ['HOME']
     for d in dirs:
@@ -32,6 +33,30 @@ def delete_elc_files():
         for f in files:
             lisp._eval('(delete-file "%s")' % f)
 
+
+def read_glossaries(file=""):
+    import re
+    ifile = open("/home/bro/master/master_opp/oppgave/glossaries.tex", 'r')
+    text = ifile.read()
+    ifile.close()
+
+    acr_pattern = re.compile(r"""
+    \\newacronym{(?P<id>[^}]*)}{(?P<short>[^}]*)}{(?P<long>[^}]*)}
+    """, re.VERBOSE | re.MULTILINE)
+
+    acronyms = []
+    for match in acr_pattern.finditer(text):
+        v = "(%s) (%s) (%s)\n" % (match.group("id"),
+                                  match.group("short"),
+                                  match.group("long"))
+        lisp.message("Acronym: '%s'" % v)
+        acronyms.append(match.group("id"))
+
+    lisp._eval('(LaTeX-add-glossaries \"%s\")' %
+               "\" \"".join(acronyms))
+
+
 interactions[break_on_whitespace] = ''
 interactions[byte_compile_el_files] = ''
 interactions[delete_elc_files] = ''
+interactions[read_glossaries] = ''

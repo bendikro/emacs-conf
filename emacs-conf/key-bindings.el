@@ -109,5 +109,5 @@
 ;;(global-set-key (kbd "<kp-2>") 'bookmark-bmenu-list)
 ;;(global-set-key (kbd "<kp-3>") 'ibuffer)
 
-(global-set-key (kbd "C-M-x C-M-r") #'resize-mode)
-(global-set-key (kbd "C-M-x C-M-f") #'flycheck-now-mode)
+(global-set-key (kbd "C-c r") #'resize-mode)
+(global-set-key (kbd "C-c f") #'flycheck-now-mode)

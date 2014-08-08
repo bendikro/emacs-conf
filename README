@@ -1,7 +1,11 @@
 ;;
 ;; See ~/.emacs.d/bash/bashrc_extra for how to load bashrc_extra from ~/.bashrc
 ;;
-;; To load tmux conf, add to ~/.tmux.conf: source-file ~/.emacs.d/tmux.conf
+;; To load tmux conf, add to ~/.tmux.conf: source-file ~/.emacs.d/configs/tmux.conf
+;;
+;; To load git config, add to ~/.gitconfig:
+;; [include]
+;;      path = ~/.emacs.d/configs/gitconfig
 ;;
 ;; To set up pyflakes with pep8:
 ;;

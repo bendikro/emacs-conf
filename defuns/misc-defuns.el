@@ -13,41 +13,26 @@
 ;;;;    Custom funcs   ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun delete-word (arg)
-  "Delete characters forward until encountering the end of a word.
-With argument, do this that many times."
-  (interactive "p")
-  (delete-region (point) (progn (forward-word arg) (point))))
+(defvar do-show-messages t
+  "Current buffer.")
 
-(defun backward-delete-word (arg)
-  "Delete characters backward until encountering the end of a word.
-With argument, do this that many times."
-  (interactive "p")
-  (delete-word (- arg)))
+(defun reload-config ()
+  "reload your .emacs file without restarting Emacs"
+  (interactive)
+  (setq do-show-messages nil)
+  (load-file user-init-file)
+  (setq do-show-messages t))
 
-(defun delete-word-no-copy (arg)
-  "Delete characters forward until encountering the end of a word.
-   With argument, do this that many times.
-   This command does not push erased text to kill-ring."
-  (interactive "p")
-  (delete-region (point) (progn (forward-word arg) (point))))
-
-(defun backward-delete-word-no-copy (arg)
-  "Delete characters backward until encountering the beginning of a word.
-   With argument, do this that many times.
-   This command does not push erased text to kill-ring."
-  (interactive "p")
-  (delete-word-no-copy (- arg)))
-
-(defun copy-rectangle-to-clipboard (p1 p2)
-  "Copy region as column (rectangle) to operating system's clipboard.
-This command will also put the text in register 0.
-
-See also: `kill-rectangle', `copy-to-register'."
-  (interactive "r")
-  (let ((x-select-enable-clipboard t))
-    (copy-rectangle-to-register ?0 p1 p2)
-    (kill-new
-     (with-temp-buffer
-       (insert-register ?0)
-       (buffer-string)))))
+(defun messages ()
+  (interactive)
+  (message "Messages do-show-messages: %s" do-show-messages)
+  (if do-show-messages
+	  (progn
+		(message "Showing messages buffer!")
+		(split-window-horizontally)   ;; want two windows at startup
+		(other-window 1)              ;; move to other window
+		(let ((buf (get-buffer "*Messages*")))
+		  (if buf
+			  (switch-to-buffer buf)))
+		(other-window 1)              ;; move to other window
+		)))
