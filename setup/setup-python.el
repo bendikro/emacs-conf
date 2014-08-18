@@ -1,4 +1,6 @@
 
+(provide 'setup-python)
+
 ;(setq py-load-pymacs-p nil)
 ;(require 'python-mode nil 'noerror)
 (require 'tramp)

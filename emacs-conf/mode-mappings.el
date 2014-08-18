@@ -10,8 +10,17 @@
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 
 ;; Auctex mode for .tex files
-(setq auto-mode-alist (cons '("\\.tex$" . LaTeX-mode) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.tikz\\'" . Latex-mode)) auto-mode-alist))
+;(setq auto-mode-alist (cons '("\\.tex$" . LaTeX-mode) auto-mode-alist))
+
+(defun mode-test()
+  (message "mode-test")
+  (require 'setup-auctex)
+  (require 'setup-tex)
+  (LaTeX-mode)
+  )
+
+(setq auto-mode-alist (cons '("\\.tikz$" . LaTeX-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.tex$" . mode-test) auto-mode-alist))
 
 ;; Assembly settings
 (require 'asm-mode)

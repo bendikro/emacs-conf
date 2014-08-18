@@ -85,6 +85,7 @@
     (unless (null pair)
       (setenv "LATEXENC" (cdr pair)))
     (TeX-run-TeX name command file)
+	(follow-auctex-compile-buffer)
     (setenv "LATEXENC" nil)))
 
 ;;;###autoload
@@ -101,15 +102,11 @@
 
 (defun Latexmk-sentinel (process name)
   (save-excursion
-;;	(message "SENT: Latexmk-sentinel: finished at: '%s'" (format "^%s finished at" name))
     (goto-char (point-max))
     (cond
-      ((re-search-backward (format "^%s finished at" name) nil t)
-	   ;;(message "SENT: Found finished at")
-	   ;;(message "SENT: re-search-backward: %s" (re-search-backward "^Run number [0-9]+ of rule '\\(pdf\\|lua\\|xe\\)?latex'" nil t))
-       (if (re-search-backward "^Run number [0-9]+ of rule '\\(pdf\\|lua\\|xe\\)?latex'" nil t)
+	 ((re-search-backward (format "^%s finished at" name) nil t)
+	  (if (re-search-backward "^Run number [0-9]+ of rule '\\(pdf\\|lua\\|xe\\)?latex'" nil t)
            (progn
-			 ;;(message "SENT: Found Run number")
              (forward-line 5)
              (let ((beg (point)))
                (when (string= (current-word) "Latexmk")
@@ -120,31 +117,18 @@
                (save-restriction
                  (narrow-to-region beg (point))
                  (goto-char (point-min))
-				 ;(message "SENT: calling TeX-LaTeX-sentinel process: %s, name: %s" process name)
-				 ;(message "SENT: P TeX-command-next: %s" TeX-command-next)
-				 ;(message "SENT: P TeX-command-default: %s" TeX-command-default)
-                 (TeX-LaTeX-sentinel process name)
-				 ;(message "SENT: A TeX-command-next: %s" TeX-command-next)
-				 ;(message "SENT: A TeX-command-default: %s" TeX-command-default)
-				 )))
-         (message (format "%s: nothing to do" name))))
-      ((re-search-backward (format "^%s exited abnormally with code" name) nil t)
+                 (TeX-LaTeX-sentinel process name))))
+         (message (format "%s: nothing to do!" name))))
+	 ((re-search-backward (format "^%s exited abnormally with code" name) nil t)
        (re-search-backward "^Collected error summary (may duplicate other messages):" nil t)
        (re-search-forward "^  \\([^:]+\\):" nil t)
        (let ((com (TeX-match-buffer 1)))
          (cond
            ((string-match "^\\(pdf\\|lua\\|xe\\)?latex" com)
             (goto-char (point-min))
-			;(message "SENT2: calling TeX-LaTeX-sentinel2")
             (TeX-LaTeX-sentinel process name)
-			;(message "SENT2: TeX-command-next: %s" TeX-command-next)
-			;(message "SENT2: TeX-command-default: %s" TeX-command-default)
-
             (when (string= TeX-command-next TeX-command-BibTeX)
-              (setq TeX-command-default)
-			  ;(message "SENT2: setting TeX-command-default: %s" TeX-command-default)
-			  ))
-		   ;(message "SENT2: string-match bibtex: %s" (string-match "^bibtex " com))
+              (setq TeX-command-default)))
            ((string-match "^bibtex " com)
             (forward-line -1)
             (re-search-backward com nil t)
@@ -154,7 +138,6 @@
               (beginning-of-line)
               (save-restriction
                 (narrow-to-region beg (point))
-				(message "SENT: Calling TeX-BibTeX-sentinel")
                 (TeX-BibTeX-sentinel process name))))))))))
 
 (defadvice TeX-recenter-output-buffer (around recenter-for-latexmk activate)

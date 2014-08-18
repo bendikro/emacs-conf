@@ -307,7 +307,6 @@
 					   "\\="))))
 ;; Acronyms
 ;;
-
 (ac-define-source auctex-glossaries-acronym
   `((init . ac-auctex-glossaries-acronyms-init)
     (candidates . ac-auctex-glossaries-candidates)
@@ -337,7 +336,6 @@
                       ac-sources)))
 
 (add-to-list 'ac-modes 'latex-mode)
-;(add-hook 'LaTeX-mode-hook 'ac-auctex-setup)
 
 (add-hook 'LaTeX-mode-hook
 		  '(lambda()
@@ -359,4 +357,3 @@
 			 ))
 
 ;;; auto-complete-auctex.el ends here
-

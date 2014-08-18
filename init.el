@@ -3,6 +3,13 @@
 ;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+;; Add hook for functions that need be be run after packages have been loaded
+;; After loading, do (run-hooks 'after-init-load-hook)
+(defvar after-init-load-hook nil
+  "Call hooks after loading package")
+
+
+
 ;; uptimes
 (setq emacs-load-start-time (current-time))
 (global-linum-mode t)
@@ -20,12 +27,15 @@
 
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
+;; Set path to dependencies
+(setq setup-files-dir (expand-file-name "setup" emacs-config-basedir))
+
+(setq init-local (expand-file-name "init-local.el" emacs-config-basedir))
 
 ;; Set up load path
 (add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
-
-(message "emacs-config-basedir: %s" '(expand-file-name "init-local.el" emacs-config-basedir))
+(add-to-list 'load-path setup-files-dir)
 
 (setq flymake-run-in-place nil) ; nice default when using tramp
 
@@ -82,19 +92,27 @@
 
 (require 'defaults)
 (require 'mode-mappings)
-(require 'key-bindings)
 (require 'appearance)
 (require 'lang)
 
-(load_libs "setup")
+;; Load local init file if it exists
+(if (file-exists-p init-local)
+	(load-file init-local))
+
+;;(load_libs "setup")
 
 (require 'setup-gtags)
+(require 'setup-python)
 (require 'setup-smooth-scrolling)
 (require 'show-wspace)
 (autoload 'gpicker "gpicker" "Gpicker mode" t)
 
 (unless (require 'ps-ccrypt nil 'noerror)
   (message "ps-ccrypt not installed!"))
+
+(require 'key-bindings)
+
+(do-key-bindings)
 
 ;(eval-after-load 'shell '(require 'setup-shell))
 
@@ -130,5 +148,3 @@
  '(default ((t (:foreground "white" :background "black"))))
  '(pointer ((t (:foreground "magenta"))) t)
  '(text-cursor ((t (:foreground "black" :background "deeppink"))) t))
-
-(load-file (expand-file-name "init-local.el" emacs-config-basedir))

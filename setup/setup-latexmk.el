@@ -1,7 +1,5 @@
 (provide 'setup-latexmk)
 
-;(defvar TeX-build-dir "")
-
 (defcustom resize-compile-window-width 80
        "*The width of the compile window. -1 to disable resizing"
 	    :group 'setuptex)
@@ -24,7 +22,7 @@
 
 ; "cd %(default-directory); " ;
 (defvar get-custom-latexmk-cmd
-  (concat "echo $PWD; "     ; Move out of the build directory cd ..;
+  (concat ;;"echo PWD: $PWD;"        ; Echo the PWD
 		  "latexmk "
 		  "%(misc-args) "          ; Extra arguments to latexmk
 		  "%(pdflatex-args) "      ; Extra arguments to pdflatex
@@ -36,7 +34,9 @@
   )
 
 (add-hook 'LaTeX-mode-hook 'setup-custom-latexmk-cmd)
-(add-hook 'LaTeX-mode-hook 'auctex-latexmk-setup)
+;;(add-hook 'LaTeX-mode-hook '(lambda ()
+;;							  (require 'auctex-latexmk)
+;;							  ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AucTeX configurations ;;
@@ -62,9 +62,11 @@
 	  (delete-window (get-buffer-window (get-buffer (TeX-process-buffer-name "main"))))
 	))
 
-(add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c C-d") 'demolish-tex-compile-buffer)))
-(add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c C-r") 'resize-mode)))
-(add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "C-c b") 'ispell-word)))
+(add-hook 'LaTeX-mode-hook '(lambda ()
+							  (local-set-key (kbd "C-c C-d")
+											 'demolish-tex-compile-buffer)
+							  (local-set-key (kbd "C-c C-r") 'resize-mode)
+							  (local-set-key (kbd "C-c b") 'ispell-word)))
 
 (defun set-window-width(n)
   "Set the selected window's width."
@@ -80,10 +82,10 @@
 		)))
 
 ;; Wrappes around Latexmk-sentinel in auctex-latexmk and resizes the output buffer before the function is called
-;(defadvice Latexmk-sentinel (around resize-output-window activate)
-;  (rezize-tex-compile-buffer)
-;  ad-do-it
-;)
+(defadvice Latexmk-sentinel (around resize-output-window activate)
+  (rezize-tex-compile-buffer)
+  ad-do-it
+)
 
 ;:; Sets this as the default pdf view command
 (defun setup-qpdfview()

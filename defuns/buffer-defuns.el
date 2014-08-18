@@ -8,13 +8,50 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
-
 (defun tf-toggle-tab-width-setting ()
     "Toggle setting tab widths between 4 and 8"
     (interactive)
     (setq tab-width (if (= tab-width 8) 4 8))
     (setq c-basic-offset tab-width)
     (redraw-display))
+
+(defun follow-buffer (&optional buffer)
+    "Sets the cursor to the end to make sure the buffer is followed"
+    (interactive)
+	(if (eq buffer nil)
+		(setq buffer (current-buffer)))
+	(let ((win (get-buffer-window buffer)))
+	    (if (eq win nil)
+			(with-current-buffer buffer
+			  (goto-char (point-max)))
+		  (with-selected-window
+			  (get-buffer-window buffer)
+			(goto-char (point-max))))))
+
+(defun follow-auctex-compile-buffer ()
+    "Sets the cursor to the end to make sure the buffer is followed"
+    (interactive)
+	;; This should give the compilation buffer
+	(let ((buffer (TeX-active-buffer)))
+	  (if buffer
+		  (if (with-current-buffer buffer
+				(follow-buffer))
+			  (message "Following buffer: %s" buffer)
+			(message "No process for this document.")))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Scroll up/down and keep cursor position
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Scroll the text one line down while keeping the cursor
+(defun scroll-down-keep-cursor ()
+   (interactive)
+   (scroll-down 1))
+
+;; Scroll the text one line up while keeping the cursor
+(defun scroll-up-keep-cursor ()
+   (interactive)
+   (scroll-up 1))
 
 (require 'whitespace)
 
