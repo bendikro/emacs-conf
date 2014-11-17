@@ -140,5 +140,11 @@ Make the buffer writable as well."
 ;(require 'sudo)
 ;(add-hook 'before-save-hook 'sudo-before-save-hook)
 
+(defun create-if-no-exists (dirs)
+  (loop for d in dirs do
+		(if (not (file-exists-p d))
+			(progn
+			  ;(message "Not exists: %s" d)
+			  (make-directory d t)))))
 
 (provide 'file-defuns)

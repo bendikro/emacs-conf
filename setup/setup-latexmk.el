@@ -1,6 +1,8 @@
 (provide 'setup-latexmk)
 
-(defcustom resize-compile-window-width 80
+(require 'auctex-latexmk)
+
+(defcustom resize-compile-window-width 90
        "*The width of the compile window. -1 to disable resizing"
 	    :group 'setuptex)
 
@@ -14,6 +16,7 @@
   (add-to-list 'TeX-expand-list (list "%(aux-dir)" '(lambda ()  (if (equal "" TeX-build-directory) "" (format "-aux-directory=%s" "build")))))
   (add-to-list 'TeX-expand-list (list "%(out-dir)" '(lambda ()  (if (equal "" TeX-build-directory) "" (format "-output-directory=%s" "build")))))
   (add-to-list 'TeX-expand-list (list "%(-PDF)" '(lambda ()  (if (or TeX-PDF-mode TeX-DVI-via-PDFTeX) "-pdf" ""))))
+  (add-to-list 'TeX-expand-list (list "%(default-dir)" '(lambda nil default-directory)))
   (add-to-list 'TeX-expand-list (list "%(pdflatex-args)"
 									  '(lambda () (if (or TeX-PDF-mode TeX-DVI-via-PDFTeX)
 													  "-pdflatex='pdflatex -synctex=1 -file-line-error -shell-escape'"))))
@@ -33,15 +36,24 @@
 		  )
   )
 
-(add-hook 'LaTeX-mode-hook 'setup-custom-latexmk-cmd)
+;;(add-hook 'LaTeX-mode-hook 'setup-custom-latexmk-cmd)
 ;;(add-hook 'LaTeX-mode-hook '(lambda ()
 ;;							  (require 'auctex-latexmk)
 ;;							  ))
+
+(add-hook 'LaTeX-mode-hook
+		  '(lambda()
+			 (message "setup-auctex - setup-latexmk")
+			 (auctex-latexmk-setup)
+			 (require 'setup-latexmk)
+			 (setup-custom-latexmk-cmd)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AucTeX configurations ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'LaTeX-mode-hook '(lambda ()
+							  (message "setup-latexmk LaTeX-mode-hook")
 							(setq TeX-PDF-mode t)
 							(setq TeX-interactive-mode t)
 							(setq TeX-source-correlate-mode t)
@@ -89,7 +101,8 @@
 
 ;:; Sets this as the default pdf view command
 (defun setup-qpdfview()
-  (setq TeX-view-program-list '(("qpdfview" "qpdfview --instance emacsauxtex --unique \"\"%o\"#src:%(buffer-name):%n:0\"")))
+  ;;(setq TeX-view-program-list '(("qpdfview" "qpdfview --instance emacsauxtex --unique \"\"%o\"#src:%(buffer-name):%n:0\"")))
+  (setq TeX-view-program-list '(("qpdfview" "qpdfview --instance emacsauxtex --unique \"\"%o\"#src:%(default-dir)%(buffer-name):%n:0\"")))
   (setq TeX-view-program-selection '((output-pdf "qpdfview")))
   )
 (add-hook 'LaTeX-mode-hook 'setup-qpdfview)

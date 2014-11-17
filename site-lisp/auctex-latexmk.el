@@ -84,7 +84,8 @@
         (pair (assq buffer-file-coding-system auctex-latexmk-encoding-alist)))
     (unless (null pair)
       (setenv "LATEXENC" (cdr pair)))
-    (TeX-run-TeX name command file)
+	(let ((default-directory (TeX-master-directory)))
+	  (TeX-run-TeX name command file))
 	(follow-auctex-compile-buffer)
     (setenv "LATEXENC" nil)))
 

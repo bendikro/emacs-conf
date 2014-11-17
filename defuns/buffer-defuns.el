@@ -32,6 +32,7 @@
     "Sets the cursor to the end to make sure the buffer is followed"
     (interactive)
 	;; This should give the compilation buffer
+	(message "(TeX-active-buffer): %s" (TeX-active-buffer))
 	(let ((buffer (TeX-active-buffer)))
 	  (if buffer
 		  (if (with-current-buffer buffer

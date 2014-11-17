@@ -9,6 +9,7 @@
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
 (depends-on "pallet")
+(depends-on "psgml")
 (depends-on "python-mode")
 (depends-on "python-pep8")
 (depends-on "python-pylint")

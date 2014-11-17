@@ -8,8 +8,6 @@
 (defvar after-init-load-hook nil
   "Call hooks after loading package")
 
-
-
 ;; uptimes
 (setq emacs-load-start-time (current-time))
 (global-linum-mode t)
@@ -102,7 +100,7 @@
 ;;(load_libs "setup")
 
 (require 'setup-gtags)
-(require 'setup-python)
+;(require 'setup-python)
 (require 'setup-smooth-scrolling)
 (require 'show-wspace)
 (autoload 'gpicker "gpicker" "Gpicker mode" t)
@@ -115,11 +113,24 @@
 (do-key-bindings)
 
 ;(eval-after-load 'shell '(require 'setup-shell))
+(message "user-login-name: %s" user-login-name)
 
-;; Write backup files to users directory
+(setq emacs-backup-dir (expand-file-name (concat user-emacs-directory "backups/")))
+(setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
+(setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
+
+;(message "user-backup-dir: %s" user-backup-dir)
+;(message "user-autosave-dir: %s" user-autosave-dir)
+(create-if-no-exists (list user-backup-dir user-autosave-dir))
+
+; Write backup files to users directory
 (setq backup-directory-alist
-      `(("." . ,(expand-file-name
-                 (concat user-emacs-directory "backups")))))
+      `(("." . , user-backup-dir)))
+
+(setq auto-save-file-name-transforms
+	  `((".*" ,user-autosave-dir t)))
+
+(setq auto-save-list-file-prefix user-autosave-dir)
 
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
