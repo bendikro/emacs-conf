@@ -1,6 +1,7 @@
 backups
 auto-save-list
 bashrc_extras_local
+init-local.el
 *~
 *.elc
 *.pyc

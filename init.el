@@ -31,7 +31,6 @@
 (setq init-local (expand-file-name "init-local.el" emacs-config-basedir))
 
 ;; Set up load path
-(add-to-list 'load-path emacs-config-basedir)
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'load-path setup-files-dir)
 
@@ -99,6 +98,7 @@
 
 ;;(load_libs "setup")
 
+(require 'setup-ispell)
 (require 'setup-gtags)
 ;(require 'setup-python)
 (require 'setup-smooth-scrolling)
