@@ -31,6 +31,8 @@ alias nl='newlines'
 alias sbsh='source ~/.bashrc'
 alias em='emacs -nw'
 alias tmuxr='tmux source-file ~/.tmux.conf'
+alias cgrep='grep --include="*.c" --include="*.h"'
+alias pgrep='grep --include="*.py"'
 
 # Only apply when we have a proper terminal
 case "$TERM" in

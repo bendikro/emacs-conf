@@ -67,7 +67,13 @@
 	 ;;
 	 ("\\\\feedback" ispell-tex-arg-end)
 	 ("\\\\gls" ispell-tex-arg-end)
-	 ("\\\\gls" ispell-tex-arg-end)
+	 ("\\\\Gls" ispell-tex-arg-end)
+	 ("\\\\citep" ispell-tex-arg-end)
+	 ("\\\\Citep" ispell-tex-arg-end)
+	 ("\\\\cite" ispell-tex-arg-end)
+	 ("\\\\Cite" ispell-tex-arg-end)
+	 ("\\\\code" ispell-tex-arg-end)
+	 ("\\\\cref" ispell-tex-arg-end)
 	 )
     (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
      ;; equation, minipage, picture, tabular, tabular* (ispell)
@@ -77,6 +83,6 @@
      ("verbatim\\*?". "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}")
      ("gather\\*?". "\\\\end[ \t\n]*{[ \t\n]*gather\\*?[ \t\n]*}")
 ;     ("\\(ccode\\|tablebox\\|command\\)\\*?"  ispell-tex-arg-end )
-     ("\\(ccode\\|tablebox\\|command\\|pseudocode\\)\\*?". "\\\\end[ \t\n]*{[ \t\n]*.*?\\*?[ \t\n]*}")
+     ("\\(ccode\\|tablebox\\|tabular\\|command\\|pseudocode\\|equation\\)\\*?". "\\\\end[ \t\n]*{[ \t\n]*.*?\\*?[ \t\n]*}")
 	 ))
 )
