@@ -1,8 +1,3 @@
-#
-# Add to ~/.gitconfig:
-# [include]
-#     path = ~/.emacs.d/configs/gitconfig
-
 [alias]
 	ch = checkout
 	br = branch
