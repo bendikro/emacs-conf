@@ -20,6 +20,8 @@
 
 ; user-init-file: /home/bro/.emacs.d/init.el
 ; Get the base directory of the emacs config
+(defvar user-home-dir "/home/bro")
+(setq cask-project-basedir (concat user-home-dir "/.cask/cask.el"))
 (setq emacs-config-basedir (file-name-directory user-init-file))
 (message "emacs-config-basedir: %s" emacs-config-basedir)
 
@@ -27,21 +29,24 @@
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
 ;; Set path to dependencies
 (setq setup-files-dir (expand-file-name "setup" emacs-config-basedir))
+(setq emacs-conf-dir (expand-file-name "emacs-conf" emacs-config-basedir))
 
 (setq init-local (expand-file-name "init-local.el" emacs-config-basedir))
 
 ;; Set up load path
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'load-path setup-files-dir)
+(add-to-list 'load-path emacs-conf-dir)
 
 (setq flymake-run-in-place nil) ; nice default when using tramp
+
 
 ;; Package Manager
 ;; See ~Cask~ file for its configuration
 ;; https://github.com/cask/cask
-(if (require 'cask "~/.cask/cask.el" 'noerror)
+(if (require 'cask cask-project-basedir 'noerror)
 ;(when (require 'cask "cask.el" 'noerror)
-	(cask-initialize)
+	(cask-initialize )
   (message "cask is not installed!"))
 
 
@@ -84,8 +89,6 @@
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 
-
-(load_libs "emacs-conf")
 
 (require 'defaults)
 (require 'mode-mappings)
@@ -151,11 +154,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values (quote ((setq reftex-texpath-environment-variables (quote (".:include/customtex/"))) (default-directory "~/master/master_opp/oppgave/")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "white" :background "black"))))
- '(pointer ((t (:foreground "magenta"))) t)
- '(text-cursor ((t (:foreground "black" :background "deeppink"))) t))
