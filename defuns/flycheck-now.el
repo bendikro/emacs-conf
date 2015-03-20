@@ -11,7 +11,9 @@
   :initial-value nil
   :lighter " Flycheck"
   :keymap flyceck-mode-map
-  :group 'flyceck-now)
+  :group 'flyceck-now
+  (flycheck-mode)
+  )
 
 (defun buffer-mode (&optional buffer-or-name)
   "Returns the major mode associated with a buffer.

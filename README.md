@@ -2,9 +2,10 @@
 
 #####tmux
 
-Add the following line to ~/.tmux.conf
+Add the following to ~/.tmux.conf
 ```
-source-file ~/.emacs.d/configs/tmux.conf
+TMUX_CONF_DIR=/home/username/.emacs.d/configs/tmux
+source-file $TMUX_CONF_DIR/tmux.conf
 ```
 
 #####bashrc

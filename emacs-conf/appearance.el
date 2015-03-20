@@ -16,7 +16,7 @@
 (set-face-attribute 'default nil :height 120)
 
 
-(require 'color-theme)
+(require 'color-theme nil 'noerror)
 
 ;(setq my-color-themes (list 'color-theme-dark-laptop
 ;							'color-theme-billw
@@ -172,12 +172,12 @@
      (window-divider-first-pixel ((t (:foreground "gray80"))))
      (window-divider-last-pixel ((t (:foreground "gray40")))))))
 
-(add-to-list 'color-themes '(color-theme-bro  "Bro Theme" "Bro"))
 
-
-(color-theme-initialize)
-
-(color-theme-bro)
+(eval-after-load 'color-theme
+  '(progn
+	 (add-to-list 'color-themes '(color-theme-bro  "Bro Theme" "Bro"))
+	 (color-theme-initialize)
+	 (color-theme-bro)))
 
 ;(require 'color-theme-solarized)
 ;(color-theme-solarized)
