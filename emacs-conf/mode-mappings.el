@@ -1,13 +1,17 @@
 (provide 'mode-mappings)
 
-;; Emacs lisp
-(add-to-list 'auto-mode-alist '("Carton$" . emacs-lisp-mode))
+(defmacro create-safe-loader-func ()
+  (let ((funsymbol (intern (concat "safe-load-mode-" mode))))
+	`(defun ,funsymbol () (interactive)
+			(if (condition-case nil (require (intern ,mode)) (error nil))
+				(,(intern mode)); Enabling mode if available
+			  (message "'%s' not available" ,mode))
+			)))
 
-;; Set C-mode for Cuda files
-(setq auto-mode-alist (cons '("\\.cu$" . c-mode) auto-mode-alist))
-
-;; Python mode for .py files
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(defun add-to-autoload (mode extensions)
+  (create-safe-loader-func)
+  (dolist (ext extensions)
+	(add-to-list 'auto-mode-alist (cons ext (intern (concat "safe-load-mode-" mode))))))
 
 ;(defun custom-TeX-command-master (orig-fun &rest args)
 ;       (message "TeX-command-master called with args %S" args)
@@ -23,32 +27,37 @@
 ;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
-(setq auto-mode-alist (cons '("\\.tikz$" . LaTeX-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.cbx$" . LaTeX-mode) auto-mode-alist))
+(add-to-autoload "LaTeX-mode" '("\\.cbx$" "\\.tikz$"))
 (setq auto-mode-alist (cons '("\\.tex$" . setup-latex-environment) auto-mode-alist))
 
+;; Emacs lisp
+(add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))
+
+;; Set C-mode for Cuda files
+(add-to-autoload "c-mode" '("\\.cu$"))
+
+;; Python mode for .py files
+(add-to-autoload "python-mode" '("\\.py$"))
+
 ;; Assembly settings
-(setq auto-mode-alist (append '(("\\.s$" . asm-mode) ("\\.S$" . asm-mode)) auto-mode-alist))
+(add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
 (setq asm-comment-char ?#)
 
 ;; PHP settings
-(require 'php-mode)
-(setq auto-mode-alist (append '(("\\.php$" . php-mode)) auto-mode-alist))
+(add-to-autoload "php-mode" '("\\.php\\'"))
 
 ;; HTML
-(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.vm$" . html-mode))
+(add-to-autoload "html-mode" '("\\.html\\'" "\\.tag$" "\\.vm$"))
 
 ;; org-mode
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(add-to-autoload "org-mode" '("\\.org$"))
 
 ;; Apache config
-(autoload 'apache-mode "apache-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
-(add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
-(add-to-list 'auto-mode-alist '("srm\\.conf\\'"    . apache-mode))
-(add-to-list 'auto-mode-alist '("access\\.conf\\'" . apache-mode))
-(add-to-list 'auto-mode-alist '("sites-\\(available\\|enabled\\)/" . apache-mode))
+(add-to-autoload "apache-mode" '("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'" "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
 
+;; ps-ccrypt
+(add-to-autoload "ps-ccrypt" '("\\.cpt$"))
 
+;(autoload 'gpicker "gpicker" "Gpicker mode" t)
+;(unless (require 'ps-ccrypt nil 'noerror)
+;  (message "ps-ccrypt not installed!"))

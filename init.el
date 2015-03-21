@@ -45,13 +45,8 @@
 ;; See ~Cask~ file for its configuration
 ;; https://github.com/cask/cask
 (if (require 'cask cask-project-basedir 'noerror)
-;(when (require 'cask "cask.el" 'noerror)
 	(cask-initialize )
   (message "cask is not installed!"))
-
-
-(unless (require 'ps-ccrypt nil 'noerror)
-  (message "ps-ccrypt not installed!"))
 
 ;; Keeps ~Cask~ file in sync with the packages
 ;; that you install/uninstall via ~M-x list-packages~
@@ -106,11 +101,6 @@
 ;(require 'setup-python)
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
-(require 'show-wspace)
-(autoload 'gpicker "gpicker" "Gpicker mode" t)
-
-(unless (require 'ps-ccrypt nil 'noerror)
-  (message "ps-ccrypt not installed!"))
 
 (require 'key-bindings)
 

@@ -1,4 +1,3 @@
-(require 'color-theme nil 'noerror)
 
 ;(setq my-color-themes (list 'color-theme-dark-laptop
 ;							'color-theme-billw
@@ -10,6 +9,7 @@
 
 ;(require 'color-theme-solarized)
 ;(color-theme-solarized)
+
 
 (defun color-theme-bro ()
   "Color theme by root, created 2015-02-22."
@@ -140,8 +140,8 @@
      (whitespace-hspace ((t (:background "grey24" :foreground "darkgray"))))
      (whitespace-indentation ((t (:background "yellow" :foreground "firebrick"))))
      (whitespace-line ((t (:background "gray20" :foreground "violet"))))
-     (whitespace-newline ((t (:foreground "darkgray" :weight normal))))
-     (whitespace-space ((t (:background "grey20" :foreground "darkgray"))))
+     ;(whitespace-newline ((t (:foreground "darkgray" :weight normal))))
+     (whitespace-space ((t (:bold t :background "grey20" :foreground "gray75"))))
      (whitespace-space-after-tab ((t (:background "yellow" :foreground "firebrick"))))
      (whitespace-space-before-tab ((t (:background "DarkOrange" :foreground "firebrick"))))
      (whitespace-tab ((t (:background "grey22" :foreground "darkgray"))))
@@ -156,9 +156,13 @@
      (window-divider-first-pixel ((t (:foreground "gray80"))))
      (window-divider-last-pixel ((t (:foreground "gray40")))))))
 
-
 (eval-after-load 'color-theme
   '(progn
 	 (add-to-list 'color-themes '(color-theme-bro  "Bro Theme" "Bro"))
 	 (color-theme-initialize)
 	 (color-theme-bro)))
+
+(require 'color-theme nil 'noerror)
+
+;(custom-set-faces
+; '(default ((t (:foreground "white" :background "black"))))

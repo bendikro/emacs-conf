@@ -4,8 +4,6 @@
 ;;;; Python
 ;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-
 ;; Set python tab width to 4 && Only spaces
 (defun py-indent ()
   (setq indent-tabs-mode nil)
