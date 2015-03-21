@@ -9,22 +9,25 @@
 ;; Python mode for .py files
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 
-;; Auctex mode for .tex files
-;(setq auto-mode-alist (cons '("\\.tex$" . LaTeX-mode) auto-mode-alist))
+;(defun custom-TeX-command-master (orig-fun &rest args)
+;       (message "TeX-command-master called with args %S" args)
+;       (let ((res (apply orig-fun args)))
+;         (message "TeX-command-master returned %S" res)
+;         res))
 
-(defun mode-test()
-  (message "mode-test")
+(defun setup-latex-environment()
   (require 'setup-auctex)
   (require 'setup-latexmk)
   (require 'setup-tex)
   (LaTeX-mode)
+;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
 (setq auto-mode-alist (cons '("\\.tikz$" . LaTeX-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.tex$" . mode-test) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.cbx$" . LaTeX-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.tex$" . setup-latex-environment) auto-mode-alist))
 
 ;; Assembly settings
-(require 'asm-mode)
 (setq auto-mode-alist (append '(("\\.s$" . asm-mode) ("\\.S$" . asm-mode)) auto-mode-alist))
 (setq asm-comment-char ?#)
 

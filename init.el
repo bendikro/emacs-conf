@@ -105,6 +105,7 @@
 (require 'setup-gtags)
 ;(require 'setup-python)
 (require 'setup-smooth-scrolling)
+(require 'setup-whitespace)
 (require 'show-wspace)
 (autoload 'gpicker "gpicker" "Gpicker mode" t)
 
@@ -145,12 +146,8 @@
 ;; auto compile elisp files after save
 ;(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
 
+(setq custom-file "~/.emacs.d/emacs-conf/custom.el")
+(load custom-file)
+
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values (quote ((setq reftex-texpath-environment-variables (quote (".:include/customtex/"))) (default-directory "~/master/master_opp/oppgave/")))))

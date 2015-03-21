@@ -12,83 +12,81 @@
 	1 TeX-auto-file)
   "Matches \loadglsentries definitions.")
 
-(add-hook 'LaTeX-mode-hook
-		  '(lambda()
-			 (global-set-key (kbd "\t") 'TeX-complete-symbol) ; ' "fix" highlighting
-			 ))
+(add-hook
+ 'LaTeX-mode-hook
+ '(lambda()
+	(global-set-key (kbd "\t") 'TeX-complete-symbol) ; ' "fix" highlighting
+	;; Completion for the bib-item entries in citen/citenp
+	(setq TeX-complete-list
+		  (append '(("\\\\citen{\\([^{}\n\r\\%,]*\\)"
+					 1 LaTeX-bibitem-list "}")
+					("\\\\citenp{\\([^{}\n\r\\%,]*\\)" 1 LaTeX-bibitem-list "}"))
+				  TeX-complete-list))
+	;; Add litem as a valid item for e.g. enumerate environment. Fixed auto-fill (M-q)
+	(LaTeX-paragraph-commands-add-locally (list "item" "litem" "ditem" "bitem" "initem" "newglossaryentry" "newacronym" "newdualentry"))
 
-;; Custom stuff to load glossaries automatically and ignore rfc bib
-(add-hook 'LaTeX-mode-hook
-		  '(lambda()
-			 (setq TeX-macro-default "/home/bro/master/master_opp/oppgave")
-			 (setq TeX-auto-default "/home/bro/master/master_opp/oppgave/auto")
-			 (TeX-auto-add-regexp TeX-load-glsentries-regexp)
-			 (setq reftex-bibfile-ignore-list (list "rfc.bib"))))
+	(font-latex-add-keywords '(
+							   ("citen" "[{")
+							   ("cites" "[{")
+							   ("code" "[{")
+							   ("test" "[{")
+							   ("name" "[{")
+							   ("atodo" "[{")
+							   ("feedback" "[{")
+							   ("hostname" "[{")
+							   ("host" "[{")
+							   ("ms" "[{")
+							   ("linuxkernel" "[{")
+							   ("citenp" "[{")
+							   ("citep" "[{")
+							   ("citesp" "[{")
+							   ("citerfc" "[{")
+							   ("citerfcp" "[{")
+							   ("cref" "[{")
+							   ("Cref" "[{")
+							   ("labelcref" "[{")
+							   ("namecref" "[{")
+							   ("newacronym" "[{")
+							   ("newglossaryentry" "[{")
+							   ("newdualentry" "[{")
+							   ("gls" "[{")
+							   ("Gls" "[{")
+							   ("glspl" "[{")
+							   ("Glspl" "[{")
+							   ("glsname" "[{")
+							   ("Glsname" "[{")
+							   ("glstext" "[{")
+							   ("Glstext" "[{")
+							   ("glsuseri" "[{")
+							   ("Glsuseri" "[{")
+							   ("Glsed" "[{")
+							   ("glsed" "[{")
+							   ("Glsing" "[{")
+							   ("glsing" "[{")
+							   ("acrshort" "[{")
+							   ("Acrshort" "[{")
+							   ("acrshortpl" "[{")
+							   ("Acrshortpl" "[{")
+							   ("acrlong" "[{")
+							   ("Acrlong" "[{")
+							   ("acrlongpl" "[{")
+							   ("Acrlongpl" "[{")
+							   ("acrfull" "[{")
+							   ("Acrfull" "[{")
+							   ("litem" "[{")
+							   ("ditem" "[{")
+							   ("bitem" "[{")
+							   ("initem" "[{")
+							   ("captionof" "[{")
+							   ("docaptionof" "[{")
+							   )
+							 'reference)
 
-(add-hook 'LaTeX-mode-hook
-		  '(lambda()
-			 ;; Completion for the bib-item entries in citen/citenp
-			 (setq TeX-complete-list
-				   (append '(("\\\\citen{\\([^{}\n\r\\%,]*\\)"
-							  1 LaTeX-bibitem-list "}")
-							 ("\\\\citenp{\\([^{}\n\r\\%,]*\\)" 1 LaTeX-bibitem-list "}"))
-						   TeX-complete-list))
-
-			 (setq font-latex-match-reference-keywords
-				   '(
-					 ("citen" "[{")
-					 ("cites" "[{")
-					 ("code" "[{")
-					 ("name" "[{")
-					 ("hostname" "[{")
-					 ("citenp" "[{")
-					 ("citep" "[{")
-					 ("citesp" "[{")
-					 ("citerfc" "[{")
-					 ("citerfcp" "[{")
-					 ("cref" "[{")
-					 ("Cref" "[{")
-					 ("labelcref" "[{")
-					 ("namecref" "[{")
-					 ("newacronym" "[{")
-					 ("newglossaryentry" "[{")
-					 ("newdualentry" "[{")
-					 ("gls" "[{")
-					 ("Gls" "[{")
-					 ("glspl" "[{")
-					 ("Glspl" "[{")
-					 ("glsname" "[{")
-					 ("Glsname" "[{")
-					 ("Glsed" "[{")
-					 ("glsed" "[{")
-					 ("Glsing" "[{")
-					 ("glsing" "[{")
-					 ("acrshort" "[{")
-					 ("Acrshort" "[{")
-					 ("acrshortpl" "[{")
-					 ("Acrshortpl" "[{")
-					 ("acrlong" "[{")
-					 ("Acrlong" "[{")
-					 ("acrlongpl" "[{")
-					 ("Acrlongpl" "[{")
-					 ("acrfull" "[{")
-					 ("Acrfull" "[{")
-					 ("litem" "[{")
-					 ("ditem" "[{")
-					 ("bitem" "[{")
-					 ("initem" "[{")
-					 ("captionof" "[{")
-					 ("docaptionof" "[{")
-					 ))
-
-			 ;; Add litem as a valid item for e.g. enumerate environment. Fixed auto-fill (M-q)
-			 (LaTeX-paragraph-commands-add-locally (list "item" "litem" "ditem" "bitem" "initem" "newglossaryentry" "newacronym" "newdualentry"))
-
-			 ;; For regular macro completion
-			 (TeX-add-symbols
-			  '("citen" ignore)
-			  ;; Load glossary entries
-			  '("citenp" ignore))))
+	;; For regular macro completion
+	(TeX-add-symbols
+	 '("citen" ignore)
+	 ;; Load glossary entries
+	 '("citenp" ignore))))
 
 (add-hook 'reftex-load-hook
 		  '(lambda()

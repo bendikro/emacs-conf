@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 notify="$HOME/.emacs.d/bin/notify-remote.sh"
 
@@ -12,7 +12,7 @@ if [ -n "$1" ]; then
 fi
 
 ssh_cmd="'touch ~/.irssi/notify/$notify_port; tmux attach -t irc || tmux new-session -s irc'"
-echo "ssh_cmd:$ssh_cmd"
+#echo "ssh_cmd:$ssh_cmd"
 
 set -e
 set -x
