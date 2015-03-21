@@ -31,6 +31,10 @@
 (setq auto-mode-alist (append '(("\\.s$" . asm-mode) ("\\.S$" . asm-mode)) auto-mode-alist))
 (setq asm-comment-char ?#)
 
+;; PHP settings
+(require 'php-mode)
+(setq auto-mode-alist (append '(("\\.php$" . php-mode)) auto-mode-alist))
+
 ;; HTML
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
