@@ -19,6 +19,7 @@
 ;         (message "TeX-command-master returned %S" res)
 ;         res))
 
+;; LaTeX
 (defun setup-latex-environment()
   (require 'setup-auctex)
   (require 'setup-latexmk)
@@ -38,6 +39,9 @@
 
 ;; Python mode for .py files
 (add-to-autoload "python-mode" '("\\.py$"))
+
+;; Markdown
+(add-to-autoload "markdown-mode" '("\\.markdown\\'" "\\.md\\'"))
 
 ;; Assembly settings
 (add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
@@ -60,5 +64,3 @@
   (message "ps-ccrypt not installed!"))
 
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)
-;(unless (require 'ps-ccrypt nil 'noerror)
-;  (message "ps-ccrypt not installed!"))
