@@ -56,7 +56,8 @@
 (add-to-autoload "apache-mode" '("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'" "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
 
 ;; ps-ccrypt
-(add-to-autoload "ps-ccrypt" '("\\.cpt$"))
+(unless (require 'ps-ccrypt nil 'noerror)
+  (message "ps-ccrypt not installed!"))
 
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)
 ;(unless (require 'ps-ccrypt nil 'noerror)
