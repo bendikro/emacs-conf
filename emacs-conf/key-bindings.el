@@ -7,6 +7,7 @@
 (defun do-key-bindings ()
   (interactive)
   (progn
+	(message "do-key-bindings")
 	;; Fix delete character
 	(global-set-key [delete] 'delete-char)
 
@@ -63,21 +64,6 @@
 
 	;; Toggle between 4 and 8 character tab width
 	(global-set-key (kbd "<f8>") 'tf-toggle-tab-width-setting) ; ' "fix" highlighting
-
-	;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;; ;;;;;;; Key bindings for gtag
-	;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-	(global-set-key "\M-," 'ww-next-gtag)      ;; M-; cycles to next result, after doing M-. C-M-. or C-M-,
-	(global-set-key "\M-*" 'gtags-pop-stack)   ;; M-, cycles to next result, after doing M-. C-M-. or C-M-,
-	(global-set-key "\M-." 'gtags-find-tag2)    ;; M-. finds tag
-;;(global-set-key [(control meta .)] 'gtags-find-rtag)   ;; C-M-. find all references of tag
-;;(global-set-key [(control meta ,)] 'gtags-find-symbol) ;; C-M-, find all usages of symbol.
-
-	(global-set-key "\M--" 'gtags-find-rtag)    ;; M-- finds tag references
-
-	;; Update TAGS file with F9
-	(global-set-key (kbd "<f9>") 'gtags-update-current-file)
 
 ;;(global-set-key (kbd "<C-M-up>") 'shrink-window)
 ;;(global-set-key (kbd "<C-M-down>") 'enlarge-window)

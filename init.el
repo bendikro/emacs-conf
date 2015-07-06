@@ -95,16 +95,13 @@
 	(load-file init-local))
 
 ;;(load_libs "setup")
-
+;(require 'setup-python)
 (require 'setup-ispell)
 (require 'setup-gtags)
-;(require 'setup-python)
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
-
+(require 'setup-markdown)
 (require 'key-bindings)
-
-(do-key-bindings)
 
 ;(eval-after-load 'shell '(require 'setup-shell))
 (message "user-login-name: %s" user-login-name)
@@ -138,6 +135,8 @@
 
 (setq custom-file "~/.emacs.d/emacs-conf/custom.el")
 (load custom-file)
+
+(run-hooks 'after-init-load-hook)
 
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))

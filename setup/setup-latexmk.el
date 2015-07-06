@@ -23,9 +23,10 @@
   (add-to-list 'TeX-expand-list (list "%(misc-args)" '(lambda () "")))
   )
 
+;		  "cd /home/bro/master/master_opp/thesis;"
 ; "cd %(default-directory); " ;
 (defvar get-custom-latexmk-cmd
-  (concat ;;"echo PWD: $PWD;"        ; Echo the PWD
+  (concat "echo PWD: $PWD;"        ; Echo the PWD
 		  "latexmk "
 		  "%(misc-args) "          ; Extra arguments to latexmk
 		  "%(pdflatex-args) "      ; Extra arguments to pdflatex

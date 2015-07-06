@@ -2,7 +2,6 @@
 
 ;(add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook '(lambda()
-							 (set-fill-column 80)
 							 (setq TeX-error-overview-open-after-TeX-run t)))
 
 ;; Auto-complete

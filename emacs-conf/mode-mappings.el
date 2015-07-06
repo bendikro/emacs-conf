@@ -3,12 +3,15 @@
 (defmacro create-safe-loader-func ()
   (let ((funsymbol (intern (concat "safe-load-mode-" mode))))
 	`(defun ,funsymbol () (interactive)
-			(if (condition-case nil (require (intern ,mode)) (error nil))
-				(,(intern mode)); Enabling mode if available
-			  (message "'%s' not available" ,mode))
-			)))
+	   (if (not (eq ',func nil))
+		   (,func))
+	   (if (condition-case nil (require (intern ,mode)) (error nil))
+		   (message "mode: %s" mode)
+		 (,(intern mode)); Enabling mode if available
+		 (message "'%s' not available" ,mode))
+	   )))
 
-(defun add-to-autoload (mode extensions)
+(defun add-to-autoload (mode extensions &optional func)
   (create-safe-loader-func)
   (dolist (ext extensions)
 	(add-to-list 'auto-mode-alist (cons ext (intern (concat "safe-load-mode-" mode))))))
@@ -24,12 +27,10 @@
   (require 'setup-auctex)
   (require 'setup-latexmk)
   (require 'setup-tex)
-  (LaTeX-mode)
 ;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
-(add-to-autoload "LaTeX-mode" '("\\.cbx$" "\\.tikz$"))
-(setq auto-mode-alist (cons '("\\.tex$" . setup-latex-environment) auto-mode-alist))
+(add-to-autoload "LaTeX-mode" '("\\.tex$" "\\.sty$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
 
 ;; Emacs lisp
 (add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))
@@ -62,5 +63,8 @@
 ;; ps-ccrypt
 (unless (require 'ps-ccrypt nil 'noerror)
   (message "ps-ccrypt not installed!"))
+
+;; rtf-mode
+(add-to-autoload "rtf-mode" '("\\.rtf$"))
 
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)

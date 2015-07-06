@@ -79,6 +79,11 @@
 							   ("initem" "[{")
 							   ("captionof" "[{")
 							   ("docaptionof" "[{")
+							   ("erratumAdd" "[{")
+							   ("erratumReplace" "[{{")
+							   ("erratumDelete" "[{")
+							   ("erratumNote" "[{")
+							   ("noindent" "")
 							   )
 							 'reference)
 

@@ -3,6 +3,7 @@
 (source marmalade)
 (source org)
 
+(depends-on "browse-kill-ring+")
 (depends-on "cask")
 (depends-on "color-theme")
 (depends-on "color-theme-solarized")
