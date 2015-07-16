@@ -133,7 +133,7 @@
 ;; auto compile elisp files after save
 ;(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
 
-(setq custom-file "~/.emacs.d/emacs-conf/custom.el")
+(setq custom-file (expand-file-name "emacs-conf/custom.el" emacs-config-basedir))
 (load custom-file)
 
 (run-hooks 'after-init-load-hook)
