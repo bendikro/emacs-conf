@@ -1,3 +1,7 @@
+[user]
+	name = bendikro
+	email = bendikro@gmail.com
+
 [alias]
 	ch = checkout
 	br = branch
@@ -5,12 +9,13 @@
 	st = status
 
 [color]
-        diff = auto
-        status = auto
-        branch = auto
+	diff = auto
+	status = auto
+	branch = auto
 
 [format]
-        pretty = "Commit:  %C(yellow)%H%nAuthor:  %C(green)%aN <%aE>%nDate:    (%C(red)%ar%Creset) %ai%nSubject: %s%n%n%b"
+	pretty = "Commit:  %C(yellow)%H%nAuthor:  %C(green)%aN <%aE>%nDate:    (%C(red)%ar%Creset) %ai%nSubject: %s%n%n%b"
+
 [core]
 	editor = emacs
 

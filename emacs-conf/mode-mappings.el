@@ -5,8 +5,8 @@
 	`(defun ,funsymbol () (interactive)
 	   (if (not (eq ',func nil))
 		   (,func))
+	   (message "Loading mode: %s" ,mode)
 	   (if (condition-case nil (require (intern ,mode)) (error nil))
-		   (message "mode: %s" mode)
 		 (,(intern mode)); Enabling mode if available
 		 (message "'%s' not available" ,mode))
 	   )))
