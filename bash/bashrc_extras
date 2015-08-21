@@ -20,6 +20,10 @@ if [ -f ~/.emacs.d/bash/bash_alias ]; then
     . ~/.emacs.d/bash/bash_alias
 fi
 
+# Set up bash completion for git commands
+if [ -f ~/.emacs.d/bash/zfs-completion.bash ]; then
+    . ~/.emacs.d/bash/zfs-completion.bash
+fi
 
 # Enable 256 colors
 [ "$TERM" = xterm ] && export TERM=xterm-256color
