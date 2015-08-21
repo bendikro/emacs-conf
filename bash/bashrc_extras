@@ -30,6 +30,16 @@ export EDITOR=emacs
 # Add the bin dir to PATH
 export PATH=$PATH:~/.emacs.d/bin/
 
+OS=`uname`
+
+if [ $OS="FreeBSD" ]; then
+    source /usr/local/share/bash-completion/bash_completion.sh
+fi
+
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 # Add the cask bin to PATH
 if [ -d $HOME/.cask/bin ]; then
     export PATH=$HOME/.cask/bin:$PATH
