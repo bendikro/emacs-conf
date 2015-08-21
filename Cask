@@ -18,3 +18,4 @@
 (depends-on "python-pep8")
 (depends-on "python-pylint")
 (depends-on "yasnippet")
+(depends-on "ggtags")

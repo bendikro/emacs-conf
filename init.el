@@ -97,7 +97,7 @@
 ;;(load_libs "setup")
 ;(require 'setup-python)
 (require 'setup-ispell)
-(require 'setup-gtags)
+(require 'setup-ggtags)
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
 (require 'setup-markdown)
