@@ -36,7 +36,7 @@ export PATH=$PATH:~/.emacs.d/bin/
 
 OS=`uname`
 
-if [ $OS="FreeBSD" ]; then
+if [[ "$OS" == 'FreeBSD' ]]; then
     source /usr/local/share/bash-completion/bash_completion.sh
 fi
 
