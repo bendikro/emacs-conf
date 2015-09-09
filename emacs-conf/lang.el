@@ -7,11 +7,10 @@
 ;; Set python tab width to 4 && Only spaces
 (defun py-indent ()
   (setq indent-tabs-mode nil)
-  (setq tab-width 4
-        py-indent-offset 4
-        indent-tabs-mode nil
-        py-smart-indentation nil))
-(add-hook 'python-mode-hook 'py-indent)
+  (setq tab-width 4)
+  (setq py-indent-offset 4)
+  (setq python-indent 4)
+  (setq py-smart-indentation nil))
 
 (defun python-setup-hook ()
   ;; The following two lines of code is run from the mode hook.
@@ -21,7 +20,9 @@
   (require 'python-pep8 nil 'noerror)
   (require 'python-pylint nil 'noerror)
   (require 'python-flake8 nil 'noerror)
-  (require 'flycheck nil 'noerror))
+  (require 'flycheck nil 'noerror)
+  (py-indent)
+)
 (add-hook 'python-mode-hook 'python-setup-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;
