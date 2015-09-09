@@ -17,12 +17,13 @@
 
 (setq inhibit-startup-message t)
 (setq debug-on-error t)
+;; Default to user home dir if not already set
+(defvar user-home-dir (getenv "HOME"))
 
-; user-init-file: /home/bro/.emacs.d/init.el
+(setq cask-load-file (concat (file-name-as-directory user-home-dir) ".cask/cask.el"))
 ; Get the base directory of the emacs config
-(defvar user-home-dir "/home/bro")
-(setq cask-project-basedir (concat user-home-dir "/.cask/cask.el"))
 (setq emacs-config-basedir (file-name-directory user-init-file))
+(message "user-init-file: %s" user-init-file)
 (message "emacs-config-basedir: %s" emacs-config-basedir)
 
 ;; Set path to dependencies
@@ -44,9 +45,10 @@
 ;; Package Manager
 ;; See ~Cask~ file for its configuration
 ;; https://github.com/cask/cask
-(if (require 'cask cask-project-basedir 'noerror)
-	(cask-initialize )
-  (message "cask is not installed!"))
+(when (>= emacs-major-version 24)
+  (if (require 'cask cask-load-file 'noerror)
+	  (cask-initialize )
+	(message "cask is not installed!")))
 
 ;; Keeps ~Cask~ file in sync with the packages
 ;; that you install/uninstall via ~M-x list-packages~
@@ -97,7 +99,10 @@
 ;;(load_libs "setup")
 ;(require 'setup-python)
 (require 'setup-ispell)
-(require 'setup-ggtags)
+(if (>= emacs-major-version 24)
+	(require 'setup-ggtags)
+  (require 'setup-gtags))
+
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
 (require 'setup-markdown)
@@ -110,8 +115,6 @@
 (setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
 (setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
 
-;(message "user-backup-dir: %s" user-backup-dir)
-;(message "user-autosave-dir: %s" user-autosave-dir)
 (create-if-no-exists (list user-backup-dir user-autosave-dir))
 
 ; Write backup files to users directory

@@ -36,7 +36,7 @@
 (add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))
 
 ;; Set C-mode for Cuda files
-(add-to-autoload "c-mode" '("\\.cu$"))
+(add-to-autoload "c-mode" '("\\.cu$" "\\.stp$"))
 
 ;; Python mode for .py files
 (add-to-autoload "python-mode" '("\\.py$"))
