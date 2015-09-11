@@ -97,7 +97,7 @@
 	(load-file init-local))
 
 ;;(load_libs "setup")
-;(require 'setup-python)
+(require 'setup-python)
 (require 'setup-ispell)
 (if (>= emacs-major-version 24)
 	(require 'setup-ggtags)

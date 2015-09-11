@@ -39,20 +39,20 @@
 (add-to-autoload "c-mode" '("\\.cu$" "\\.stp$"))
 
 ;; Python mode for .py files
-(add-to-autoload "python-mode" '("\\.py$"))
+;;(add-to-autoload "python-mode" '("\\.py$"))
 
 ;; Markdown
-(add-to-autoload "markdown-mode" '("\\.markdown\\'" "\\.md\\'"))
+(add-to-autoload "markdown-mode" '("\\.markdown$" "\\.md$"))
 
 ;; Assembly settings
 (add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
 (setq asm-comment-char ?#)
 
 ;; PHP settings
-(add-to-autoload "php-mode" '("\\.php\\'"))
+(add-to-autoload "php-mode" '("\\.php$"))
 
 ;; HTML
-(add-to-autoload "html-mode" '("\\.html\\'" "\\.tag$" "\\.vm$"))
+(add-to-autoload "html-mode" '("\\.html$" "\\.tag$" "\\.vm$"))
 
 ;; org-mode
 (add-to-autoload "org-mode" '("\\.org$"))
