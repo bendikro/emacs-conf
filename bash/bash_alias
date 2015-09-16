@@ -1,5 +1,5 @@
 # Clear screen properly
-alias cl='printf "\033c"'
+alias cl='printf "\033c"' # Clear screen and history
 alias gkill="grep_kill"
 alias nl='newlines'
 alias sbsh='source ~/.bashrc'
@@ -15,7 +15,8 @@ alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask"'
 
 alias tmuxdeluge='ssh freebsd -t "tmux attach -t deluge || tmux new-session -s deluge"'
 
-#tmux attach -t irc || tmux new-session -s irc'
+alias bsd="ssh freebsd"
+
 
 # Only apply when we have a proper terminal
 case "$TERM" in
