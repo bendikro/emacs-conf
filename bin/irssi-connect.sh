@@ -20,7 +20,14 @@ set -x
 socat -u tcp4-listen:$notify_port,reuseaddr,fork,bind=127.0.0.1 exec:$notify &
 socat_pid=$!
 
+cleanup()
+{
+	echo "Killing socat: $socat_pid"
+	kill $socat_pid
+}
+
+trap cleanup SIGINT
+
 eval "ssh -o ServerAliveInterval=20 $host -p $ssh_port -R $notify_port:localhost:$notify_port -t $ssh_cmd"
 
-echo "Killing socat: $socat_pid"
-kill $socat_pid
+cleanup
