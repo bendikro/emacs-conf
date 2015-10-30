@@ -1,0 +1,4 @@
+# Add emacs python functions to PYTHONPATH
+if [ -d $HOME/.emacs.d/site-py ]; then
+    export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
+fi

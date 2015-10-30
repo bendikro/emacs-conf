@@ -25,6 +25,12 @@ if [ -f ~/.emacs.d/bash/zfs-completion.bash ]; then
     . ~/.emacs.d/bash/zfs-completion.bash
 fi
 
+# Add pymacs to PYTHONPATH
+if [ -f ~/.emacs.d/bash/pypath_pymacs ]; then
+    . ~/.emacs.d/bash/pypath_pymacs
+fi
+
+
 # Enable 256 colors
 [ "$TERM" = xterm ] && export TERM=xterm-256color
 
@@ -47,9 +53,4 @@ fi
 # Add the cask bin to PATH
 if [ -d $HOME/.cask/bin ]; then
     export PATH=$HOME/.cask/bin:$PATH
-fi
-
-# Add emacs python functions to PYTHONPATH
-if [ -d $HOME/.emacs.d/site-py ]; then
-    export PYTHONPATH=$PYTHONPATH:$HOME/.emacs.d/site-py
 fi

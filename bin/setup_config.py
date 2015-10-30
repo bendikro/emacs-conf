@@ -1,21 +1,5 @@
 #!/usr/bin/env python
 
-tmux = ".tmux.conf"
-tmux_conf = """TMUX_CONF_DIR=%s/.emacs.d/configs/tmux
-source-file $TMUX_CONF_DIR/tmux.conf
-"""
-
-bashrc = ".bashrc"
-bashrc_conf = """if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
-    . ~/.emacs.d/bash/bashrc_extras
-fi
-"""
-
-gitconfig = ".gitconfig"
-gitconfig_conf = """[include]
-     path = ~/.emacs.d/configs/gitconfig
-"""
-
 import re
 import os.path
 from os.path import expanduser
@@ -29,18 +13,43 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
                 return
     elif not create_if_not_exists:
         return
+    else:
+        print "Nothing done on '%s'" % filename
 
     with open(filename, 'a+') as f:
         f.write(conf)
 
+home = expanduser("~")
+
+# Tuples with (Filename,  pattern,  conf)
+configs = [
+    # Tmux
+    (os.path.join(home, ".tmux.conf"), "TMUX_CONF_DIR", """
+TMUX_CONF_DIR=%s/.emacs.d/configs/tmux
+source-file $TMUX_CONF_DIR/tmux.conf
+    """ % "/home/bro"),
+    # .profile
+    (os.path.join(home, ".profile"), "# Add pymacs to PYTHONPATH", """
+# Add pymacs to PYTHONPATH
+if [ -f $HOME/.emacs.d/bash/pypath_pymacs ]; then
+    . $HOME/.emacs.d/bash/pypath_pymacs
+fi
+"""),
+    # bash
+(os.path.join(home, ".bashrc"), "/.emacs.d/bash/bashrc_extras", """
+if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
+    . ~/.emacs.d/bash/bashrc_extras
+fi
+"""),
+    # Git config
+    (os.path.join(home, ".gitconfig"), "/.emacs.d/configs/gitconfig", """
+[include]
+     path = ~/.emacs.d/configs/gitconfig
+""")
+]
+
+
 if __name__ == '__main__':
-    home = expanduser("~")
 
-    tmux_conf_file = os.path.join(home, tmux)
-    add_to_config(tmux_conf_file, "TMUX_CONF_DIR", tmux_conf % "/home/bro", True)
-
-    bashrc_file = os.path.join(home, bashrc)
-    add_to_config(bashrc_file, "/.emacs.d/bash/bashrc_extras", bashrc_conf, True)
-
-    gitconfig_file = os.path.join(home, gitconfig)
-    add_to_config(gitconfig_file, "/.emacs.d/configs/gitconfig", gitconfig_conf, True)
+    for fname, pattern, conf in configs:
+        add_to_config(fname, pattern, conf, True)
