@@ -54,3 +54,12 @@ fi
 if [ -d $HOME/.cask/bin ]; then
     export PATH=$HOME/.cask/bin:$PATH
 fi
+
+# PYENV
+if [[ $EUID -ne 0 ]] && [ -d "$HOME/.pyenv" ]; then
+   export PYENV_ROOT="$HOME/.pyenv"
+   export PATH="$PYENV_ROOT/bin:$PATH"
+   eval "$(pyenv init -)"
+else
+   export PYENV_ROOT=""
+fi
