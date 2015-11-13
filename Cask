@@ -18,6 +18,7 @@
 (depends-on "python-pep8")
 (depends-on "python-pylint")
 
+(depends-on "auctex")
 (depends-on "yasnippet")
 (depends-on "auto-complete")
 (depends-on "ggtags")

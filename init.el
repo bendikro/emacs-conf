@@ -41,7 +41,6 @@
 
 (setq flymake-run-in-place nil) ; nice default when using tramp
 
-
 ;; Package Manager
 ;; See ~Cask~ file for its configuration
 ;; https://github.com/cask/cask
@@ -96,7 +95,7 @@
 (if (file-exists-p init-local)
 	(load-file init-local))
 
-;;(load_libs "setup")
+(load_libs "setup")
 (require 'setup-python)
 (require 'setup-ispell)
 (if (>= emacs-major-version 24)

@@ -1,4 +1,3 @@
-
 (provide 'setup-python)
 
 ;(setq py-load-pymacs-p nil)

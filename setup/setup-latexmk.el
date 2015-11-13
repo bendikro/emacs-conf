@@ -1,5 +1,4 @@
 (provide 'setup-latexmk)
-
 (require 'auctex-latexmk)
 
 (defcustom resize-compile-window-width 90

@@ -24,13 +24,23 @@
 
 ;; LaTeX
 (defun setup-latex-environment()
+  (interactive)
+  (load "auctex.el" nil t t)
   (require 'setup-auctex)
   (require 'setup-latexmk)
   (require 'setup-tex)
 ;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
-(add-to-autoload "LaTeX-mode" '("\\.tex$" "\\.sty$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
+(add-hook 'LaTeX-mode-hook
+		  '(lambda()
+			 (setup-latex-environment)
+			 ))
+
+;(add-to-autoload "LaTeX-mode" '("\\.tex$" "\\.sty$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
+;(add-to-autoload "latex-mode" '("\\.tex$" "\\.sty$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
+
+; (add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
 
 ;; Emacs lisp
 (add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))

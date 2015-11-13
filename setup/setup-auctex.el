@@ -1,11 +1,11 @@
-(provide 'setup-auctex)
+(add-hook 'LaTeX-mode-hook
+		  '(lambda()
+			 (require 'reftex-cite)
+			 (require 'bibtex)
+			 (require 'flymake)
+			 (require 'auto-complete-auctex)
+			 ))
 
-(load "auctex.el" nil t t)
-
-(require 'reftex-cite)
-(require 'bibtex)
-(require 'flymake)
-(require 'auto-complete-auctex)
 
 (defvar TeX-load-glsentries-regexp
   '("\\\\loadglsentries\\[[^]]*\\]{\\(\\.*[^#}%\\\\\\.\n\r]+\\)}"
@@ -120,3 +120,4 @@
 			 ))
 
 ;(add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)
+(provide 'setup-auctex)

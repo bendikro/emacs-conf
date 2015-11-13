@@ -8,6 +8,7 @@
 (add-hook 'auto-complete-mode-hook
 		  '(lambda()
 			 (define-key ac-completing-map "\e" 'ac-stop)
+			 (yas-minor-mode)
 			 (yas-minor-mode-on)
 			 (ac-set-trigger-key "TAB")
 			 (setq ac-auto-start nil)))
@@ -22,4 +23,3 @@
 			 (run-hooks 'after-init-load-hook)
 			 (setq compilation-scroll-output t)
 			 (auto-complete-mode)))
-
