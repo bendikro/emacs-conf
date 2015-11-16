@@ -45,6 +45,12 @@ fi
     (os.path.join(home, ".gitconfig"), "/.emacs.d/configs/gitconfig", """
 [include]
      path = ~/.emacs.d/configs/gitconfig
+"""),
+    # gtk-3.0 active terminal tab color
+    (os.path.join(home, ".config/gtk-3.0/gtk.css"), "TerminalWindow .notebook tab:active", """
+TerminalWindow .notebook tab:active {
+    background-color: #b6bccb;
+}
 """)
 ]
 
