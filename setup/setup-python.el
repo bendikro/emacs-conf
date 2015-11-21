@@ -1,5 +1,11 @@
 (provide 'setup-python)
 
+;; Add site-py dir to PYTHONPATH
+(setenv "PYTHONPATH"
+		(concat
+		 (expand-file-name "site-py" emacs-config-basedir) ":" (getenv "PYTHONPATH")
+		 ))
+
 ;(setq py-load-pymacs-p nil)
 ;(require 'python-mode nil 'noerror)
 (require 'tramp)
