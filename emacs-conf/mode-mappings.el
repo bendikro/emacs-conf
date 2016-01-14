@@ -77,4 +77,9 @@
 ;; rtf-mode
 (add-to-autoload "rtf-mode" '("\\.rtf$"))
 
+
+(require 'giteditmsg-mode)
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . giteditmsg-mode))
+
+
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)

@@ -17,6 +17,7 @@
 (depends-on "python-mode")
 (depends-on "python-pep8")
 (depends-on "python-pylint")
+(depends-on "magit")
 
 (depends-on "auctex")
 (depends-on "yasnippet")
