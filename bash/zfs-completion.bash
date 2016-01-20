@@ -63,7 +63,7 @@ __zfs_list_volumes()
 
 __zfs_argument_chosen()
 {
-    for word in $(seq $((COMP_CWORD-1)) -1 2)
+    for word in $(seq $((COMP_CWORD-1)) 2)
     do
         local prev="${COMP_WORDS[$word]}"
         for property in $@
