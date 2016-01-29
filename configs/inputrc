@@ -1,0 +1,9 @@
+# Include this file by adding the following to ~/.inputrc
+# $include ~/.emacs.d/configs/inputrc
+
+set editing-mode emacs
+
+# Fixes CTRL+left/right in such as ipython
+"\e[1;5C": forward-word    # Ctrl+right
+"\e[1;5D": backward-word   # Ctrl+left
+"\e[3;5~": kill-word       # Ctrl+del : Kill the word to the right

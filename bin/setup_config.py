@@ -41,6 +41,10 @@ if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
     . ~/.emacs.d/bash/bashrc_extras
 fi
 """),
+    # inputrc
+(os.path.join(home, ".inputrc"), "/.emacs.d/configs/inputrc", """
+$include ~/.emacs.d/configs/inputrc
+"""),
     # Git config
     (os.path.join(home, ".gitconfig"), "/.emacs.d/configs/gitconfig", """
 [include]

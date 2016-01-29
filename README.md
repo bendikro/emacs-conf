@@ -9,12 +9,20 @@ source-file $TMUX_CONF_DIR/tmux.conf
 ```
 
 #####bashrc
-```
 Add the following to ~/.bashrc
+```
 if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
     . ~/.emacs.d/bash/bashrc_extras
 fi
 ```
+
+#####inputrc
+Add the following to ~/.inputrc
+```
+$include ~/.emacs.d/configs/inputrc
+```
+
+
 #####git
 
 To load git config, add to ~/.gitconfig:
