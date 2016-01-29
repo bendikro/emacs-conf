@@ -23,6 +23,7 @@ alias grr='git remote rm'
 alias gsh='git show'
 alias gs='git status'
 alias gsu='git status --untracked-files=no'
+alias gcma='git commit --amend --no-edit --reset-author'
 
 # Set up bash completion for git commands
 if [ -f ~/.emacs.d/bash/git-completion.bash ]; then
