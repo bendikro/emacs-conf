@@ -1,5 +1,5 @@
 (provide 'setup-ggtags)
-(require 'ggtags)
+(require 'ggtags nil 'noerror)
 
 (add-hook 'ggtags-mode-hook
 		  '(lambda()

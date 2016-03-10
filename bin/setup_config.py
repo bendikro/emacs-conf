@@ -15,6 +15,7 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
         return
     else:
         print "Nothing done on '%s'" % filename
+        return
 
     with open(filename, 'a+') as f:
         f.write(conf)
