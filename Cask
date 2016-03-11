@@ -14,7 +14,6 @@
 (depends-on "markdown-mode")
 (depends-on "pallet")
 (depends-on "psgml")
-(depends-on "python-mode")
 (depends-on "python-pep8")
 (depends-on "python-pylint")
 (depends-on "magit")
@@ -23,3 +22,7 @@
 (depends-on "yasnippet")
 (depends-on "auto-complete")
 (depends-on "ggtags")
+
+;; File mode
+(depends-on "python-mode")
+(depends-on "apache-mode")
