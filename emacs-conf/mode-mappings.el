@@ -82,4 +82,9 @@
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . giteditmsg-mode))
 
 
+(add-hook 'js-mode-hook
+		  '(lambda()
+			 (setq-default indent-tabs-mode nil)
+			 ))
+
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)
