@@ -5,7 +5,6 @@ declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "tmux_complet
 for i in "${bash_files[@]}"
 do
 	if [ -f ~/.emacs.d/bash/"$i" ]; then
-		echo "Found: ~/.emacs.d/bash/$i";
 		. ~/.emacs.d/bash/"$i"
 	fi
 
