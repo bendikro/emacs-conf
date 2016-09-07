@@ -67,6 +67,9 @@
 ;; org-mode
 (add-to-autoload "org-mode" '("\\.org$"))
 
+;; go-mode
+(add-to-autoload "go-mode" '("\\.go$"))
+
 ;; Apache config
 (add-to-autoload "apache-mode" '("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'" "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
 

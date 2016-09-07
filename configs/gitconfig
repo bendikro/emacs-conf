@@ -1,6 +1,5 @@
 [user]
-	name = bendikro
-	email = bro.devel@gmail.com
+	useConfigOnly = true
 
 [format]
 	pretty = "Commit:  %C(yellow)%H%nAuthor:  %C(green)%aN <%aE>%nDate:    (%C(red)%ar%Creset) %ai%nSubject: %s%n%n%b"
@@ -10,3 +9,6 @@
 
 [push]
 	default = simple
+
+[alias]
+    changeremotehost = !sh -c \"git remote -v | grep '$1.*fetch' | sed s/..fetch.// | sed s/$1/$2/ |   xargs -n2 git remote set-url\"
