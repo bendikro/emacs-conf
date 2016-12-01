@@ -27,3 +27,4 @@
 (depends-on "python-mode")
 (depends-on "apache-mode")
 (depends-on "go-mode")
+(depends-on "yaml-mode")

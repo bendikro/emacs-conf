@@ -70,6 +70,9 @@
 ;; go-mode
 (add-to-autoload "go-mode" '("\\.go$"))
 
+;; yaml-mode
+(add-to-autoload "yaml-mode" '("\\.yml$" "\\.yaml$"))
+
 ;; Apache config
 (add-to-autoload "apache-mode" '("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'" "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
 
