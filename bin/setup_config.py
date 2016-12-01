@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import re
-import os.path
-from os.path import expanduser
+import os
 import subprocess
+import sys
+
 
 def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
     print "Updating '%s'" % filename
@@ -19,9 +20,7 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
     with open(filename, 'a+') as f:
         f.write(conf)
 
-home = expanduser("~")
-
-
+home = os.path.expanduser("~")
 os_line = subprocess.check_output(["uname", "-a"])
 
 # Tuples with (Filename,  pattern,  conf)
@@ -64,5 +63,16 @@ TerminalWindow .notebook tab:active {
 
 if __name__ == '__main__':
 
-    for fname, pattern, conf, create_if_not_exists in configs:
-        add_to_config(fname, pattern, conf, create_if_not_exists=create_if_not_exists)
+    if not ("config" in sys.argv or "tmux" in sys.argv):
+        print "Valid arguments are 'config' and 'tmux'"
+        sys.exit()
+
+    if "tmux" in sys.argv:
+        tpm = os.path.join(home, ".tmux/plugins/tpm")
+        if not os.path.isdir(tpm):
+            os.makedirs(tpm)
+            subprocess.call("git clone https://github.com/tmux-plugins/tpm %s" % tpm, shell=True)
+
+    if "config" in sys.argv:
+        for fname, pattern, conf, create_if_not_exists in configs:
+            add_to_config(fname, pattern, conf, create_if_not_exists=create_if_not_exists)
