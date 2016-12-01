@@ -110,23 +110,25 @@
 ;(eval-after-load 'shell '(require 'setup-shell))
 (message "user-login-name: %s" user-login-name)
 
-(setq emacs-backup-dir (expand-file-name (concat user-emacs-directory "backups/")))
-(setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
-(setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
+(when (string= (getenv "EMACS_NO_BACKUP") nil)
+  (setq emacs-backup-dir (expand-file-name (concat user-emacs-directory "backups/")))
+  (setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
+  (setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
 
-(create-if-no-exists (list user-backup-dir user-autosave-dir))
+  (create-if-no-exists (list user-backup-dir user-autosave-dir))
 
-; Write backup files to users directory
-(setq backup-directory-alist
-      `(("." . , user-backup-dir)))
+  ;; Write backup files to users directory
+  (setq backup-directory-alist
+		`(("." . , user-backup-dir)))
 
-(setq auto-save-file-name-transforms
-	  `((".*" ,user-autosave-dir t)))
+  (setq auto-save-file-name-transforms
+		`((".*" ,user-autosave-dir t)))
 
-(setq auto-save-list-file-prefix user-autosave-dir)
+  (setq auto-save-list-file-prefix user-autosave-dir)
 
-;; Make backups of files, even when they're in version control
-(setq vc-make-backup-files t)
+  ;; Make backups of files, even when they're in version control
+  (setq vc-make-backup-files t))
+
 
 ;; Conclude init by setting up specifics for the current user
 ;(when (file-exists-p user-settings-dir)
