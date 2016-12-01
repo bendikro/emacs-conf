@@ -3,6 +3,7 @@
 import re
 import os.path
 from os.path import expanduser
+import subprocess
 
 def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
     print "Updating '%s'" % filename
@@ -19,6 +20,9 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
         f.write(conf)
 
 home = expanduser("~")
+
+
+os_line = subprocess.check_output(["uname", "-a"])
 
 # Tuples with (Filename,  pattern,  conf)
 configs = [
@@ -54,7 +58,7 @@ $include ~/.emacs.d/configs/inputrc
 TerminalWindow .notebook tab:active {
     background-color: #b6bccb;
 }
-""", False)
+""", "Ubuntu" in os_line)
 ]
 
 
