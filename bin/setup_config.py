@@ -17,6 +17,11 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
         print "Nothing done on '%s'" % filename
         return
 
+    path_dir = os.path.dirname(filename)
+    if not os.path.isdir(path_dir):
+        print "Creating directory '%s'" % path_dir
+        os.makedirs(path_dir)
+
     with open(filename, 'a+') as f:
         f.write(conf)
 
@@ -29,7 +34,7 @@ configs = [
     (os.path.join(home, ".tmux.conf"), "TMUX_CONF_DIR", """
 TMUX_CONF_DIR=%s/.emacs.d/configs/tmux
 source-file $TMUX_CONF_DIR/tmux.conf
-""" % "/home/bro", True),
+""" % home, True),
     # .profile
     (os.path.join(home, ".profile"), "# Add pymacs to PYTHONPATH", """
 # Add pymacs to PYTHONPATH
