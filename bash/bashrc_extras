@@ -29,6 +29,11 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    . /usr/local/bin/virtualenvwrapper.sh
+fi
+
+
 # Add the cask bin to PATH
 if [ -d $HOME/.cask/bin ]; then
     export PATH=$HOME/.cask/bin:$PATH
