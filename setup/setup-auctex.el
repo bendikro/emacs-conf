@@ -1,4 +1,4 @@
-(add-hook 'LaTeX-mode-hook
+(add-hook 'TeX-mode-hook
 		  '(lambda()
 			 (require 'reftex-cite)
 			 (require 'bibtex)
@@ -13,7 +13,7 @@
   "Matches \loadglsentries definitions.")
 
 (add-hook
- 'LaTeX-mode-hook
+ 'TeX-mode-hook
  '(lambda()
 	(global-set-key (kbd "\t") 'TeX-complete-symbol) ; ' "fix" highlighting
 	;; Completion for the bib-item entries in citen/citenp
@@ -98,19 +98,19 @@
 			 (setq reftex-bibliography-commands
 				   '("addbibresource" "bibliography" "nobibliography"))))
 
-(defun LaTeX-glossaries-auto-prepare ()
+(defun TeX-glossaries-auto-prepare ()
   "Prepare for LaTeX parsing."
   (setq TeX-auto-full-regexp-list
 		(append (list TeX-load-glsentries-regexp)
 				TeX-auto-full-regexp-list)))
 
-(add-hook 'TeX-auto-prepare-hook 'LaTeX-glossaries-auto-prepare)
+(add-hook 'TeX-auto-prepare-hook 'TeX-glossaries-auto-prepare)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Activate RefTex and wire it into AucTex ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'LaTeX-mode-hook
+(add-hook 'TeX-mode-hook
 		  '(lambda()
 			 'turn-on-reftex
 			 'flyspell-mode nil
@@ -119,5 +119,4 @@
 			 (setq TeX-show-compilation t)
 			 ))
 
-;(add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)
 (provide 'setup-auctex)

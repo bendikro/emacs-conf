@@ -43,7 +43,6 @@
 
 (add-hook 'LaTeX-mode-hook
 		  '(lambda()
-			 (message "setup-auctex - setup-latexmk")
 			 (auctex-latexmk-setup)
 			 (require 'setup-latexmk)
 			 (setup-custom-latexmk-cmd)))
@@ -53,7 +52,6 @@
 ;; AucTeX configurations ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'LaTeX-mode-hook '(lambda ()
-							  (message "setup-latexmk LaTeX-mode-hook")
 							(setq TeX-PDF-mode t)
 							(setq TeX-interactive-mode t)
 							(setq TeX-source-correlate-mode t)
