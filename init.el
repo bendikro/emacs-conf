@@ -15,7 +15,6 @@
 ;; No splash screen please
 (setq inhibit-startup-message t)
 
-(setq inhibit-startup-message t)
 (setq debug-on-error t)
 ;; Default to user home dir if not already set
 (defvar user-home-dir (getenv "HOME"))
@@ -144,3 +143,14 @@
 
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))
+
+
+(defun my-startup-layout ()
+ (interactive)
+ (split-window-horizontally)
+ (next-multiframe-window)
+ (switch-to-buffer (get-buffer-create "*Messages*"))
+ (next-multiframe-window)
+)
+
+(my-startup-layout)

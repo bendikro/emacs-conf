@@ -6,27 +6,25 @@
 			 (require 'auto-complete-auctex)
 			 ))
 
-
-(defvar TeX-load-glsentries-regexp
-  '("\\\\loadglsentries\\[[^]]*\\]{\\(\\.*[^#}%\\\\\\.\n\r]+\\)}"
-	1 TeX-auto-file)
-  "Matches \loadglsentries definitions.")
-
 (add-hook
  'TeX-mode-hook
  '(lambda()
 	(global-set-key (kbd "\t") 'TeX-complete-symbol) ; ' "fix" highlighting
 	;; Completion for the bib-item entries in citen/citenp
 	(setq TeX-complete-list
-		  (append '(("\\\\citen{\\([^{}\n\r\\%,]*\\)"
-					 1 LaTeX-bibitem-list "}")
-					("\\\\citenp{\\([^{}\n\r\\%,]*\\)" 1 LaTeX-bibitem-list "}"))
+		  (append '(("\\\\citep{\\([^{}\n\r\\%,]*\\)" 1 LaTeX-bibitem-list "}")
+					;;("\\\\citenp{\\([^{}\n\r\\%,]*\\)" 1 LaTeX-bibitem-list "}")
+					)
 				  TeX-complete-list))
+
+	;; For regular macro completion
+	(TeX-add-symbols
+	 '("citep" TeX-arg-cite))
+
 	;; Add litem as a valid item for e.g. enumerate environment. Fixed auto-fill (M-q)
 	(LaTeX-paragraph-commands-add-locally (list "item" "litem" "ditem" "bitem" "initem" "newglossaryentry" "newacronym" "newdualentry"))
 
 	(font-latex-add-keywords '(
-							   ("citen" "[{")
 							   ("cites" "[{")
 							   ("code" "[{")
 							   ("test" "[{")
@@ -37,7 +35,6 @@
 							   ("host" "[{")
 							   ("ms" "[{")
 							   ("linuxkernel" "[{")
-							   ("citenp" "[{")
 							   ("citep" "[{")
 							   ("citesp" "[{")
 							   ("citerfc" "[{")
@@ -46,33 +43,6 @@
 							   ("Cref" "[{")
 							   ("labelcref" "[{")
 							   ("namecref" "[{")
-							   ("newacronym" "[{")
-							   ("newglossaryentry" "[{")
-							   ("newdualentry" "[{")
-							   ("gls" "[{")
-							   ("Gls" "[{")
-							   ("glspl" "[{")
-							   ("Glspl" "[{")
-							   ("glsname" "[{")
-							   ("Glsname" "[{")
-							   ("glstext" "[{")
-							   ("Glstext" "[{")
-							   ("glsuseri" "[{")
-							   ("Glsuseri" "[{")
-							   ("Glsed" "[{")
-							   ("glsed" "[{")
-							   ("Glsing" "[{")
-							   ("glsing" "[{")
-							   ("acrshort" "[{")
-							   ("Acrshort" "[{")
-							   ("acrshortpl" "[{")
-							   ("Acrshortpl" "[{")
-							   ("acrlong" "[{")
-							   ("Acrlong" "[{")
-							   ("acrlongpl" "[{")
-							   ("Acrlongpl" "[{")
-							   ("acrfull" "[{")
-							   ("Acrfull" "[{")
 							   ("litem" "[{")
 							   ("ditem" "[{")
 							   ("bitem" "[{")
@@ -87,11 +57,7 @@
 							   )
 							 'reference)
 
-	;; For regular macro completion
-	(TeX-add-symbols
-	 '("citen" ignore)
-	 ;; Load glossary entries
-	 '("citenp" ignore))))
+	))
 
 (add-hook 'reftex-load-hook
 		  '(lambda()
@@ -100,10 +66,13 @@
 
 (defun TeX-glossaries-auto-prepare ()
   "Prepare for LaTeX parsing."
-  (setq TeX-auto-full-regexp-list
-		(append (list TeX-load-glsentries-regexp)
-				TeX-auto-full-regexp-list)))
+  (message "TeX-glossaries-auto-prepare")
+  ;; Load glossaries style to define
+  ;;(load-file "~/.emacs.d/auctex/style/glossaries.el")
+  ;;(TeX-load-style "glossaries")
+)
 
+;; This hook is run for each tex file that doesn't already have an <name>.el file in auto/ dir
 (add-hook 'TeX-auto-prepare-hook 'TeX-glossaries-auto-prepare)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -117,6 +86,8 @@
 			 ;; Autosave before compiling
 			 (setq TeX-save-query nil)
 			 (setq TeX-show-compilation t)
+			 (TeX-load-style "glossaries")
+			 (init-LaTeX-glossaries-style)
 			 ))
 
 (provide 'setup-auctex)

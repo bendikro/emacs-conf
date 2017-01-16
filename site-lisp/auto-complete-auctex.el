@@ -26,12 +26,9 @@
 
 ;;; Code:
 
-(provide 'auto-complete-auctex)
-
-(require 'tex)
-(require 'latex)
-
 (eval-when-compile
+  (require 'tex)
+  (require 'latex)
   (require 'auto-complete)
   (require 'yasnippet))
 
@@ -117,32 +114,20 @@
 						   val))))
   )
 
-(defun ac-auctex-macro-candidates2 ()
-;  (message "ac-auctex-macro-candidates2: %s" (ac-auctex-macro-candidates))
-;  (message "TeX-symbol-list: %s" TeX-symbol-list)
-  (ac-auctex-macro-candidates))
-
 (defun ac-auctex-macro-candidates ()
-  (message "ac-auctex-macro-candidates")
    (let ((comlist (if TeX-symbol-list
 					  (mapcar (lambda (item)
 								(or (car-safe (car item)) (car item)))
 							  TeX-symbol-list))))
 	 (all-completions ac-prefix comlist)))
 
-
-(defun ac-auctex-macro-action2 ()
-  (ac-auctex-macro-action)
-  (message "ac-auctex-macro-action2"))
-
 (defun ac-auctex-macro-action ()
-;  (message "ac-auctex-macro-action")
   (yas-expand-snippet (ac-auctex-macro-snippet (assoc-default candidate TeX-symbol-list))))
 
 (ac-define-source auctex-macros
   '((init . TeX-symbol-list)
-    (candidates . ac-auctex-macro-candidates2)
-    (action . ac-auctex-macro-action2)
+    (candidates . ac-auctex-macro-candidates)
+    (action . ac-auctex-macro-action)
     (requires . 0)
     (symbol . "m")
     (prefix . "\\\\\\([a-zA-Z]*\\)\\=")))
@@ -151,11 +136,9 @@
 ;;
 
 (defun ac-auctex-symbol-candidates ()
-  (message "ac-auctex-symbol-candidates")
   (all-completions ac-prefix (mapcar 'cadr LaTeX-math-default)))
 
 (defun ac-auctex-symbol-action ()
-  (message "ac-auctex-symbol-action")
   (re-search-backward candidate)
   (delete-region (1- (match-beginning 0)) (match-end 0))
   (if (texmathp)
@@ -214,7 +197,6 @@
 ;; Refs
 ;;
 
-
 (defun ac-auctex-label-candidates ()
   ;;(message "ac-auctex-label-candidates: %s" (all-completions ac-prefix (mapcar 'car LaTeX-label-list)))
   (all-completions ac-prefix (mapcar 'car LaTeX-label-list)))
@@ -238,7 +220,7 @@
     (candidates . ac-auctex-bib-candidates)
     (requires . 0)
     (symbol . "b")
-    (prefix . ,(concat "\\\\cite\\(?:n\\|np\\)?"
+    (prefix . ,(concat "\\\\\\(C\\|c\\)ite\\(?:t\\|p\\)?"
 					   "\\(?:"
 					   "\\[[^]]*\\]"
 					   "\\)?"
@@ -247,50 +229,40 @@
 
 ;; Glossaries
 ;;
-
 (defvar auctex-completion-list-tmp (list)
   "Temporary for parsing \\newmacro definitions.")
 
 (defun add-list-to-list (elements add-to-list)
-  ;;(message "add-list-to-list: %s" elements)
   (mapc (lambda (listelem)
-		  ;;(message "glsentry: %s" glsentry)
 		  (setq tmp (nth 0 listelem))
 		  (if (listp tmp)
 			  (progn
-				;;(message "is a list: %s" tmp)
 				(setq add-to-list (add-list-to-list listelem add-to-list))
 				)
 			(progn
-			  ;;(message "NOt a list: %s so adding %s" tmp listelem)
 			  (add-to-list 'add-to-list listelem)
-			  ;;(message "add-to-listis now: %s" add-to-list)
-			)
-			))
-		  ;;(add-to-list 'add-to-list listelem))
+			)))
 		elements)
-  ;;(message "add-to-list ret: %s" add-to-list)
   add-to-list
 )
 
 (defun ac-auctex-glossaries-candidates ()
-;;  (message "ac-auctex-glossaries-candidates - ac-prefix: %s, LaTeX-glossaries-list: %s" ac-prefix LaTeX-glossaries-list)
   (all-completions ac-prefix (mapcar 'car auctex-completion-list-tmp)))
 
 (defun ac-auctex-glossaries-init ()
+  "Called each time a completion is initiated"
   (interactive)
   (setq auctex-completion-list-tmp (list nil))
   (setq auctex-completion-list-tmp
-		(add-list-to-list LaTeX-glossaries-list auctex-completion-list-tmp))
-  (setq auctex-completion-list-tmp
-		(add-list-to-list LaTeX-glossaries-acronym-list auctex-completion-list-tmp))
+		(add-list-to-list LaTeX-glossaries-list-global auctex-completion-list-tmp))
   auctex-completion-list-tmp)
 
 (defun ac-auctex-glossaries-acronyms-init ()
+  "Called each time a completion is initiated"
   (interactive)
   (setq auctex-completion-list-tmp (list nil))
   (setq auctex-completion-list-tmp
-		(add-list-to-list LaTeX-glossaries-acronym-list auctex-completion-list-tmp))
+		(add-list-to-list LaTeX-glossaries-acronym-list-global auctex-completion-list-tmp))
   auctex-completion-list-tmp)
 
 (ac-define-source auctex-glossaries
@@ -298,21 +270,7 @@
     (candidates . ac-auctex-glossaries-candidates)
     (requires . 0)
     (symbol . "g")
-    (prefix . ,(concat "\\(?:gls\\|Gls\\)"
-					   "\\(?:pl\\)?"
-					   "\\(?:"
-					   "\\[[^]]*\\]"
-					   "\\)?"
-					   "{\\([^},]*\\)"
-					   "\\="))))
-;; Acronyms
-;;
-(ac-define-source auctex-glossaries-acronym
-  `((init . ac-auctex-glossaries-acronyms-init)
-    (candidates . ac-auctex-glossaries-candidates)
-    (requires . 0)
-    (symbol . "a")
-    (prefix . ,(concat "\\(?:acrshort\\|Acrshort\\)"
+    (prefix . ,(concat "\\(?:G\\|g\\)ls\\(?:entry\\(?:long\\|short\\|full\\)\\)?"
 					   "\\(?:pl\\)?"
 					   "\\(?:"
 					   "\\[[^]]*\\]"
@@ -320,10 +278,25 @@
 					   "{\\([^},]*\\)"
 					   "\\="))))
 
+;; Acronyms
+;;
+(ac-define-source auctex-glossaries-acronym
+  `((init . ac-auctex-glossaries-acronyms-init)
+    (candidates . ac-auctex-glossaries-candidates)
+    (requires . 0)
+    (symbol . "a")
+    (prefix . ,(concat "\\(?:acr\\|Acr\\|ACR\\)\\(?:short\\|long\\|full\\|fullfmt\\)"
+					   "\\(?:pl\\)?"
+					   "\\(?:"
+					   "\\[[^]]*\\]"
+					   "\\)?"
+					   "{\\([^},]*\\)"
+					   "\\="))
+	))
+
 ;; Setup
 ;;
 (defun ac-auctex-setup ()
-  (message "ac-auctex-setup")
   (setq ac-sources (append
                       '(ac-source-auctex-symbols
                         ac-source-auctex-macros
@@ -337,23 +310,18 @@
 
 (add-to-list 'ac-modes 'latex-mode)
 
+;; Must use LaTeX-mode-hook and not TeX-mode-hook for some reason, or it won't be loaded..
 (add-hook 'LaTeX-mode-hook
 		  '(lambda()
 			 (ac-auctex-setup)
 			 (setq ac-use-menu-map t)
-			 ;; Default settings [1;5B
-;			 (define-key ac-menu-map "\e[3;3~" [down])
-			 (define-key ac-menu-map "\C-n" 'ac-next)
-			 (define-key ac-menu-map "\C-p" 'ac-previous)
-			 ;(define-key ac-menu-map "\C-m" 'ac-next)
-			 (define-key ac-menu-map "\eOB" 'ac-next)
-			 (define-key ac-menu-map "\eOA" 'ac-previous)
-			 ;(define-key ac-menu-map [up] 'ac-previous)
-			 ;(define-key ac-menu-map [down] 'ac-next)
-			 ;(define-key ac-menu-map (kbd "<up>") 'ac-previous)
-			 ;(define-key ac-menu-map (kbd "<down>") 'ac-next)
-			 ;(global-set-key (kbd "<up>") 'ac-previous)
-			 ;(global-set-key (kbd "<down>") 'ac-next)
+			 ;; Navigate the dropdown list of completions:
+			 (define-key ac-menu-map "\C-n" 'ac-next)     ; CTRL+n
+			 (define-key ac-menu-map "\C-p" 'ac-previous) ; CTRL+p
+			 (define-key ac-menu-map "\eOB" 'ac-next)     ; Arrow-down
+			 (define-key ac-menu-map "\eOA" 'ac-previous) ; Arrow-up
 			 ))
+
+(provide 'auto-complete-auctex)
 
 ;;; auto-complete-auctex.el ends here

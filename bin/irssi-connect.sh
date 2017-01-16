@@ -3,7 +3,7 @@
 notify="$HOME/.emacs.d/bin/notify-remote.sh"
 
 host="freebsd"
-notify_port=12003
+notify_port=12004
 ssh_port=22
 
 # If we get an argument, use it for ssh port, otherwise use default of 22
@@ -27,6 +27,7 @@ cleanup()
 }
 
 trap cleanup SIGINT
+trap cleanup SIGHUP
 
 eval "ssh -o ServerAliveInterval=20 $host -p $ssh_port -R $notify_port:localhost:$notify_port -t $ssh_cmd"
 

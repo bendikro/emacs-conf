@@ -25,14 +25,20 @@
 
 ;;; Code:
 
+(require 'tex)
+
 (TeX-auto-add-type "glossaries-acronym" "LaTeX")
 (TeX-auto-add-type "glossaries" "LaTeX")
 
-;;(defvar LaTeX-auto-glossaries nil
-;;  "Temporary for parsing \\newmacro definitions.")
-;;
-;;(defvar LaTeX-auto-glossaries-acronyms nil
-;;  "Temporary for parsing \\newmacro definitions.")
+;; Tell AUCTeX that \loadglsentries loads a file.  regexp is the same as
+;; for \input or \include.  This will run `TeX-run-style-hooks' on
+;; subfile(s) when master file is loaded.
+(defvar TeX-load-glsentries-regexp
+  '("\\\\loadglsentries\\[[^]]*\\]{\\(\\.*[^#}%\\\\\\.\n\r]+\\)}"
+	1 TeX-auto-file)
+  "Matches \loadglsentries definitions. The file containing this command
+will have first argument to the command added to the call to TeX-run-style-hooks
+in its auto/<file>.el file")
 
 (defvar TeX-newacronym-regexp
   '("\\\\newacronym{\\([^}{]*\\)}{\\([^}{]*\\)}{\\([^}{]*\\)}"
@@ -44,40 +50,55 @@
 	(1 1) LaTeX-auto-glossaries)
   "Matches \newglossaryentry definitions.")
 
-(defvar TeX-load-glsentries-regexp
-  '("\\\\loadglsentries\\[[^]]*\\]{\\(\\.*[^#}%\\\\\\.\n\r]+\\)}"
-	1 TeX-auto-file)
-  "Matches \loadglsentries definitions.")
+;;(defvar LaTeX-auto-glossaries nil
+;;  "Temporary for parsing glossaries by `glossaries' package.")
+
+;;(defvar LaTeX-auto-glossaries-acronym nil
+;;  "Temporary for parsing acronyms by `glossaries' package.")
+
+;; The *-list variables are local to each buffer, so need to use global variables
+(defvar LaTeX-glossaries-list-global nil
+  "Global glossaries list")
+
+(defvar LaTeX-glossaries-acronym-list-global nil
+  "Global acronym list")
 
 (defun LaTeX-glossaries-cleanup ()
   "Move acronyms from `LaTeX-auto-glossaries' to `LaTeX-glossaries-list'."
-;;  (message "LaTeX-glossaries-cleanup LaTeX-auto-glossaries: %s, \nLaTeX-auto-glossaries-acronyms: %s" LaTeX-auto-glossaries LaTeX-auto-glossaries-acronym)
-  ;;(message "Adding glsentry: (%s) to LaTeX-glossaries-list. LaTeX-auto-glossaries: %s" LaTeX-auto-glossaries)
-  ;;(message "Before - LaTeX-glossaries-list: %s" LaTeX-glossaries-list)
-  ;;(message "Before - LaTeX-glossaries-acronym-list: %s" LaTeX-glossaries-acronym-list)
   (mapc (lambda (glsentry)
-		  ;;(message "glsentry: %s" glsentry)
 		  (add-to-list 'LaTeX-glossaries-list glsentry))
 		LaTeX-auto-glossaries)
-  ;;(message "After glsentry: %s" LaTeX-glossaries-list)
-;;  (mapc (lambda (acronym)
-;;		  (add-to-list 'LaTeX-glossaries-list (list acronym)))
-;;		LaTeX-auto-glossaries-acronym)
+
+  (mapc (lambda (glsentry)
+		  (add-to-list 'LaTeX-glossaries-list-global glsentry))
+		LaTeX-auto-glossaries)
+
   (mapc (lambda (acronym)
 		  (add-to-list 'LaTeX-glossaries-acronym-list acronym))
 		LaTeX-auto-glossaries-acronym)
-  ;;(message "After - LaTeX-glossaries-list: %s" LaTeX-glossaries-list)
-  ;;(message "After - LaTeX-glossaries-acronym-list: %s" LaTeX-glossaries-acronym-list)
+
+  (mapc (lambda (acronym)
+		  (add-to-list 'LaTeX-glossaries-acronym-list-global acronym))
+		LaTeX-auto-glossaries-acronym)
 )
 
-(defun LaTeX-glossaries-prepare ()
-;;  (message "TeX-glossaries-prepare!!!!")
-  ;; Clear `LaTeX-auto-glossaries-glsentries' before use.
-  (setq LaTeX-auto-glossaries nil)
-  (setq LaTeX-auto-glossaries-acronym nil))
+(defun LaTeX-acronym-cleanup ()
+  "Move acronyms from `LaTeX-auto-acronym' to `LaTeX-acronym-list'."
+  (mapc (lambda (acronym)
+		  (add-to-list 'LaTeX-acronym-list (list acronym)))
+		LaTeX-auto-acronym))
 
-(add-hook 'TeX-auto-prepare-hook 'LaTeX-glossaries-prepare)
-(add-hook 'TeX-auto-cleanup-hook 'LaTeX-glossaries-cleanup)
+
+(defun LaTeX-glossaries-prepare ()
+  " Clear `LaTeX-auto-glossaries-glsentries' before use."
+  (setq LaTeX-auto-glossaries nil)
+  (setq LaTeX-auto-glossaries-acronym nil)
+)
+
+;; Called for each new file that is opened
+(add-hook 'TeX-auto-prepare-hook #'LaTeX-glossaries-prepare t)
+(add-hook 'TeX-auto-cleanup-hook #'LaTeX-glossaries-cleanup t)
+(add-hook 'TeX-update-style-hook #'TeX-auto-parse t)
 
 (defvar LaTeX-glossaries-acronym-history nil
   "History of acronyms in acronym.")
@@ -127,15 +148,18 @@ argument, otherwise as a mandatory one.  Use PROMPT as the prompt
 string."
   (LaTeX-arg-glossaries-acronym optional prompt t))
 
-(defvar LaTeX-glossaries-package-options nil
+(defvar LaTeX-glossaries-package-options
+  '("toc" "acronym" "nopostdot" "xindy" "nonumberlist" "noredefwarn" "shortcuts")
   "Package options for the glossaries package.")
+
 
 (TeX-add-style-hook "glossaries"
  (function
   (lambda ()
-	(message "glossaries style hook executed")
-    (TeX-auto-add-regexp TeX-newacronym-regexp)
-    (TeX-auto-add-regexp TeX-newglossary-regexp)
+	(message "MSG Loading AUCTeX glossaries style")
+
+	(TeX-auto-add-regexp TeX-newacronym-regexp)
+	(TeX-auto-add-regexp TeX-newglossary-regexp)
 	(TeX-auto-add-regexp TeX-load-glsentries-regexp)
 
 	(LaTeX-add-environments
@@ -162,38 +186,101 @@ string."
     (and (fboundp 'reftex-add-index-macros)
 		 (reftex-add-index-macros '(glossaries)))
 
-	;; Add symbols for regular completion
+	;; Auto symbols completion
 	(TeX-add-symbols
+	 ;; Print the lists in the document
+	 '("printglossary" ignore)
+	 '("printacronyms" ignore)
+	 ;; Generate glossaries with xindy/makeindex
 	 '("makeglossaries" ignore)
 	 ;; Load glossary entries
 	 '("loadglsentries" [ "id" ] [ "filename" ])
-	 '("printglossary" ignore)
-	 '("printacronyms" ignore)
-	 ;; Define Acronym
+	 ;; Define Glossary/Acronym
 	 '("newacronym" LaTeX-arg-define-glossaries-acronym [ "Short name" ] "Full name")
-	 ;; Define gls
 	 '("newglossaryentry" LaTeX-arg-define-glossaries-glsentry [ "name" ] "description")
-
-	 ;; Load macros
+	 '("newdualentry" LaTeX-arg-define-glossaries-glsentry [ "name" ] "description")
+	 ;;[options]{label}{abbrv}{long}{description}
+	 ;; Reference glossary entry
 	 '("Gls" LaTeX-arg-glossaries-glsentry)
 	 '("gls" LaTeX-arg-glossaries-glsentry)
+	 '("Glspl" LaTeX-arg-glossaries-glsentry)
+ 	 '("glspl" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentrylong" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentrylong" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentrylongpl" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentrylongpl" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentryshort" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentryshort" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentryshortpl" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentryshortpl" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentryfull" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentryfull" LaTeX-arg-glossaries-glsentry)
+ 	 '("glsentryfullpl" LaTeX-arg-glossaries-glsentry)
+ 	 '("Glsentryfullpl" LaTeX-arg-glossaries-glsentry)
+
+	 ;; Reference acronyms
 	 '("acrshort" LaTeX-arg-glossaries-acronym)
 	 '("Acrshort" LaTeX-arg-glossaries-acronym)
-	 '("ACRshort" LaTeX-arg-glossaries-acronym)
 	 '("acrshortpl" LaTeX-arg-glossaries-acronym)
 	 '("Acrshortpl" LaTeX-arg-glossaries-acronym)
-	 '("ACRshortpl" LaTeX-arg-glossaries-acronym)
 	 '("acrlong" LaTeX-arg-glossaries-acronym)
 	 '("Acrlong" LaTeX-arg-glossaries-acronym)
-	 '("ACRlong" LaTeX-arg-glossaries-acronym)
 	 '("acrlongpl" LaTeX-arg-glossaries-acronym)
 	 '("Acrlongpl" LaTeX-arg-glossaries-acronym)
-	 '("ACRlongpl" LaTeX-arg-glossaries-acronym)
 	 '("acrfull" LaTeX-arg-glossaries-acronym)
 	 '("acrfullfmt" LaTeX-arg-glossaries-acronym)
 	 '("Acrfull" LaTeX-arg-glossaries-acronym)
-	 '("ACRfull" LaTeX-arg-glossaries-acronym)
 	 )
+
+	;; Fontification
+	(when (and (fboundp 'font-latex-add-keywords)
+			   (fboundp 'font-latex-set-syntactic-keywords)
+			   (eq TeX-install-font-lock 'font-latex-setup))
+	  (font-latex-add-keywords
+	   '(("newacronym" "[{")
+		 ("newglossaryentry" "[{")
+		 ("newdualentry" "[{")
+		 ("gls" "[{")
+		 ("Gls" "[{")
+		 ("glspl" "[{")
+		 ("Glspl" "[{")
+		 ("glsentrylong"  "[{")
+		 ("Glsentrylong"  "[{")
+		 ("glsentrylongpl"  "[{")
+		 ("Glsentrylongpl"  "[{")
+		 ("glsentryshort"  "[{")
+		 ("Glsentryshort"  "[{")
+		 ("glsentryshortpl"  "[{")
+		 ("Glsentryshortpl"  "[{")
+		 ("glsentryfull"  "[{")
+		 ("Glsentryfull"  "[{")
+		 ("glsentryfullpl"  "[{")
+		 ("Glsentryfullpl"  "[{")
+		 ("glsname" "[{")
+		 ("Glsname" "[{")
+		 ("glstext" "[{")
+		 ("Glstext" "[{")
+		 ("glsuseri" "[{")
+		 ("Glsuseri" "[{")
+		 ("Glsed" "[{")
+		 ("glsed" "[{")
+		 ("Glsing" "[{")
+		 ("glsing" "[{")
+		 ("acrshort" "[{")
+		 ("Acrshort" "[{")
+		 ("acrshortpl" "[{")
+		 ("Acrshortpl" "[{")
+		 ("acrlong" "[{")
+		 ("Acrlong" "[{")
+		 ("acrlongpl" "[{")
+		 ("Acrlongpl" "[{")
+		 ("acrfull" "[{")
+		 ("Acrfull" "[{"))
+	   'reference)
+	  )
 	)))
+
+(defun init-LaTeX-glossaries-style ()
+  (TeX-auto-add-regexp TeX-load-glsentries-regexp))
 
 ;;; glossaries.el ends here
