@@ -112,12 +112,17 @@ If OPTIONAL is non-nil, insert the resulting value as an optional
 argument, otherwise as a mandatory one.  Use PROMPT as the prompt
 string.  If DEFINITION is non-nil, add the chosen gls-entry to the
 list of defined gls-entries."
+  ;; Copy from global to local list because global list will give "void funtion" error....???
+  (mapc (lambda (glsentry)
+		  (add-to-list 'LaTeX-glossaries-list glsentry))
+		LaTeX-glossaries-list-global)
+
   (let ((glossary
 		 (completing-read (TeX-argument-prompt optional prompt "Glossary")
-						  (LaTeX-glossariess-list) nil nil nil
+						  (LaTeX-glossaries-list) nil nil nil
 						  'LaTeX-glossaries-history)))
     (if (and definition (not (string-equal "" glossary)))
-		(LaTeX-add-glossariess glossary))
+		(LaTeX-add-glossariess glossary)) ; Extra (plural) s on "glossariess" added by TeX-auto-add-type
     (TeX-argument-insert glossary optional optional)))
 
 (defun LaTeX-arg-define-glossaries-glsentry (optional &optional prompt)
@@ -133,12 +138,17 @@ If OPTIONAL is non-nil, insert the resulting value as an optional
 argument, otherwise as a mandatory one.  Use PROMPT as the prompt
 string.  If DEFINITION is non-nil, add the chosen acronym to the
 list of defined acronyms."
+  ;; Copy from global to local list because global list will give "void funtion" error....???
+  (mapc (lambda (acrentry)
+		  (add-to-list 'LaTeX-glossaries-acronym-list acrentry))
+		LaTeX-glossaries-acronym-list-global)
+
   (let ((acronym
 		 (completing-read (TeX-argument-prompt optional prompt "Acronym")
 						  (LaTeX-glossaries-acronym-list) nil nil nil
 						  'LaTeX-glossaries-acronym-history)))
     (if (and definition (not (string-equal "" acronym)))
-		(LaTeX-add-glossaries-acronyms acronym))
+		(LaTeX-add-glossaries-acronymss acronym)) ; Extra (plural) s on "acronymss" added by TeX-auto-add-type
     (TeX-argument-insert acronym optional optional)))
 
 (defun LaTeX-arg-define-glossaries-acronym (optional &optional prompt)
@@ -166,27 +176,28 @@ string."
 	 '("glossaries" LaTeX-env-args
 	   [TeX-arg-string "Longest glossary"]))
 
-    ;; Completion for the glossary entries in \gls
-	(setq TeX-complete-list
-		  (append '(("\\gls{\\([^{}\n\r\\%,]*\\)"
-					 1 LaTeX-glossariess-list "}")
-					("\\Gls{\\([^{}\n\r\\%,]*\\)"
-					 1 LaTeX-glossariess-list "}"))
-				  TeX-complete-list))
-
-    ;; Completion for the glossary entries in \acr
-	(setq TeX-complete-list
-		  (append '(("\\acrshort{\\([^{}\n\r\\%,]*\\)"
-					 1 LaTeX-glossaries-acronym-list "}")
-					("\\acrfull{\\([^{}\n\r\\%,]*\\)"
-					 1 LaTeX-glossaries-acronym-list "}"))
-				  TeX-complete-list))
+	;; Are these required for anything?
+    ;;;; Completion for the glossary entries in \gls
+	;;(setq TeX-complete-list
+	;;	  (append '(("\\gls{\\([^{}\n\r\\%,]*\\)"
+	;;				 1 LaTeX-glossaries-list-global "}")
+	;;				("\\Gls{\\([^{}\n\r\\%,]*\\)"
+	;;				 1 LaTeX-glossaries-list-global "}"))
+	;;			  TeX-complete-list))
+	;;
+	;;;; Completion for the glossary entries in \acr
+	;;(setq TeX-complete-list
+	;;	  (append '(("\\acrshort{\\([^{}\n\r\\%,]*\\)"
+	;;				 1 LaTeX-glossaries-acronym-list "}")
+	;;				("\\acrfull{\\([^{}\n\r\\%,]*\\)"
+	;;				 1 LaTeX-glossaries-acronym-list "}"))
+	;;			  TeX-complete-list))
 
     ;; RefTeX support
     (and (fboundp 'reftex-add-index-macros)
 		 (reftex-add-index-macros '(glossaries)))
 
-	;; Auto symbols completion
+	;; Auto symbols completion in status line (E.g. C-c RET \gls RET "Tab to complete")
 	(TeX-add-symbols
 	 ;; Print the lists in the document
 	 '("printglossary" ignore)
@@ -199,7 +210,6 @@ string."
 	 '("newacronym" LaTeX-arg-define-glossaries-acronym [ "Short name" ] "Full name")
 	 '("newglossaryentry" LaTeX-arg-define-glossaries-glsentry [ "name" ] "description")
 	 '("newdualentry" LaTeX-arg-define-glossaries-glsentry [ "name" ] "description")
-	 ;;[options]{label}{abbrv}{long}{description}
 	 ;; Reference glossary entry
 	 '("Gls" LaTeX-arg-glossaries-glsentry)
 	 '("gls" LaTeX-arg-glossaries-glsentry)
@@ -217,7 +227,6 @@ string."
  	 '("Glsentryfull" LaTeX-arg-glossaries-glsentry)
  	 '("glsentryfullpl" LaTeX-arg-glossaries-glsentry)
  	 '("Glsentryfullpl" LaTeX-arg-glossaries-glsentry)
-
 	 ;; Reference acronyms
 	 '("acrshort" LaTeX-arg-glossaries-acronym)
 	 '("Acrshort" LaTeX-arg-glossaries-acronym)
