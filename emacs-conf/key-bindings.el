@@ -65,6 +65,8 @@
 	;; Toggle between 4 and 8 character tab width
 	(global-set-key (kbd "<f8>") 'tf-toggle-tab-width-setting) ; ' "fix" highlighting
 
+	(global-set-key (kbd "M-#") 'replace-regexp)
+
 ;;(global-set-key (kbd "<C-M-up>") 'shrink-window)
 ;;(global-set-key (kbd "<C-M-down>") 'enlarge-window)
 ;;(global-set-key (kbd "<C-M-left>") 'shrink-window-horizontally)
