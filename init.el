@@ -145,12 +145,12 @@
          (float-time (time-since emacs-load-start-time)))
 
 
-(defun my-startup-layout ()
- (interactive)
- (split-window-horizontally)
- (next-multiframe-window)
- (switch-to-buffer (get-buffer-create "*Messages*"))
- (next-multiframe-window)
-)
-
-(my-startup-layout)
+;;(defun my-startup-layout ()
+;; (interactive)
+;; (split-window-horizontally)
+;; (next-multiframe-window)
+;; (switch-to-buffer (get-buffer-create "*Messages*"))
+;; (next-multiframe-window)
+;;)
+;;
+;;(my-startup-layout)

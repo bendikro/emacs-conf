@@ -1,0 +1,136 @@
+#!/usr/bin/env python
+# -*- coding: utf-8; -*-
+
+# Copyright (C) 2012, 2013, 2014 Johan Andersson
+# Copyright (C) 2013, 2014 Sebastian Wiesner
+# Copyright (C) 2017 bendikro
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with GNU Emacs; see the file COPYING.  If not, write to the
+# Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+
+"""
+Install emacs conf
+"""
+
+from __future__ import unicode_literals, print_function
+
+import os
+import shutil
+import sys
+import errno
+from subprocess import CalledProcessError, check_call, check_output
+
+
+HOME = os.path.expanduser('~')
+TARGET_DIRECTORY = os.path.join(HOME, '.emacs.d')
+EM_CONF_REPO = os.environ.get('EM_CONF_REPO', 'https://github.com/bendikro/emacs-conf.git')
+EM_CONF_FORCE = os.environ.get('EM_CONF_FORCE', 'dir') # never/dir/git
+EM_CONF_SETUP = os.environ.get('EM_CONF_SETUP', 'config') # never/dir/git
+
+class GoError(Exception):
+    pass
+
+
+OKGREEN = '\033[32m'
+FAIL = '\033[31m'
+ENDC = '\033[0m'
+
+
+def success(s):
+    print(OKGREEN + s + ENDC)
+    sys.exit(0)
+
+
+def fail(s):
+    print(FAIL + s + ENDC, file=sys.stderr)
+    sys.exit(1)
+
+
+def install_cask(target_directory):
+    os.chdir(target_directory)
+    try:
+        check_call(['curl', '-o', 'cask.go', '-fsSkL', 'https://raw.github.com/cask/cask/master/go'])
+        print(check_output(['python', 'cask.go']))
+    except CalledProcessError:
+        print('Cask could not be installed.')
+    except OSError as error:
+        if error.errno == errno.ENOENT:
+            raise GoError('git executable not found.  Please install Git')
+        else:
+            raise
+    finally:
+        try:
+            os.remove('cask.go')
+        except OSError:
+            pass
+
+
+def install_emacs_conf(target_directory):
+    if os.path.isdir(target_directory):
+        remove = False
+        if os.path.isdir(os.path.join(target_directory, ".git")):
+            print("%s git repo already exists" % target_directory)
+            if EM_CONF_FORCE == "git":
+                remove = True
+            else:
+                raise GoError('Aborting installation. Is emacs config already installed?')
+        else:
+            print("%s dir already exists" % target_directory)
+            if EM_CONF_FORCE in ["git", "dir"]:
+                remove = True
+            else:
+                raise GoError('Directory {0} exists. Aborting installation!'.format(target_directory))
+        if remove:
+            print("Removing %s" % target_directory)
+            shutil.rmtree(target_directory)
+    try:
+        print(check_output(['git', 'clone', EM_CONF_REPO, target_directory]))
+    except CalledProcessError:
+        raise GoError('Emacs config could not be installed.')
+    except OSError as error:
+        if error.errno == errno.ENOENT:
+            raise GoError('git executable not found.  Please install Git')
+        else:
+            raise
+
+
+def setup_emacs(target_directory):
+    os.chdir(target_directory)
+    try:
+        # Execute with shell=True to reread the .bashrc
+        args = ['python', os.path.join(target_directory, "bin/setup_config.py")]
+        args.extend(EM_CONF_SETUP.split(" "))
+        print(check_output(args, shell=False))
+    except CalledProcessError:
+        raise GoError('Emacs packages could not be installed.')
+    except OSError as error:
+        if error.errno == errno.ENOENT:
+            raise GoError('git executable not found.  Please install Git')
+        else:
+            raise
+
+
+def main():
+    try:
+        install_cask(HOME)
+        install_emacs_conf(TARGET_DIRECTORY)
+        setup_emacs(TARGET_DIRECTORY)
+        success("""Successfully installed emacs config!""")
+    except GoError as error:
+        fail('{0!s}'.format(error))
+
+
+if __name__ == '__main__':
+    sys.exit(main())
