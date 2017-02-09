@@ -79,6 +79,8 @@
 ;; rtf-mode
 (add-to-autoload "rtf-mode" '("\\.rtf$"))
 
+;; conf-mode
+(add-to-autoload "conf-mode" '("\\.ini$"))
 
 (require 'giteditmsg-mode)
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . giteditmsg-mode))
