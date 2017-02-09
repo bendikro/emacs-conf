@@ -47,6 +47,9 @@
 ;; Markdown
 (add-to-autoload "markdown-mode" '("\\.markdown$" "\\.md$"))
 
+;; Dockerfile
+(add-to-autoload "dockerfile-mode" '("Dockerfile"))
+
 ;; Assembly settings
 (add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
 (setq asm-comment-char ?#)

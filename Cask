@@ -22,6 +22,7 @@
 (depends-on "yaml-mode")
 (depends-on "psgml") ;; XML, HTML, markup langs ++
 (depends-on "markdown-mode")
+(depends-on "dockerfile-mode")
 
 ;; Python
 (depends-on "python-mode")

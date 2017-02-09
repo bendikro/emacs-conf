@@ -7,3 +7,7 @@ set editing-mode emacs
 "\e[1;5C": forward-word    # Ctrl+right
 "\e[1;5D": backward-word   # Ctrl+left
 "\e[3;5~": kill-word       # Ctrl+del : Kill the word to the right
+
+# Needed for tmux when attaching to a docker container
+"\e[1~": beginning-of-line # Home : Move cursor to beginning of line
+"\e[4~": end-of-line       # End : Move cursor to end of lineroot@slurmctld
