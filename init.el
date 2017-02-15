@@ -5,6 +5,9 @@
 
 ;; Add hook for functions that need be be run after packages have been loaded
 ;; After loading, do (run-hooks 'after-init-load-hook)
+(setq package-enable-at-startup nil)
+(package-initialize)
+
 (defvar after-init-load-hook nil
   "Call hooks after loading package")
 
