@@ -48,7 +48,8 @@
 (add-to-autoload "markdown-mode" '("\\.markdown$" "\\.md$"))
 
 ;; Dockerfile
-(add-to-autoload "dockerfile-mode" '("Dockerfile"))
+(add-to-autoload "rockerfile-mode" '("Dockerfile"))
+(add-to-autoload "rockerfile-mode" '("Rockerfile"))
 
 ;; Assembly settings
 (add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
