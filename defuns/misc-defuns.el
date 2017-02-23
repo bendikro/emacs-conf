@@ -23,6 +23,14 @@
   (load-file user-init-file)
   (setq do-show-messages t))
 
+(defun startup-with-messages-buffer ()
+  (interactive)
+  (split-window-horizontally)
+  (next-multiframe-window)
+  (switch-to-buffer (get-buffer-create "*Messages*"))
+  (next-multiframe-window)
+  )
+
 (defun messages ()
   (interactive)
   (message "Messages do-show-messages: %s" do-show-messages)

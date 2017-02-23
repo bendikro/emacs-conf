@@ -23,6 +23,25 @@
     ,@(sh-font-lock-keywords-1))
   "Default font-lock-keywords for `rockerfile mode'.")
 
+(defvar rockerfile-mode-map
+  (let ((map (make-sparse-keymap))
+        (menu-map (make-sparse-keymap)))
+    (define-key map "\C-c\C-b" 'dockerfile-build-buffer)
+    (define-key map "\C-c\M-b" 'dockerfile-build-no-cache-buffer)
+    (define-key map "\C-c\C-z" 'dockerfile-test-function)
+    (define-key map "\C-c\C-c" 'comment-region)
+    (define-key map [menu-bar dockerfile-mode] (cons "Dockerfile" menu-map))
+    (define-key menu-map [dfc]
+      '(menu-item "Comment Region" comment-region
+                  :help "Comment Region"))
+    (define-key menu-map [dfb]
+      '(menu-item "Build" dockerfile-build-buffer
+                  :help "Send the Dockerfile to docker build"))
+    (define-key menu-map [dfb]
+      '(menu-item "Build without cache" dockerfile-build-no-cache-buffer
+                  :help "Send the Dockerfile to docker build without cache"))
+    map))
+
 ;; Handle emacs < 24, which does not have prog-mode
 (defalias 'rockerfile-parent-mode
   (if (fboundp 'prog-mode) 'prog-mode 'fundamental-mode))
@@ -32,7 +51,7 @@
   "A major mode to edit Rockerfiles.
 \\{rockerfile-mode-map}
 "
-  (set-syntax-table rockerfile-mode-syntax-table)
+  (set-syntax-table dockerfile-mode-syntax-table)
   (set (make-local-variable 'require-final-newline) mode-require-final-newline)
   (set (make-local-variable 'comment-start) "#")
   (set (make-local-variable 'comment-end) "")

@@ -7,13 +7,16 @@
 (depends-on "cask")
 (depends-on "color-theme")
 (depends-on "color-theme-solarized")
-(depends-on "exec-path-from-shell")
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
-(depends-on "ggtags")
 (depends-on "magit")
 (depends-on "pallet")
 (depends-on "yasnippet")
+
+;; Utils
+(depends-on "ggtags")
+(depends-on "xclip-mode")
+(depends-on "exec-path-from-shell")
 
 ;; File mode
 (depends-on "elpy")

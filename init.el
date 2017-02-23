@@ -109,7 +109,6 @@
 (require 'setup-markdown)
 (require 'key-bindings)
 
-;(eval-after-load 'shell '(require 'setup-shell))
 (message "user-login-name: %s" user-login-name)
 
 (when (string= (getenv "EMACS_NO_BACKUP") nil)
@@ -136,9 +135,6 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
-;; auto compile elisp files after save
-;(add-hook 'emacs-lisp-mode-hook (lambda () (add-hook 'after-save-hook 'emacs-lisp-byte-compile t t)) )
-
 (setq custom-file (expand-file-name "emacs-conf/custom.el" emacs-config-basedir))
 (load custom-file)
 
@@ -147,13 +143,4 @@
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))
 
-
-;;(defun my-startup-layout ()
-;; (interactive)
-;; (split-window-horizontally)
-;; (next-multiframe-window)
-;; (switch-to-buffer (get-buffer-create "*Messages*"))
-;; (next-multiframe-window)
-;;)
-;;
-;;(my-startup-layout)
+;(startup-with-messages-buffer)
