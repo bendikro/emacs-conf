@@ -1,4 +1,4 @@
-(require 'xclip)
+(require 'xclip nil 'noerror)
 
 (setq x-select-enable-clipboard t)
 
