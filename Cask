@@ -15,7 +15,7 @@
 
 ;; Utils
 (depends-on "ggtags")
-(depends-on "xclip-mode")
+(depends-on "xclip")
 (depends-on "exec-path-from-shell")
 
 ;; File mode
