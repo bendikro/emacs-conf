@@ -2,7 +2,7 @@
 
 (setq x-select-enable-clipboard t)
 
-(defun copy-to-clipboard ()
+(defun clipb-copy ()
   "Copies selection to x-clipboard."
   (interactive)
   (if (display-graphic-p)
@@ -26,20 +26,15 @@
 	)
   )
 
-(defun paste-from-clipboard ()
+(defun clipb-paste ()
   "Pastes from x-clipboard."
   (interactive)
   (if (display-graphic-p)
-	  (progn
-		(clipboard-yank)
-		(message "graphics active")
-		)
-	  (progn
-		(message "Call xclip-selection-value")
-		;;(xclip-selection-value)
-		(xclip-selection-value)
-		(message "Called xclip-selection-value")
-		)
+	  (clipboard-yank)
+	(progn
+	  (xclip-selection-value)
+	  (insert xclip-last-selected-text-clipboard)
+	  )
 	)
   )
 
