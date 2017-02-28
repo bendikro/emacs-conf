@@ -1,9 +1,32 @@
 #!/usr/bin/env python
 
-import re
 import os
+import re
 import subprocess
 import sys
+
+
+def check_output_copy(*popenargs, **kwargs):
+    r"""Copy from https://hg.python.org/cpython/file/d37f963394aa/Lib/subprocess.py#l647
+    Not available in python2.6
+    """
+    from subprocess import Popen, PIPE
+    if 'stdout' in kwargs:
+        raise ValueError('stdout argument not allowed, it will be overridden.')
+    process = Popen(stdout=PIPE, *popenargs, **kwargs)
+    output, unused_err = process.communicate()
+    retcode = process.poll()
+    if retcode:
+        cmd = kwargs.get("args")
+        if cmd is None:
+            cmd = popenargs[0]
+        raise CalledProcessError(retcode, cmd, output=output)
+    return output
+
+try:
+    from subprocess import check_output
+except:
+    check_output = check_output_copy
 
 
 def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
@@ -26,7 +49,7 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
         f.write(conf)
 
 home = os.path.expanduser("~")
-os_line = subprocess.check_output(["uname", "-a"])
+os_line = check_output(["uname", "-a"])
 
 # Tuples with (Filename,  pattern,  conf)
 configs = [
