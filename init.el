@@ -7,7 +7,7 @@
 ;; After loading, do (run-hooks 'after-init-load-hook)
 (setq package-enable-at-startup nil)
 
-(if (>= emacs-major-version 23)
+(if (> emacs-major-version 23)
 	(package-initialize))
 
 (defvar after-init-load-hook nil

@@ -78,7 +78,7 @@
 (set-default 'indicate-empty-lines t)
 
 ;; Easily navigate sillycased words (Not supported in emacs < 24)
-(if (>= emacs-major-version 23)
+(if (> emacs-major-version 23)
 	(global-subword-mode 1))
 
 ;; Don't break lines for me, please
