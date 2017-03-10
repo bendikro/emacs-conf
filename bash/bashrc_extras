@@ -1,11 +1,14 @@
 # -*- mode: shell-script -*-
 
+EMACS_HOME=${EMACS_HOME:-$HOME}
+
+
 declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "tmux_completion.sh" "alias.bash" "zfs-completion.bash")
 
 for i in "${bash_files[@]}"
 do
-	if [ -f ~/.emacs.d/bash/"$i" ]; then
-		. ~/.emacs.d/bash/"$i"
+	if [ -f "$EMACS_HOME/.emacs.d/bash/$i" ]; then
+		. $EMACS_HOME/.emacs.d/bash/$i
 	fi
 
 done
@@ -17,7 +20,7 @@ done
 export EDITOR=emacs
 
 # Add the bin dir to PATH
-export PATH=$PATH:~/.emacs.d/bin/
+export PATH=$PATH:$EMACS_HOME/.emacs.d/bin/
 
 OS=`uname`
 
@@ -35,13 +38,13 @@ fi
 
 
 # Add the cask bin to PATH
-if [ -d $HOME/.cask/bin ]; then
-    export PATH=$HOME/.cask/bin:$PATH
+if [ -d $EMACS_HOME/.cask/bin ]; then
+    export PATH=$EMACS_HOME/.cask/bin:$PATH
 fi
 
 # PYENV
-if [[ $EUID -ne 0 ]] && [ -f "$HOME/.pyenv" ] ; then
-   export PYENV_ROOT="$HOME/.pyenv"
+if [[ $EUID -ne 0 ]] && [ -f "$EMACS_HOME/.pyenv" ] ; then
+   export PYENV_ROOT="$EMACS_HOME/.pyenv"
    export PATH="$PYENV_ROOT/bin:$PATH"
    eval "$(pyenv init -)"
 else

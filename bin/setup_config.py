@@ -51,35 +51,50 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
 home = os.path.expanduser("~")
 os_line = check_output(["uname", "-a"])
 
+emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~"))
+
+conf_d = {"emacs_home": emacs_home}
+
 # Tuples with (Filename,  pattern,  conf)
 configs = [
     # Tmux
     (os.path.join(home, ".tmux.conf"), "TMUX_CONF_DIR", """
-TMUX_CONF_DIR=%s/.emacs.d/configs/tmux
-source-file $TMUX_CONF_DIR/tmux.conf
-""" % home, True),
+TMUX_CONF_DIR=%(emacs_home)s/.emacs.d/configs/tmux
+source-file %(emacs_home)s/.tmux.conf
+""" % conf_d, True),
     # .profile
     (os.path.join(home, ".profile"), "# Add pymacs to PYTHONPATH", """
 # Add pymacs to PYTHONPATH
-if [ -f $HOME/.emacs.d/bash/pypath_pymacs ]; then
-    . $HOME/.emacs.d/bash/pypath_pymacs
+if [ -f %(emacs_home)s/.emacs.d/bash/pypath_pymacs ]; then
+    . %(emacs_home)s/.emacs.d/bash/pypath_pymacs
 fi
-""", True),
-    # bash
+""" % conf_d, True),
+    # .bashrc
 (os.path.join(home, ".bashrc"), "/.emacs.d/bash/bashrc_extras", """
-if [ -f ~/.emacs.d/bash/bashrc_extras ]; then
-    . ~/.emacs.d/bash/bashrc_extras
+EMACS_HOME=%(emacs_home)s
+
+if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
+    . %(emacs_home)s/.emacs.d/bash/bashrc_extras
 fi
-""", True),
+""" % conf_d, True),
+    # .bash_profile
+(os.path.join(home, ".bash_profile"), "/.emacs.d/bash/bashrc_extras", """
+# Needed for tmux
+EMACS_HOME=%(emacs_home)s
+
+if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
+    . %(emacs_home)s/.emacs.d/bash/bashrc_extras
+fi
+""" % conf_d, True),
     # inputrc
 (os.path.join(home, ".inputrc"), "/.emacs.d/configs/inputrc", """
-$include ~/.emacs.d/configs/inputrc
-""", True),
+$include %(emacs_home)s/.emacs.d/configs/inputrc
+""" % conf_d, True),
     # Git config
     (os.path.join(home, ".gitconfig"), "/.emacs.d/configs/gitconfig", """
 [include]
-     path = ~/.emacs.d/configs/gitconfig
-""", True),
+     path = %(emacs_home)s/.emacs.d/configs/gitconfig
+""" % conf_d, True),
     # gtk-3.0 active terminal tab color
     (os.path.join(home, ".config/gtk-3.0/gtk.css"), "TerminalWindow .notebook tab:active", """
 TerminalWindow .notebook tab:active {
@@ -92,7 +107,7 @@ TerminalWindow .notebook tab:active {
 if __name__ == '__main__':
 
     if not ("config" in sys.argv or "tmux" in sys.argv):
-        print "Valid arguments are 'config' and 'tmux'"
+        print "Valid arguments are 'config' and 'tmux'. Specify env EMACS_HOME to change the location of .emacs.d. Default to HOME."
         sys.exit()
 
     if "tmux" in sys.argv:
