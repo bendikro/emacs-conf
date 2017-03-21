@@ -60,7 +60,7 @@ configs = [
     # Tmux
     (os.path.join(home, ".tmux.conf"), "TMUX_CONF_DIR", """
 TMUX_CONF_DIR=%(emacs_home)s/.emacs.d/configs/tmux
-source-file %(emacs_home)s/.tmux.conf
+source-file $TMUX_CONF_DIR/tmux.conf
 """ % conf_d, True),
     # .profile
     (os.path.join(home, ".profile"), "# Add pymacs to PYTHONPATH", """
