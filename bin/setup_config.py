@@ -115,7 +115,7 @@ if emacs_home != os.path.expanduser("~"):
 (setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
 (defvar user-home-dir "%(emacs_home)s")
 (setq user-emacs-directory "%(emacs_home)s/.emacs.d/")
-(defvar user-writable-dir "%(home)s")
+(defvar user-writable-dir "%(home)s/.emacs.d/")
 (load-file "%(emacs_home)s/.emacs.d/init.el")
 """ % conf_d, True))
 
