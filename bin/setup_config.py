@@ -53,7 +53,8 @@ os_line = check_output(["uname", "-a"])
 
 emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~"))
 
-conf_d = {"emacs_home": emacs_home}
+conf_d = {"emacs_home": emacs_home,
+          "home": home}
 
 # Tuples with (Filename,  pattern,  conf)
 configs = [
@@ -85,6 +86,9 @@ EMACS_HOME=%(emacs_home)s
 if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
     . %(emacs_home)s/.emacs.d/bash/bashrc_extras
 fi
+
+. %(emacs_home)s/.bashrc
+
 """ % conf_d, True),
     # inputrc
 (os.path.join(home, ".inputrc"), "/.emacs.d/configs/inputrc", """
@@ -102,6 +106,18 @@ TerminalWindow .notebook tab:active {
 }
 """, "Ubuntu" in os_line)
 ]
+
+if emacs_home != os.path.expanduser("~"):
+    configs.append(
+        # .emacs
+        (os.path.join(home, ".emacs"), "# Use load emacs config from", """
+;; Use load emacs config from %(emacs_home)s
+(setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
+(defvar user-home-dir "%(emacs_home)s")
+(setq user-emacs-directory "%(emacs_home)s/.emacs.d/")
+(defvar user-writable-dir "%(home)s")
+(load-file "%(emacs_home)s/.emacs.d/init.el")
+""" % conf_d, True))
 
 
 if __name__ == '__main__':

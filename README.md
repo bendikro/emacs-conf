@@ -1,3 +1,6 @@
+## Setup from cloned repo
+
+
 ### Setup loading custom configs
 
 ```
@@ -18,4 +21,10 @@ $ curl -fsSkL https://raw.github.com/cask/cask/master/go | python`
 Download packages:
 ```
 ~/.emacs.d$ cask install
+```
+
+## Clone repo and setup with curl
+
+```
+curl -fsSkL https://raw.githubusercontent.com/bendikro/emacs-conf/master/install | python
 ```

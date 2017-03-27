@@ -30,6 +30,9 @@
 (message "user-init-file: %s" user-init-file)
 (message "emacs-config-basedir: %s" emacs-config-basedir)
 
+;; Default to user home dir if not already set
+(defvar user-writable-dir emacs-config-basedir)
+
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
 ;; Set path to dependencies
@@ -114,7 +117,8 @@
 (message "user-login-name: %s" user-login-name)
 
 (when (string= (getenv "EMACS_NO_BACKUP") nil)
-  (setq emacs-backup-dir (expand-file-name (concat user-emacs-directory "backups/")))
+  (setq emacs-backup-dir (expand-file-name (concat (file-name-as-directory user-writable-dir) "backups/")))
+  (message "Using %s for backups and autosave" emacs-backup-dir)
   (setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
   (setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
 
