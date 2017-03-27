@@ -22,6 +22,13 @@
 ;         (message "TeX-command-master returned %S" res)
 ;         res))
 
+(defun enable-guess-style()
+  (interactive)
+  (require 'guess-style)
+  (guess-style-guess-all)
+  (guess-style-info-mode 1)
+  )
+
 ;; LaTeX
 (defun setup-latex-environment()
   (interactive)

@@ -13,10 +13,6 @@
   (setq py-smart-indentation nil))
 
 (defun python-setup-hook ()
-  ;; The following two lines of code is run from the mode hook.
-  ;; These are for buffer-specific things.
-  ;; In this setup, you want to enable flyspell-mode
-  ;; and run org-reveal for every org buffer.
   (require 'python-pep8 nil 'noerror)
   (require 'python-pylint nil 'noerror)
   (require 'python-flake8 nil 'noerror)
