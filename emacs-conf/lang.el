@@ -79,3 +79,14 @@ header"
 
 ;; If you want Emacs to defer loading the JDE until you open a java file
 (setq defer-loading-jde t)
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;;; Markdown
+;;;;;;;;;;;;;;;;;;;;;
+(defun markdown-setup-hook ()
+  ;; These are bound to reordering lists in markdown mode.
+  (define-key markdown-mode-map (kbd "M-<up>") nil)
+  (define-key markdown-mode-map (kbd "M-<down>") nil)
+)
+(add-hook 'markdown-mode-hook 'markdown-setup-hook)
