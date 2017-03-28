@@ -87,7 +87,7 @@ if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
     . %(emacs_home)s/.emacs.d/bash/bashrc_extras
 fi
 
-. %(emacs_home)s/.bashrc
+. %(home)s/.bashrc
 
 """ % conf_d, True),
     # inputrc
