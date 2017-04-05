@@ -100,6 +100,17 @@ def install_cask(target_directory):
         except OSError:
             pass
 
+def install_cask_packages(target_directory):
+    os.chdir(target_directory)
+    try:
+        print(check_output(['cask', 'install']))
+    except CalledProcessError:
+        print('Failed to install emacs packages with Cask.')
+    except OSError as error:
+        if error.errno == errno.ENOENT:
+            raise GoError('cask executable not found.')
+        else:
+            raise
 
 def install_emacs_conf(target_directory):
     if os.path.isdir(target_directory):
@@ -148,9 +159,10 @@ def setup_emacs(target_directory):
 
 def main():
     try:
-        install_cask(HOME)
         install_emacs_conf(TARGET_DIRECTORY)
         setup_emacs(TARGET_DIRECTORY)
+        install_cask(HOME)
+        install_cask_packages(TARGET_DIRECTORY)
         success("""Successfully installed emacs config!""")
     except GoError as error:
         fail('{0!s}'.format(error))
