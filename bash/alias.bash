@@ -51,3 +51,7 @@ OS=`uname`
 if [ "$OS" = "FreeBSD" ]; then
     alias ls='ls -G'
 fi
+
+dexec() {
+	docker exec -i -t $1 script -q -c "/bin/bash"
+}

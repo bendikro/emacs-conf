@@ -54,6 +54,10 @@
 	(global-set-key "\C-cc" 'comment-region)
 	(global-set-key "\C-cu" 'uncomment-region)
 
+	;; These are disabled by default, so enable
+	(put 'upcase-region 'disabled nil)
+	(put 'downcase-region 'disabled nil)
+
 ;; Rectangle settings
 ; (global-set-key [f5] 'copy-region-as-kill)   ; Copy
 ; (global-set-key [f6] 'kill-rectangle)        ; Cut

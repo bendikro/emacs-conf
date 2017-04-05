@@ -103,9 +103,9 @@ def install_cask(target_directory):
 def install_cask_packages(target_directory):
     os.chdir(target_directory)
     try:
-        print(check_output(['cask', 'install']))
-    except CalledProcessError:
-        print('Failed to install emacs packages with Cask.')
+        print(check_output(['bash', '-c', ". ~/.bashrc; cask install"], shell=False))
+    except CalledProcessError as err:
+        print('Error when installng emacs packages with Cask:', err)
     except OSError as error:
         if error.errno == errno.ENOENT:
             raise GoError('cask executable not found.')
@@ -144,7 +144,6 @@ def install_emacs_conf(target_directory):
 def setup_emacs(target_directory):
     os.chdir(target_directory)
     try:
-        # Execute with shell=True to reread the .bashrc
         args = ['python', os.path.join(target_directory, "bin/setup_config.py")]
         args.extend(EM_CONF_SETUP.split(" "))
         print(check_output(args, shell=False))

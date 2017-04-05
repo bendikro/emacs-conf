@@ -26,3 +26,14 @@ function grep_kill() {
     echo "Killing pid: ${array[1]}";
     kill -9 ${array[1]};
 }
+
+
+pathadd () {
+	if ! echo "$PATH" | /bin/grep -Eq "(^|:)$1($|:)" ; then
+		if [ "$2" = "after" ] ; then
+			PATH="$PATH:$1"
+		else
+			PATH="$1:$PATH"
+		fi
+	fi
+}
