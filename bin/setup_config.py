@@ -104,6 +104,24 @@ $include %(emacs_home)s/.emacs.d/configs/inputrc
 TerminalWindow .notebook tab:active {
     background-color: #b6bccb;
 }
+    """, "Ubuntu" in os_line),
+    # terminator config
+    (os.path.join(home, ".config/terminator/config"), "custom_command",
+     """[global_config]
+[keybindings]
+  broadcast_group = <Primary><Alt>g
+  go_down = <Primary><Shift><Alt>Down
+  go_right = <Primary><Shift><Alt>Right
+  go_up = <Primary><Shift><Alt>Up
+  resize_left = ISO_Level3_Shift
+  resize_right = ISO_Level3_Shift
+[profiles]
+  [[default]]
+    background_image = None
+    scroll_on_output = False
+    scrollback_lines = 30000
+	custom_command = TERM=xterm-256color bash -l
+    use_custom_command = True
 """, "Ubuntu" in os_line)
 ]
 
