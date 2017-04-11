@@ -10,4 +10,4 @@ set editing-mode emacs
 
 # Needed for tmux when attaching to a docker container
 "\e[1~": beginning-of-line # Home : Move cursor to beginning of line
-"\e[4~": end-of-line       # End : Move cursor to end of lineroot@slurmctld
+"\e[4~": end-of-line       # End : Move cursor to end of line

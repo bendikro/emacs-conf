@@ -45,6 +45,9 @@ dbash() {
 	docker exec -i -t $1 script -q -c "/bin/bash"
 }
 
+docker-ip() {
+	docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
+}
 
 completions_dir=/usr/share/bash-completion/completions
 
@@ -61,5 +64,5 @@ if [ -f "${completions_dir}/docker" ]; then
 		_get_comp_words_by_ref -n : cur prev words cword
 		__docker_complete_containers_running
 	}
-	complete -F _dbash_complete_containers dbash
+	complete -F _dbash_complete_containers dbash docker-ip
 fi
