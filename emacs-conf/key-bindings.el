@@ -45,6 +45,9 @@
 	(define-key input-decode-map "\e[1;3C" [M-right])
 	(define-key input-decode-map "\e[1;3D" [M-left])
 
+	;; Fix End key
+	(global-set-key [select]  'move-end-of-line)
+
 	;; ;;;;;;;;;;;;;;;
 	;; ;; Misc
 	;; ;;;;;;;;;;;;;;;
