@@ -37,3 +37,29 @@ pathadd () {
 		fi
 	fi
 }
+
+##########
+# Docker
+
+dbash() {
+	docker exec -i -t $1 script -q -c "/bin/bash"
+}
+
+
+completions_dir=/usr/share/bash-completion/completions
+
+if [ ! -d "$completions_dir" ]; then
+	completions_dir=/usr/local/share/bash-completion/completions
+fi
+
+if [ -f "${completions_dir}/docker" ]; then
+	source ${completions_dir}/docker
+
+	_dbash_complete_containers() {
+		COMPREPLY=()
+		local cur prev words cword
+		_get_comp_words_by_ref -n : cur prev words cword
+		__docker_complete_containers_running
+	}
+	complete -F _dbash_complete_containers dbash
+fi
