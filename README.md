@@ -28,3 +28,16 @@ Download packages:
 ```
 curl -fsSkL https://raw.githubusercontent.com/bendikro/emacs-conf/master/install | python
 ```
+
+## Support for golang tags
+
+```
+git clone https://github.com/bendikro/gotags.git
+cd gotags
+rake install
+```
+
+Create TAGS file for a go project:
+```
+$ gotags
+```
