@@ -12,3 +12,8 @@
 
 [alias]
     changeremotehost = !sh -c \"git remote -v | grep '$1.*fetch' | sed s/..fetch.// | sed s/$1/$2/ |   xargs -n2 git remote set-url\"
+
+[alias]
+    setdefemail = "config user.email 'bro.devel@gmail.com'"
+    setdefuser = "config user.name 'bendikro'"
+    defuser = !sh -c \"git setdefuser && git setdefemail\"
