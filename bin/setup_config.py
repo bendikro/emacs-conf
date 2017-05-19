@@ -51,7 +51,7 @@ def add_to_config(filename, search_pattern, conf, create_if_not_exists=True):
 home = os.path.expanduser("~")
 os_line = check_output(["uname", "-a"])
 
-emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~"))
+emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~")).rstrip('/')
 
 conf_d = {"emacs_home": emacs_home,
           "home": home}
