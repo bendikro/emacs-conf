@@ -103,7 +103,9 @@ def install_cask(target_directory):
 def install_cask_packages(target_directory):
     os.chdir(target_directory)
     try:
-        print(check_output(['bash', '-c', ". ~/.bashrc; cask install"], shell=False))
+        print(check_output(['bash', '-c', ". %s; cask install" %
+                            os.path.join(target_directory, "bash/bashrc_extras")],
+                           shell=False))
     except CalledProcessError as err:
         print('Error when installng emacs packages with Cask:', err)
     except OSError as error:
