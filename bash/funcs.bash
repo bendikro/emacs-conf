@@ -2,13 +2,13 @@
 
 # Print the number of newlines in the shell
 function newlines() {
-    count=10
-    if [ $# -eq 1 ]; then
-        count=$1
-    fi
-    for ((c=1; c <= $count; c++)); do
-        echo ""
-    done
+	count=10
+	if [ $# -eq 1 ]; then
+		count=$1
+	fi
+	for ((c=1; c <= $count; c++)); do
+		echo ""
+	done
 }
 
 function get_sessionname_func {
@@ -20,11 +20,24 @@ function get_sessionname_func {
 }
 
 function grep_kill() {
-    ret=`ps aux | grep $@`
-    array=($ret);
-    echo "Found: $ret"
-    echo "Killing pid: ${array[1]}";
-    kill -9 ${array[1]};
+	ret=`ps aux | grep $@`
+	#array=($ret);
+	#echo "Found: $ret"
+	#echo "Killing pid: ${array[1]}";
+	#kill -9 ${array[1]};
+	ret_count=`ps aux | grep -c $@`
+
+	if [ "$ret_count" = 1 ]; then
+		echo "No matches found for expression $@:"
+		echo $ret
+	elif [ "$ret_count" = 2 ]; then
+		echo "Killing pid: ${array[1]}";
+		array=($ret);
+		kill -9 ${array[1]};
+	else
+		echo "Too many matches for expression $@:"
+		echo $ret
+	fi
 }
 
 
