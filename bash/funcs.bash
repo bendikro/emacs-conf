@@ -52,6 +52,15 @@ pathadd () {
 }
 
 ##########
+# Vagrant
+
+
+vagrantssh() {
+	vagrant ssh `vagrant global-status | grep $1 | awk '{split($0,a," "); print a[1]}'`
+}
+
+
+##########
 # Docker
 
 dbash() {
