@@ -35,6 +35,9 @@
 ;; Delete selected text with del and CTRL-d
 (delete-selection-mode t)
 
+;; Disable shift selection (Shift+arrow keys)
+(setq shift-select-mode nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    Indentation    ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
