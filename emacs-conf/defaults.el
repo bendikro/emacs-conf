@@ -38,6 +38,9 @@
 ;; Disable shift selection (Shift+arrow keys)
 (setq shift-select-mode nil)
 
+;; Do not automatically add newline at end of file, but ask
+(setq mode-require-final-newline 'ask)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    Indentation    ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
