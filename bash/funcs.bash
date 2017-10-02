@@ -20,23 +20,23 @@ function get_sessionname_func {
 }
 
 function grep_kill() {
-	ret=`ps aux | grep $@`
-	#array=($ret);
-	#echo "Found: $ret"
-	#echo "Killing pid: ${array[1]}";
-	#kill -9 ${array[1]};
-	ret_count=`ps aux | grep -c $@`
+	ret=`ps aux | grep $1 | grep -v -e "grep"`
+	ret_count=`ps aux | grep -v -e "grep" | grep -c $1`
 
-	if [ "$ret_count" = 1 ]; then
-		echo "No matches found for expression $@:"
-		echo $ret
-	elif [ "$ret_count" = 2 ]; then
-		echo "Killing pid: ${array[1]}";
-		array=($ret);
-		kill -9 ${array[1]};
+	kill_signal="-15"
+	if [ ! -z "$2" ]; then
+		kill_signal=$2
+	fi
+
+	if [ "$ret_count" = 0 ]; then
+		echo "No matches found for expression $1:"
+	elif [ "$ret_count" = 1 ]; then
+		process_array=($ret);
+		echo "Killing pid: ${process_array[1]} with signal $kill_signal";
+		kill $kill_signal ${process_array[1]};
 	else
-		echo "Too many matches for expression $@:"
-		echo $ret
+		echo "Too many matches ($ret_count) for expression $1:"
+		printf "%b" "$ret\n"
 	fi
 }
 
