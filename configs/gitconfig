@@ -17,3 +17,11 @@
     setdefemail = "config user.email 'bro.devel@gmail.com'"
     setdefuser = "config user.name 'bendikro'"
     defuser = !sh -c \"git setdefuser && git setdefemail\"
+
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+  pager = true
