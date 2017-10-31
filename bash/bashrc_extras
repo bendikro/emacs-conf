@@ -32,10 +32,10 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+# virtualenvwrapper location on FreeBSD
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     . /usr/local/bin/virtualenvwrapper.sh
 fi
-
 
 # Add the cask bin to PATH
 if [ -d $EMACS_HOME/.cask/bin ]; then
@@ -43,7 +43,7 @@ if [ -d $EMACS_HOME/.cask/bin ]; then
 fi
 
 # PYENV
-if [[ $EUID -ne 0 ]] && [ -f "$EMACS_HOME/.pyenv" ] ; then
+if [[ $EUID -ne 0 ]] && [ -d "$EMACS_HOME/.pyenv" ] ; then
    export PYENV_ROOT="$EMACS_HOME/.pyenv"
    pathadd $PYENV_ROOT/bin
    eval "$(pyenv init -)"
