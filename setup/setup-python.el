@@ -8,7 +8,7 @@
 
 ;(setq py-load-pymacs-p nil)
 ;(require 'python-mode nil 'noerror)
-(require 'tramp)
+;(require 'tramp) ; Slow on startup with no internet connection
 (require 'python-pep8 nil 'noerror)
 (require 'python-pylint nil 'noerror)
 (require 'python-flake8 nil 'noerror)
