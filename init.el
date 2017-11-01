@@ -33,6 +33,10 @@
 ;; Default to user home dir if not already set
 (defvar user-writable-dir emacs-config-basedir)
 
+;; used to store local settings (custom.el) and backups
+(setq emacs-config-session-store-dir
+	  (expand-file-name (concat (file-name-as-directory user-writable-dir) "session-store/")))
+
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs-config-basedir))
 ;; Set path to dependencies
@@ -114,13 +118,15 @@
 (require 'setup-markdown)
 (require 'key-bindings)
 
-(message "user-login-name: %s" user-login-name)
+(setq emacs-user-session-store-dir
+	  (expand-file-name (concat (file-name-as-directory emacs-config-session-store-dir) user-login-name)))
 
 (when (string= (getenv "EMACS_NO_BACKUP") nil)
-  (setq emacs-backup-dir (expand-file-name (concat (file-name-as-directory user-writable-dir) "backups/")))
-  (message "Using %s for backups and autosave" emacs-backup-dir)
-  (setq user-backup-dir (expand-file-name (concat emacs-backup-dir user-login-name "/backups")))
-  (setq user-autosave-dir (expand-file-name (concat emacs-backup-dir user-login-name "/autosave")))
+  (setq user-backup-dir (expand-file-name (concat (file-name-as-directory emacs-user-session-store-dir) "backups/")))
+  (setq user-autosave-dir (expand-file-name (concat (file-name-as-directory emacs-user-session-store-dir) "autosave/")))
+
+  (message "Using %s for backups" user-backup-dir)
+  (message "Using %s for autosave" user-autosave-dir)
 
   (create-if-no-exists (list user-backup-dir user-autosave-dir))
 
@@ -141,8 +147,11 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
-(setq custom-file (expand-file-name "emacs-conf/custom.el" emacs-config-basedir))
-(load custom-file)
+(setq custom-file (expand-file-name "custom.el" emacs-user-session-store-dir))
+(message "Using custom-file: %s" custom-file)
+
+(if (file-readable-p custom-file)
+	(load custom-file))
 
 (run-hooks 'after-init-load-hook)
 

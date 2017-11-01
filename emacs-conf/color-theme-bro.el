@@ -7,8 +7,8 @@
 ;							'color-theme-Arjen
 ;							))
 
-;(require 'color-theme-solarized)
-;(color-theme-solarized)
+(require 'color-theme-solarized)
+;;(color-theme-solarized)
 
 
 (defun color-theme-bro ()
