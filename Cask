@@ -9,9 +9,12 @@
 (depends-on "color-theme-solarized")
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
-(depends-on "magit")
 (depends-on "pallet")
 (depends-on "yasnippet")
+
+;; Problmems with magit on < 24.3
+;;(depends-on "magit" :git "https://github.com/magit/magit.git" :ref "48e73138872d117e0bdd71d1227af06cf3aec147")
+;;(depends-on "magit")
 
 ;; Utils
 (depends-on "ggtags")
@@ -19,7 +22,10 @@
 (depends-on "exec-path-from-shell")
 
 ;; File mode
-(depends-on "elpy")
+
+; Must have this version as newer do not support emacs < 24.4
+(depends-on "elpy" :git "https://github.com/jorgenschaefer/elpy.git" :ref "1.16.0")
+
 (depends-on "apache-mode")
 (depends-on "go-mode")
 (depends-on "yaml-mode")
