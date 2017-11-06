@@ -19,6 +19,7 @@ except:
     def colored(text, color):
         return text
 
+import datetime
 from datetime import timedelta
 
 def str_to_timedelta(time_val):
@@ -68,15 +69,17 @@ def str_to_timedelta(time_val):
 #    return td.strftime("%H:%M:%S.%f").rstrip('0')
 
 
-def get_formatted_time_elapsed(sec_start):
-    return "%2f" % (time.time() - sec_start)
+def print_log(msg, **args):
+    print("[%s] %s" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")[:-3], msg), **args)
+
+def get_formatted_time_elapsed(sec_start, sec_end=None):
+    if sec_end is None:
+        sec_end = time.time()
+    return "%2f" % (sec_end - sec_start)
 
 
 def execute(args):
-    print("execute")
     wait = str_to_timedelta(args.wait)
-    print("Wait:", wait)
-
     start = time.time()
 
     if args.verbose:
@@ -91,13 +94,15 @@ def execute(args):
     while True:
         count += 1
         if args.verbose > 1:
-            print("[V] %d command execution: " % count, end='')
+            print_log("%d command execution: " % count, end='')
             sys.stdout.flush()
 
+        start_cmd = time.time()
         ret = subprocess.call(
             args.command,
             stderr=subprocess.STDOUT,
             shell=True)
+        end_cmd = time.time()
 
         if args.fail_exit_value:
             if ret in args.fail_exit_value:
@@ -108,17 +113,20 @@ def execute(args):
                 error_ret = ret
                 break
 
+        if args.time:
+            print_log("Execution time: %s" % get_formatted_time_elapsed(start_cmd, sec_end=end_cmd))
+
         if not args.until_fail and args.count and count == args.count:
             break
 
         if wait:
             if args.verbose > 2:
-                print("[V] Sleeping for %s seconds: " % wait.total_seconds())
+                print_log("Sleeping for %s seconds: " % wait.total_seconds())
             time.sleep(wait.total_seconds())
 
         if args.time:
             if args.verbose > 1:
-                print("[V] Time elapsed: %s" % get_formatted_time_elapsed(start))
+                print_log("Time elapsed: %s" % get_formatted_time_elapsed(start))
 
 
     if error_ret is not 0:
@@ -127,7 +135,7 @@ def execute(args):
     end = time.time()
 
     if args.verbose > 1:
-        print("[V] Total executions: %s" % count)
+        print_log("Total executions: %s" % count)
 
     if args.time:
         print("Time elapsed: %s seconds" % get_formatted_time_elapsed(start))
