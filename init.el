@@ -99,12 +99,14 @@
 
 (require 'defaults)
 (require 'mode-mappings)
-(require 'appearance)
-(require 'lang)
 
 ;; Load local init file if it exists
 (if (file-exists-p init-local)
 	(load-file init-local))
+
+(require 'appearance)
+(require 'lang)
+
 
 (load_libs "setup")
 (require 'setup-python)

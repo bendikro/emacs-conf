@@ -15,4 +15,5 @@
 ;; Font height
 (set-face-attribute 'default nil :height 120)
 
-(load "color-theme-bro.el")
+(add-hook 'after-init-load-hook
+		  (require-safe "color-theme-bro.el"))

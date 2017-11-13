@@ -6,4 +6,5 @@ init-local.el
 *.elc
 *.pyc
 .cask/
+/session-store/
 elpa
