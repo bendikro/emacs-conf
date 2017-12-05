@@ -7,20 +7,28 @@
 (defun do-key-bindings ()
   (interactive)
   (progn
-	(message "do-key-bindings")
 	;; Fix delete character
 	(global-set-key [delete] 'delete-char)
 
+	;; -------------------
 	;; Make ALT-backspace and ALT-del delete words without copying text til kill-ring
-	(define-key input-decode-map "\e[3;3~" [M-del]) ; Make in work in tmux and screen
-	(global-set-key [M-del] 'delete-word-no-copy)
+
+	;; Must undefine and redefine M-delete/M-backspace to work in windowed mode
+	(define-key input-decode-map [M-delete] nil)
+	(define-key input-decode-map [M-backspace] nil)
+
+	;; ALT-del
+	(define-key input-decode-map "\e[3;3~" [M-del]) ; Make it works in tmux and screen
+	(global-set-key [M-del] 'delete-word-no-copy) ;; Required for no-window mode
+	(global-set-key (kbd "M-<delete>") 'delete-word-no-copy)  ;; Required for window mode
+
+	;; ALT-backspace delete word backwards without copy
+	(global-set-key (kbd "M-<DEL>") 'backward-delete-word-no-copy)
 
 	;; CTRL-del delete word
 	(define-key input-decode-map "\e[3;5~" [C-del]) ; Make in work in tmux and screen
 	(global-set-key [C-del] 'kill-word)
-
-	;; ALT-backspace delete word backwards
-	(global-set-key [?\M-\d] 'backward-delete-word-no-copy)
+	;; -------------------
 
 	;; Bind Meta-arrow up/down to scroll without moving cursor
 	(global-set-key [M-up] 'scroll-down-keep-cursor)
