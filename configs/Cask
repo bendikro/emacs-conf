@@ -1,3 +1,4 @@
+;; This cask files is a limited version of the main Cask file
 (source gnu)
 (source melpa)
 (source marmalade)
@@ -12,16 +13,13 @@
 (depends-on "pallet")
 (depends-on "yasnippet")
 
-;; Problmems with magit on < 24.3
-(depends-on "magit")
-
 ;; Utils
 (depends-on "ggtags")
 (depends-on "xclip")
 (depends-on "exec-path-from-shell")
-(depends-on "elpy")
 
 ;; File mode
+
 (depends-on "apache-mode")
 (depends-on "go-mode")
 (depends-on "yaml-mode")

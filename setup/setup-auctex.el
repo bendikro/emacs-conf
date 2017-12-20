@@ -24,40 +24,131 @@
 	;; Add litem as a valid item for e.g. enumerate environment. Fixed auto-fill (M-q)
 	(LaTeX-paragraph-commands-add-locally (list "item" "litem" "ditem" "bitem" "initem" "newglossaryentry" "newacronym" "newdualentry"))
 
+	;; General
 	(font-latex-add-keywords '(
-							   ("cites" "[{")
-							   ("code" "[{")
-							   ("test" "[{")
-							   ("name" "[{")
-							   ("atodo" "[{")
-							   ("feedback" "[{")
-							   ("hostname" "[{")
-							   ("host" "[{")
-							   ("ms" "[{")
+							   ("NeedsTeXFormat" "[{")
+							   ("ProvidesPackage" "[{")
+							   ("RequirePackage" "[{")
+							   ("noindent" "")
+							   ("def" "")
+							   ("protected" "")
+							   ("expandonce" "")
+							   )
+							 'reference)
+
+	;; cleveref
+	(font-latex-add-keywords '(
+							   ("cref" "[{")
+							   ("Cref" "[{")
+							   ("labelcref" "[{")
+							   ("namecref" "[{")
+							   )
+							 'reference)
+
+	;; caption
+	(font-latex-add-keywords '(
+							   ("captionof" "[{")
+							   )
+							 'reference)
+
+
+	;; kvoptions
+	(font-latex-add-keywords '(
+							   ("SetupKeyvalOptions" "[{")
+							   ("DeclareStringOption" "[{")
+							   ("DeclareBoolOption" "[{")
+							   ("ProcessKeyvalOptions" "[{")
+							   )
+							 'reference)
+
+	;; xparse
+	(font-latex-add-keywords '(
+							   ("NewDocumentCommand" "[{")
+							   ("DeclareExpandableDocumentCommand" "[{")
+							   )
+							 'reference)
+
+	;; etoolbox
+	(font-latex-add-keywords '(
+							   ("ifboolexpr" "[{")
+							   ("protected@csxdef" "[{")
+							   )
+							 'reference)
+
+	;; xinttools
+	(font-latex-add-keywords '(
+							   ("xintFor" "[{")
+							   )
+							 'reference)
+
+	;; xstring
+	(font-latex-add-keywords '(
+							   ("StrGobbleLeft" "[{")
+							   )
+							 'reference)
+
+	;; ifthenelse
+	(font-latex-add-keywords '(
+							   ("ifthenelse" "[{")
+							   )
+							 'reference)
+
+
+
+	;; pgfkeys
+	(font-latex-add-keywords '(
+							   ("pgfkeys" "[{")
+							   ("pgfkeysdefnargs" "[{")
+							   ("pgfkeysdefargs" "[{")
+							   ("pgfkeyscurrentpath" "[{")
+							   ("pgfkeysgetvalue" "[{")
+							   ("pgfkeyssetvalue" "[{")
+							   ("pgfkeysdefaultpath" "[{")
+							   ("pgfqkeys" "[{")
+							   ("pgfqkeysalso" "[{")
+							   ("pgfkeysvalueof" "[{")
+							   ("pgfkeysifdefined" "[{")
+							   )
+							 'reference)
+
+	;; Errata2
+	(font-latex-add-keywords '(
+							   ("erratumAdd" "[{{")
+							   ("erratumReplace" "[{{{")
+							   ("erratumDelete" "[{{")
+							   ("erratumNote" "[{{")
+							   )
+							 'reference)
+
+	;; Master
+	(font-latex-add-keywords '(
 							   ("linuxkernel" "[{")
 							   ("citep" "[{")
 							   ("citesp" "[{")
 							   ("citerfc" "[{")
 							   ("citerfcp" "[{")
-							   ("cref" "[{")
-							   ("Cref" "[{")
-							   ("labelcref" "[{")
-							   ("namecref" "[{")
+							   ("cites" "[{")
+							   ("code" "[{")
+							   ("atodo" "[{")
+							   ("feedback" "[{")
+							   ("hostname" "[{")
+							   ("name" "[{")
+							   ("test" "[{")
+							   ("host" "[{")
+							   ("ms" "[{")
+
 							   ("litem" "[{")
 							   ("ditem" "[{")
 							   ("bitem" "[{")
 							   ("initem" "[{")
-							   ("captionof" "[{")
+
 							   ("docaptionof" "[{")
-							   ("erratumAdd" "[{")
-							   ("erratumReplace" "[{{")
-							   ("erratumDelete" "[{")
-							   ("erratumNote" "[{")
-							   ("noindent" "")
 							   )
 							 'reference)
 
 	))
+
+
 
 (add-hook 'reftex-load-hook
 		  '(lambda()
