@@ -162,7 +162,8 @@
 	 (color-theme-initialize)
 	 (color-theme-bro)))
 
-(require 'color-theme nil 'noerror)
+(if (not (require 'color-theme nil t))
+	(message "Failed to load `color-theme'"))
 
 ;(custom-set-faces
 ; '(default ((t (:foreground "white" :background "black"))))
