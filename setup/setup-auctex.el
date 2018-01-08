@@ -25,32 +25,16 @@
 	(LaTeX-paragraph-commands-add-locally (list "item" "litem" "ditem" "bitem" "initem" "newglossaryentry" "newacronym" "newdualentry"))
 
 	;; General
-	(font-latex-add-keywords '(
-							   ("NeedsTeXFormat" "[{")
-							   ("ProvidesPackage" "[{")
-							   ("RequirePackage" "[{")
-							   ("noindent" "")
-							   ("def" "")
-							   ("protected" "")
-							   ("expandonce" "")
-							   )
-							 'reference)
-
-	;; cleveref
-	(font-latex-add-keywords '(
-							   ("cref" "[{")
-							   ("Cref" "[{")
-							   ("labelcref" "[{")
-							   ("namecref" "[{")
-							   )
-							 'reference)
-
-	;; caption
-	(font-latex-add-keywords '(
-							   ("captionof" "[{")
-							   )
-							 'reference)
-
+	;;(font-latex-add-keywords '(
+	;;						   ("NeedsTeXFormat" "[{")
+	;;						   ("ProvidesPackage" "[{")
+	;;						   ("RequirePackage" "[{")
+	;;						   ("noindent" "")
+	;;						   ("def" "")
+	;;						   ("protected" "")
+	;;						   ("expandonce" "")
+	;;						   )
+	;;						 'reference)
 
 	;; kvoptions
 	(font-latex-add-keywords '(
@@ -58,20 +42,6 @@
 							   ("DeclareStringOption" "[{")
 							   ("DeclareBoolOption" "[{")
 							   ("ProcessKeyvalOptions" "[{")
-							   )
-							 'reference)
-
-	;; xparse
-	(font-latex-add-keywords '(
-							   ("NewDocumentCommand" "[{")
-							   ("DeclareExpandableDocumentCommand" "[{")
-							   )
-							 'reference)
-
-	;; etoolbox
-	(font-latex-add-keywords '(
-							   ("ifboolexpr" "[{")
-							   ("protected@csxdef" "[{")
 							   )
 							 'reference)
 
@@ -92,8 +62,6 @@
 							   ("ifthenelse" "[{")
 							   )
 							 'reference)
-
-
 
 	;; pgfkeys
 	(font-latex-add-keywords '(
@@ -117,6 +85,10 @@
 							   ("erratumReplace" "[{{{")
 							   ("erratumDelete" "[{{")
 							   ("erratumNote" "[{{")
+							   ("eAdd" "[{{")
+							   ("eReplace" "[{{{")
+							   ("eDelete" "[{{")
+							   ("eNote" "[{{")
 							   )
 							 'reference)
 
@@ -178,6 +150,7 @@
 			 (setq TeX-save-query nil)
 			 (setq TeX-show-compilation t)
 			 (TeX-load-style "glossaries")
+			 (TeX-load-style "etoolbox")
 			 (init-LaTeX-glossaries-style)
 			 ))
 

@@ -39,8 +39,7 @@
 ;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
-
-(add-to-autoload "tex-mode" '("\\.tex$" "\\.sty$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
+(add-to-autoload "tex-mode" '("\\.tex$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
 
 ;; Emacs lisp
 (add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))
