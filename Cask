@@ -12,7 +12,7 @@
 (depends-on "pallet")
 (depends-on "yasnippet")
 
-;; Problmems with magit on < 24.3
+;; Problems with magit on < 24.3
 (depends-on "magit")
 
 ;; Utils
