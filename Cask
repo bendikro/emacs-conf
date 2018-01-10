@@ -29,6 +29,7 @@
 (depends-on "psgml") ;; XML, HTML, markup langs ++
 (depends-on "markdown-mode")
 (depends-on "dockerfile-mode")
+(depends-on "jinja2-mode")
 
 ;; Python
 (depends-on "python-mode")
