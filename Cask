@@ -19,6 +19,7 @@
 (depends-on "ggtags")
 (depends-on "xclip")
 (depends-on "exec-path-from-shell")
+(depends-on "visual-regexp")
 (depends-on "elpy")
 
 ;; File mode
