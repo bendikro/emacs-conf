@@ -3,7 +3,12 @@
 EMACS_HOME=${EMACS_HOME:-$HOME}
 
 
-declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "tmux_completion.sh" "alias.bash" "zfs-completion.bash" "vagrant-completion.bash" "vboxmanage-completion.bash")
+declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash"
+					   "tmux_completion.sh"
+					   "zfs-completion.bash"
+					   "vagrant-completion.bash"
+					   "vboxmanage-completion.bash"
+					   "supervisorctl-completion.bash")
 
 for i in "${bash_files[@]}"
 do
