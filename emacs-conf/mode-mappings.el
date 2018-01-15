@@ -32,7 +32,6 @@
 ;; LaTeX
 (defun setup-latex-environment()
   (interactive)
-  (require 'tex-site)
   (require 'setup-auctex)
   (require 'setup-latexmk)
   (require 'setup-tex)
