@@ -8,7 +8,8 @@ declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash"
 					   "zfs-completion.bash"
 					   "vagrant-completion.bash"
 					   "vboxmanage-completion.bash"
-					   "supervisorctl-completion.bash")
+					   "supervisorctl-completion.bash"
+					   "docker-compose-completion.bash")
 
 for i in "${bash_files[@]}"
 do
