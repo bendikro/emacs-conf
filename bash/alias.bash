@@ -20,6 +20,13 @@ alias suspend='dbus-send --system --print-reply --dest="org.freedesktop.login1" 
 alias bsd="ssh freebsd"
 alias rmpyc='find . -name "*.pyc" -exec rm -rf {} \;'
 
+# Docker
+alias dps="docker ps"
+alias dpsi="docker images"
+alias drun="docker run"
+alias dstop="docker stop"
+
+
 
 # Only apply when we have a proper terminal
 case "$TERM" in
