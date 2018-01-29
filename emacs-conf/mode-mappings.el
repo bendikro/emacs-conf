@@ -88,8 +88,10 @@
 ;; conf-mode
 (add-to-autoload "conf-mode" '("\\.ini$" ".gitignore$" ".gitconfig$"))
 
-;; conf-mode
+;; jinja2-mode
 (add-to-autoload "jinja2-mode" '("\\.j2$"))
+
+(add-to-list 'auto-mode-alist '("\\.bashrc\\'" . sh-mode))
 
 (require 'giteditmsg-mode)
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . giteditmsg-mode))
