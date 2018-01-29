@@ -115,6 +115,8 @@
 	(require 'setup-ggtags)
   (require 'setup-gtags))
 
+(require 'setup-package-menu-mode)
+
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
 (require 'setup-markdown)
