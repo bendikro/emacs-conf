@@ -101,6 +101,21 @@ def install_cask(target_directory):
         except OSError:
             pass
 
+
+def create_emacs_color_themes_dir(emacs_conf_dir):
+    """ Must Create the color themes directory for some reason"""
+    search_dir = os.path.join(emacs_conf_dir, ".cask/")
+
+    #Looking for a file: /root/.emacs.d/.cask/24.3/elpa/color-theme-20070910.1007/color-theme.el
+    for root, dirs, files in os.walk(search_dir):
+        for f in files:
+            if f == "color-theme.el":
+                themes_dir = os.path.join(root, "themes")
+                if not os.path.isdir(themes_dir):
+                    print("Creating themes directory:", themes_dir)
+                    os.mkdir(themes_dir)
+
+
 def install_cask_packages(target_directory, cask_conf_file):
     os.chdir(target_directory)
     try:
@@ -118,6 +133,9 @@ def install_cask_packages(target_directory, cask_conf_file):
             raise GoError('cask executable not found.')
         else:
             raise
+
+    create_emacs_color_themes_dir(target_directory)
+
 
 def install_emacs_conf(target_directory):
     if os.path.isdir(target_directory):
