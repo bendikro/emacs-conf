@@ -162,4 +162,4 @@
 (message "Emacs startup time: %f seconds."
          (float-time (time-since emacs-load-start-time)))
 
-(startup-with-messages-buffer)
+;;(startup-with-messages-buffer)
