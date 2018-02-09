@@ -54,3 +54,16 @@
 	  (interactive)
 	  (ignore-errors
 		(funcall fn)))))
+
+;; Add function for multiple hooks
+(defun add-hooks (function hooks)
+  (mapc (lambda (hook)
+		  (add-hook hook function))
+		hooks))
+
+(defmacro measure-time (comment &rest body)
+  "Measure the time it takes to evaluate BODY."
+  `(let ((time (current-time)))
+	 ,@body
+	 (message "%s took %.06f seconds" ,comment (float-time (time-since time)))
+	 ))

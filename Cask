@@ -30,6 +30,7 @@
 (depends-on "markdown-mode")
 (depends-on "dockerfile-mode")
 (depends-on "jinja2-mode")
+(depends-on "dtrt-indent")
 
 ;; Python
 (depends-on "python-mode")

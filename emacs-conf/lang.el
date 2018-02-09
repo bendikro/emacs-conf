@@ -90,3 +90,28 @@ header"
   (define-key markdown-mode-map (kbd "M-<down>") nil)
 )
 (add-hook 'markdown-mode-hook 'markdown-setup-hook)
+
+;;;;;;;;;;;;;;;;;;;;;
+;;;; dtrt-indent
+;;;;;;;;;;;;;;;;;;;;;
+(defun load-dtrt-indent-mode ()
+  (setq dtrt-indent-verbosity 3)
+  (dtrt-indent-mode)
+  (remove-hook 'find-file-hook 'dtrt-indent-find-file-hook)
+  (add-hook 'find-file-hook
+			'(lambda()
+			   (measure-time "Guessing indentation" (dtrt-indent-find-file-hook))
+			   ))
+  )
+
+(add-hooks 'load-dtrt-indent-mode
+		   '(python-mode-hook
+			 c-mode-hook
+			 go-mode-hook
+
+			 makefile-mode-hook
+			 sh-mode-hook
+			 yaml-mode-hook
+			 conf-mode-hook
+			 js-mode-hook
+			 ))

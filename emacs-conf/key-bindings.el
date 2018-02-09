@@ -122,12 +122,6 @@
   (local-set-key (kbd "C-c C-c") 'comment-or-uncomment-line-or-region)
 )
 
-;; Add function for multiple hooks
-(defun add-hooks (function hooks)
-  (mapc (lambda (hook)
-		  (add-hook hook function))
-		hooks))
-
 
 (add-hooks 'set-programming-keys
 		   '(python-mode-hook
