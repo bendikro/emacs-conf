@@ -89,7 +89,7 @@
 	  (load file)))
 )
 
-(load_libs "defuns")
+(load_libs "local-lisp")
 
 ; Path
 (when (require 'exec-path-from-shell nil 'noerror)
@@ -162,4 +162,4 @@
 (message "Emacs startup time: %d seconds."
          (float-time (time-since emacs-load-start-time)))
 
-;;(startup-with-messages-buffer)
+(startup-with-messages-buffer)

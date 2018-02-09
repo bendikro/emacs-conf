@@ -64,11 +64,6 @@
 	;; ;; Misc
 	;; ;;;;;;;;;;;;;;;
 
-	;;(require 'cc-mode)
-	;; comment / uncomment region
-	(global-set-key "\C-cc" 'comment-region)
-	(global-set-key "\C-cu" 'uncomment-region)
-
 	;; These are disabled by default, so enable
 	(put 'upcase-region 'disabled nil)
 	(put 'downcase-region 'disabled nil)
@@ -86,13 +81,6 @@
 
 	(global-set-key (kbd "M-#") 'replace-regexp)
 
-;;(global-set-key (kbd "<C-M-up>") 'shrink-window)
-;;(global-set-key (kbd "<C-M-down>") 'enlarge-window)
-;;(global-set-key (kbd "<C-M-left>") 'shrink-window-horizontally)
-;;(global-set-key (kbd "<C-M-right>") 'enlarge-window-horizontally)
-
-; (define-key local-function-key-map [M-kp-2] [?\C-2])
-
 	(global-set-key (kbd "S-<kp-8>") 'shrink-window)
 	(global-set-key (kbd "S-<kp-2>") 'enlarge-window)
 	(global-set-key (kbd "S-<kp-4>") 'shrink-window-horizontally)
@@ -103,11 +91,54 @@
 ;;(global-set-key (kbd "<kp-3>") 'ibuffer)
 
 	(global-set-key (kbd "C-c r") #'resize-mode)
-	(global-set-key (kbd "C-c f") #'flycheck-now-mode)
-	(local-unset-key (kbd "C-c C-f"))
-	(global-set-key (kbd "C-c C-f") 'follow-auctex-compile-buffer)
+
+	;; Bind keys to move cursor between windows
+	(global-set-key (kbd "C-c <C-left>") (ignore-error-wrapper 'windmove-left))
+	(global-set-key (kbd "C-c <C-right>") (ignore-error-wrapper 'windmove-right))
+	(global-set-key (kbd "C-c <C-up>") (ignore-error-wrapper 'windmove-up))
+	(global-set-key (kbd "C-c <C-down>") (ignore-error-wrapper 'windmove-down))
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;;
+	;; Mode specific bindings
+	;;;;;;;;;;;;;;;;;;;;;;;;;;
+	(add-hook 'python-mode-hook
+			  '(lambda() (global-set-key (kbd "C-c f") #'flycheck-now-mode)))
+
+	;; Handle key bindings for following compile buffer
+	(add-hook 'TeX-mode-hook
+			  '(lambda()
+				 (local-unset-key (kbd "C-c C-f"))
+				 (local-set-key (kbd "C-c C-f") 'follow-auctex-compile-buffer)
+				 (local-set-key (kbd "C-c C-g") #'encapsulate-glossary)))
 	))
+
 
 (add-hook 'after-init-load-hook
 		  (lambda ()
 			(do-key-bindings)))
+
+;; keys to set for programming modes
+(defun set-programming-keys ()
+  (local-set-key (kbd "C-c C-c") 'comment-or-uncomment-line-or-region)
+)
+
+;; Add function for multiple hooks
+(defun add-hooks (function hooks)
+  (mapc (lambda (hook)
+		  (add-hook hook function))
+		hooks))
+
+
+(add-hooks 'set-programming-keys
+		   '(python-mode-hook
+			 c-mode-hook
+			 go-mode-hook
+
+			 makefile-mode-hook
+			 sh-mode-hook
+			 yaml-mode-hook
+			 conf-mode-hook
+			 jinja2-mode-hook
+			 rockerfile-mode-hook
+			 latex-mode-hook
+			 ))

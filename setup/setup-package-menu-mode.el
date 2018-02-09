@@ -21,6 +21,4 @@ Letters do not insert themselves; instead, they are commands.
 	(add-hook 'tabulated-list-revert-hook 'package-menu--refresh nil t)
 	(tabulated-list-init-header))
 
-(message "SDKROOOOOO")
-
 (provide 'setup-package-menu-mode)

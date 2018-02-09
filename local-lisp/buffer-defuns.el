@@ -73,3 +73,12 @@
    (newline-mark 13 [181 13]) ; carriage return
    (tab-mark 9 [9655 9] [92 9]) ; tab
 ))
+
+
+;; Comment or incomment region
+(defun comment-or-uncomment-line-or-region ()
+  (interactive)
+  (if (use-region-p)
+	  (comment-or-uncomment-region (region-beginning) (region-end))
+	(comment-or-uncomment-region (line-beginning-position) (line-end-position)
+								 )))
