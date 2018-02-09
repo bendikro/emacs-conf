@@ -38,15 +38,25 @@ import os
 import sys
 
 
+def io_errors_with_signals():
+    return os.getenv('IO_ERRORS_WITH_SIGNALS', default=True)
 
 
+def is_python3():
+    import sys
+    return sys.version_info[0] == 3
 
 
+if is_python3():
+    import collections
 
+    def callable(value):
+        return isinstance(value, collections.Callable)
 
-
-
-__metaclass__ = type
+    basestring = str
+    from imp import reload
+else:
+    __metaclass__ = type
 
 
 def fixup_icanon():
@@ -106,26 +116,26 @@ Arguments are added to the search path for Python modules.
         # Inhibit signals.  The Interrupt signal is temporary enabled, however,
         # while executing any Python code received from the Lisp side.
         if signal is not None:
-
-            # See the comment for IO_ERRORS_WITH_SIGNALS in ppppconfig.py.
-            self.original_handler = signal.signal(
-                signal.SIGINT, self.interrupt_handler)
-
-
-
-
-
-
-
-
-
-
+            if io_errors_with_signals():
+                # See the comment for IO_ERRORS_WITH_SIGNALS in ppppconfig.py.
+                self.original_handler = signal.signal(
+                    signal.SIGINT, self.interrupt_handler)
+            else:
+                for counter in range(1, signal.NSIG):
+                    if counter == signal.SIGINT:
+                        self.original_handler = signal.signal(
+                            counter, self.interrupt_handler)
+                    else:
+                        try:
+                            signal.signal(counter, self.generic_handler)
+                        except (RuntimeError, OSError):
+                            pass
         self.inhibit_quit = True
 
-
-        # Re-open standard input and output in binary mode.
-        sys.stdin = os.fdopen(sys.stdin.fileno(), 'rb')
-        sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb')
+        if not is_python3():
+            # Re-open standard input and output in binary mode.
+            sys.stdin = os.fdopen(sys.stdin.fileno(), 'rb')
+            sys.stdout = os.fdopen(sys.stdout.fileno(), 'wb')
 
         # Start protocol and services.
         lisp._protocol.send('version', '"%s"' % version)
@@ -176,231 +186,231 @@ class Protocol:
     def __init__(self):
         self.freed = []
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def loop(self):
-        # The server loop repeatedly receives a request from Emacs and
-        # returns a response, which is either the value of the received
-        # Python expression, or the Python traceback if an error occurs
-        # while evaluating the expression.
-
-        # The server loop may also be executed, as a recursive invocation,
-        # in the context of Emacs serving a Python request.  In which
-        # case, we might also receive a notification from Emacs telling
-        # that the reply has been transmitted, or that an error occurred.
-        # A reply notification from Emacs interrupts the loop: the result
-        # of this function is then the value returned from Emacs.
-        done = False
-        while not done:
-            try:
-                action, text = self.receive()
-                if action == 'eval':
-                    action = 'return'
-                    try:
-                        run.inhibit_quit = False
-                        value = eval(text)
-                    finally:
-                        run.inhibit_quit = True
-                elif action == 'exec':
-                    action = 'return'
-                    value = None
-                    try:
-                        run.inhibit_quit = False
-                        exec(text)
-                    finally:
-                        run.inhibit_quit = True
-                elif action == 'return':
-                    done = True
-                    try:
-                        run.inhibit_quit = False
-                        value = eval(text)
-                    finally:
-                        run.inhibit_quit = True
-                elif action == 'raise':
+    if is_python3():
+
+        def loop(self):
+            # The server loop repeatedly receives a request from Emacs and
+            # returns a response, which is either the value of the received
+            # Python expression, or the Python traceback if an error occurs
+            # while evaluating the expression.
+
+            # The server loop may also be executed, as a recursive invocation,
+            # in the context of Emacs serving a Python request.  In which
+            # case, we might also receive a notification from Emacs telling
+            # that the reply has been transmitted, or that an error occurred.
+            # A reply notification from Emacs interrupts the loop: the result
+            # of this function is then the value returned from Emacs.
+            done = False
+            while not done:
+                try:
+                    action, text = self.receive()
+                    if action == 'eval':
+                        action = 'return'
+                        try:
+                            run.inhibit_quit = False
+                            value = eval(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'exec':
+                        action = 'return'
+                        value = None
+                        try:
+                            run.inhibit_quit = False
+                            exec(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'return':
+                        done = True
+                        try:
+                            run.inhibit_quit = False
+                            value = eval(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'raise':
+                        action = 'raise'
+                        value = 'Emacs: ' + text
+                    else:
+                        raise ProtocolError("Unknown action %r" % action)
+                except KeyboardInterrupt:
+                    if done:
+                        raise
                     action = 'raise'
-                    value = 'Emacs: ' + text
-                else:
+                    value = '*Interrupted*'
+                except ProtocolError as exception:
+                    sys.exit("Protocol error: %s\n" % exception)
+                except:
+                    import traceback
+                    action = 'raise'
+                    if lisp.debug_on_error.value() is None:
+                        value = traceback.format_exception_only(
+                            sys.exc_info[0], sys.exc_info[1])
+                        value = ''.join(value).rstrip()
+                    else:
+                        value = traceback.format_exc()
+                if not done:
+                    fragments = []
+                    print_lisp(value, fragments.append, True)
+                    self.send(action, ''.join(fragments))
+            return value
+
+    else:
+
+        def loop(self):
+            # The server loop repeatedly receives a request from Emacs and
+            # returns a response, which is either the value of the received
+            # Python expression, or the Python traceback if an error occurs
+            # while evaluating the expression.
+
+            # The server loop may also be executed, as a recursive invocation,
+            # in the context of Emacs serving a Python request.  In which
+            # case, we might also receive a notification from Emacs telling
+            # that the reply has been transmitted, or that an error occurred.
+            # A reply notification from Emacs interrupts the loop: the result
+            # of this function is then the value returned from Emacs.
+            done = False
+            while not done:
+                try:
+                    action, text = self.receive()
+                    if action == 'eval':
+                        action = 'return'
+                        try:
+                            run.inhibit_quit = False
+                            value = eval(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'exec':
+                        action = 'return'
+                        value = None
+                        try:
+                            run.inhibit_quit = False
+                            exec(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'return':
+                        done = True
+                        try:
+                            run.inhibit_quit = False
+                            value = eval(text)
+                        finally:
+                            run.inhibit_quit = True
+                    elif action == 'raise':
+                        action = 'raise'
+                        value = 'Emacs: ' + text
+                    else:
 
 
 
-                    raise ProtocolError("Unknown action %r" % action)
-            except KeyboardInterrupt:
-                if done:
-                    raise
-                action = 'raise'
-                value = '*Interrupted*'
-            except ProtocolError, exception:
-                sys.exit("Protocol error: %s\n" % exception)
-            except:
-                import traceback
-                action = 'raise'
-                if lisp.debug_on_error.value() is None:
-                    value = traceback.format_exception_only(
-                        sys.exc_type, sys.exc_value)
-                    value = ''.join(value).rstrip()
-                else:
-                    value = traceback.format_exc()
-            if not done:
-                fragments = []
-                print_lisp(value, fragments.append, True)
-                self.send(action, ''.join(fragments))
-        return value
+                        raise ProtocolError("Unknown action %r" % action)
+                except KeyboardInterrupt:
+                    if done:
+                        raise
+                    action = 'raise'
+                    value = '*Interrupted*'
+                except ProtocolError as exception:
+                    sys.exit("Protocol error: %s\n" % exception)
+                except:
+                    import traceback
+                    action = 'raise'
+                    if lisp.debug_on_error.value() is None:
+                        value = traceback.format_exception_only(
+                            sys.exc_type, sys.exc_value)
+                        value = ''.join(value).rstrip()
+                    else:
+                        value = traceback.format_exc()
+                if not done:
+                    fragments = []
+                    print_lisp(value, fragments.append, True)
+                    self.send(action, ''.join(fragments))
+            return value
+
+    if is_python3():
+
+        def receive(self):
+            # Receive a Python expression from Emacs, return (ACTION, TEXT).
+            prefix = sys.stdin.buffer.read(3)
+            if not prefix or prefix[0] != ord(b'>'):
+                raise ProtocolError("`>' expected.")
+            while prefix[-1] != ord(b'\t'):
+                character = sys.stdin.buffer.read(1)
+                if not character:
+                    raise ProtocolError("Empty stdin read.")
+                prefix += character
+            data = sys.stdin.buffer.read(int(prefix[1:-1]))
+            try:
+                text = data.decode('UTF-8')
+            except UnicodeDecodeError:
+                #assert False, ('***', data)
+                text = data.decode('ISO-8859-1')
+            if run.debug_file is not None:
+                handle = open(run.debug_file, 'a')
+                handle.write(prefix.decode('ASCII') + text)
+                handle.close()
+            return text.split(None, 1)
+
+    else:
+
+        def receive(self):
+            # Receive a Python expression from Emacs, return (ACTION, TEXT).
+            prefix = sys.stdin.read(3)
+            if not prefix or prefix[0] != '>':
 
 
 
+                raise ProtocolError("`>' expected.")
+            while prefix[-1] != '\t':
+                character = sys.stdin.read(1)
+                if not character:
 
 
 
+                    raise ProtocolError("Empty stdin read.")
+                prefix += character
+            text = sys.stdin.read(int(prefix[1:-1]))
+            if run.debug_file is not None:
+                handle = open(run.debug_file, 'a')
+                handle.write(prefix + text)
+                handle.close()
+            return text.split(None, 1)
 
+    if is_python3():
 
+        def send(self, action, text):
+            # Send ACTION and its TEXT argument to Emacs.
+            if self.freed:
+                # All delayed Lisp cleanup is piggied back on the transmission.
+                text = ('(free (%s) %s %s)\n'
+                        % (' '.join(map(str, self.freed)), action, text))
+                self.freed = []
+            else:
+                text = '(%s %s)\n' % (action, text)
+            data = text.encode('UTF-8')
+            prefix = '<%d\t' % len(data)
+            if run.debug_file is not None:
+                handle = open(run.debug_file, 'a')
+                handle.write(prefix + text)
+                handle.close()
+            sys.stdout.buffer.write(prefix.encode('ASCII'))
+            sys.stdout.buffer.write(data)
+            sys.stdout.buffer.flush()
 
+    else:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def receive(self):
-        # Receive a Python expression from Emacs, return (ACTION, TEXT).
-        prefix = sys.stdin.read(3)
-        if not prefix or prefix[0] != '>':
-
-
-
-            raise ProtocolError("`>' expected.")
-        while prefix[-1] != '\t':
-            character = sys.stdin.read(1)
-            if not character:
-
-
-
-                raise ProtocolError("Empty stdin read.")
-            prefix += character
-        text = sys.stdin.read(int(prefix[1:-1]))
-        if run.debug_file is not None:
-            handle = open(run.debug_file, 'a')
-            handle.write(prefix + text)
-            handle.close()
-        return text.split(None, 1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def send(self, action, text):
-        # Send ACTION and its TEXT argument to Emacs.
-        if self.freed:
-            # All delayed Lisp cleanup is piggied back on the transmission.
-            text = ('(free (%s) %s %s)\n'
-                    % (' '.join(map(str, self.freed)), action, text))
-            self.freed = []
-        else:
-            text = '(%s %s)\n' % (action, text)
-        prefix = '<%d\t' % len(text)
-        if run.debug_file is not None:
-            handle = open(run.debug_file, 'a')
-            handle.write(prefix + text)
-            handle.close()
-        sys.stdout.write(prefix + text)
-        sys.stdout.flush()
+        def send(self, action, text):
+            # Send ACTION and its TEXT argument to Emacs.
+            if self.freed:
+                # All delayed Lisp cleanup is piggied back on the transmission.
+                text = ('(free (%s) %s %s)\n'
+                        % (' '.join(map(str, self.freed)), action, text))
+                self.freed = []
+            else:
+                text = '(%s %s)\n' % (action, text)
+            prefix = '<%d\t' % len(text)
+            if run.debug_file is not None:
+                handle = open(run.debug_file, 'a')
+                handle.write(prefix + text)
+                handle.close()
+            sys.stdout.write(prefix + text)
+            sys.stdout.flush()
 
 
 def pymacs_load_helper(file_without_extension, prefix, noerror=None):
@@ -468,7 +478,7 @@ def pymacs_load_helper(file_without_extension, prefix, noerror=None):
 def doc_string(function):
     import inspect
     return inspect.getdoc(function)
-
+
 ## Garbage collection matters.
 
 # Many Python types do not have direct Lisp equivalents, and may not be
@@ -542,14 +552,14 @@ class Let:
     def __del__(self):
         self.pops()
 
-
-
-
-
-
-    def __nonzero__(self):
-        # So stylistic `if let:' executes faster.
-        return True
+    if is_python3():
+        def __bool__(self):
+            # So stylistic `if let:' executes faster.
+            return True
+    else:
+        def __nonzero__(self):
+            # So stylistic `if let:' executes faster.
+            return True
 
     def pops(self):
         while self.stack:
@@ -817,153 +827,154 @@ class Lisp_Interface:
             symbol = self._cache[name] = Symbol(name)
         symbol.set(value)
 
+
 lisp = Lisp_Interface()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-print_lisp_quoted_specials = {
-    '"': '\\"', '\\': '\\\\', '\b': '\\b', '\f': '\\f',
-    '\n': '\\n', '\r': '\\r', '\t': '\\t'}
-
-def print_lisp(value, write, quoted):
-    if value is None:
-        write('nil')
-    elif isinstance(bool, type) and isinstance(value, bool):
-        write(('nil', 't')[value])
-    elif isinstance(value, int):
-        write(repr(value))
-    elif isinstance(value, float):
-        write(repr(value))
-    elif isinstance(value, basestring):
-        multibyte = False
-        if isinstance(value, unicode):
-            try:
-                value = value.encode('ASCII')
-            except UnicodeError:
-                value = value.encode('UTF-8')
-                multibyte = True
-        if multibyte:
-            write('(decode-coding-string ')
-        write('"')
-        for character in value:
-            special = print_lisp_quoted_specials.get(character)
-            if special is not None:
-                write(special)
-            elif 32 <= ord(character) < 127:
-                write(character)
-            else:
-                write('\\%.3o' % ord(character))
-        write('"')
-        if multibyte:
-            write(' \'utf-8)')
-    elif isinstance(value, list):
-        if quoted:
-            write("'")
-        if len(value) == 0:
+if is_python3():
+
+    print_lisp_quoted_specials = {
+        ord('"'): '\\"', ord('\\'): '\\\\', ord('\b'): '\\b',
+        ord('\f'): '\\f',
+        ord('\n'): '\\n', ord('\r'): '\\r', ord('\t'): '\\t'}
+
+    def print_lisp(value, write, quoted):
+        if value is None:
             write('nil')
-        elif len(value) == 2 and value[0] == lisp.quote:
-            write("'")
-            print_lisp(value[1], write, False)
+        elif isinstance(bool, type) and isinstance(value, bool):
+            write(('nil', 't')[value])
+        elif isinstance(value, int):
+            write(repr(value))
+        elif isinstance(value, float):
+            write(repr(value))
+        elif isinstance(value, str):
+            try:
+                value.encode('ASCII')
+            except UnicodeError:
+                write('(decode-coding-string "')
+                for byte in value.encode('UTF-8'):
+                    special = print_lisp_quoted_specials.get(byte)
+                    if special is not None:
+                        write(special)
+                    elif 32 <= byte < 127:
+                        write(chr(byte))
+                    else:
+                        write('\\%.3o' % byte)
+                write('" \'utf-8)')
+            else:
+                write('"')
+                for character in value:
+                    special = print_lisp_quoted_specials.get(ord(character))
+                    if special is not None:
+                        write(special)
+                    elif 32 <= ord(character) < 127:
+                        write(character)
+                    else:
+                        write('\\%.3o' % ord(character))
+                write('"')
+        elif isinstance(value, list):
+            if quoted:
+                write("'")
+            if len(value) == 0:
+                write('nil')
+            elif len(value) == 2 and value[0] == lisp.quote:
+                write("'")
+                print_lisp(value[1], write, False)
+            else:
+                write('(')
+                print_lisp(value[0], write, False)
+                for sub_value in value[1:]:
+                    write(' ')
+                    print_lisp(sub_value, write, False)
+                write(')')
+        elif isinstance(value, tuple):
+            write('[')
+            if len(value) > 0:
+                print_lisp(value[0], write, False)
+                for sub_value in value[1:]:
+                    write(' ')
+                    print_lisp(sub_value, write, False)
+            write(']')
+        elif isinstance(value, Lisp):
+            write(str(value))
+        elif isinstance(value, Symbol):
+            if quoted:
+                write("'")
+            write(value.text)
+        elif callable(value):
+            write('(pymacs-defun %d nil)' % allocate_python(value))
         else:
-            write('(')
-            print_lisp(value[0], write, False)
-            for sub_value in value[1:]:
-                write(' ')
-                print_lisp(sub_value, write, False)
-            write(')')
-    elif isinstance(value, tuple):
-        write('[')
-        if len(value) > 0:
-            print_lisp(value[0], write, False)
-            for sub_value in value[1:]:
-                write(' ')
-                print_lisp(sub_value, write, False)
-        write(']')
-    elif isinstance(value, Lisp):
-        write(str(value))
-    elif isinstance(value, Symbol):
-        if quoted:
-            write("'")
-        write(value.text)
-    elif callable(value):
-        write('(pymacs-defun %d nil)' % allocate_python(value))
-    else:
-        write('(pymacs-python %d)' % allocate_python(value))
+            write('(pymacs-python %d)' % allocate_python(value))
+
+else:
+
+    print_lisp_quoted_specials = {
+        '"': '\\"', '\\': '\\\\', '\b': '\\b', '\f': '\\f',
+        '\n': '\\n', '\r': '\\r', '\t': '\\t'}
+
+    def print_lisp(value, write, quoted):
+        if value is None:
+            write('nil')
+        elif isinstance(bool, type) and isinstance(value, bool):
+            write(('nil', 't')[value])
+        elif isinstance(value, int):
+            write(repr(value))
+        elif isinstance(value, float):
+            write(repr(value))
+        elif isinstance(value, basestring):
+            multibyte = False
+            if isinstance(value, unicode):
+                try:
+                    value = value.encode('ASCII')
+                except UnicodeError:
+                    value = value.encode('UTF-8')
+                    multibyte = True
+            if multibyte:
+                write('(decode-coding-string ')
+            write('"')
+            for character in value:
+                special = print_lisp_quoted_specials.get(character)
+                if special is not None:
+                    write(special)
+                elif 32 <= ord(character) < 127:
+                    write(character)
+                else:
+                    write('\\%.3o' % ord(character))
+            write('"')
+            if multibyte:
+                write(' \'utf-8)')
+        elif isinstance(value, list):
+            if quoted:
+                write("'")
+            if len(value) == 0:
+                write('nil')
+            elif len(value) == 2 and value[0] == lisp.quote:
+                write("'")
+                print_lisp(value[1], write, False)
+            else:
+                write('(')
+                print_lisp(value[0], write, False)
+                for sub_value in value[1:]:
+                    write(' ')
+                    print_lisp(sub_value, write, False)
+                write(')')
+        elif isinstance(value, tuple):
+            write('[')
+            if len(value) > 0:
+                print_lisp(value[0], write, False)
+                for sub_value in value[1:]:
+                    write(' ')
+                    print_lisp(sub_value, write, False)
+            write(']')
+        elif isinstance(value, Lisp):
+            write(str(value))
+        elif isinstance(value, Symbol):
+            if quoted:
+                write("'")
+            write(value.text)
+        elif callable(value):
+            write('(pymacs-defun %d nil)' % allocate_python(value))
+        else:
+            write('(pymacs-python %d)' % allocate_python(value))
 
 if __name__ == '__main__':
     main(*sys.argv[1:])
