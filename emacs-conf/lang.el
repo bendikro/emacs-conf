@@ -98,10 +98,10 @@ header"
   (setq dtrt-indent-verbosity 3)
   (dtrt-indent-mode)
   (remove-hook 'find-file-hook 'dtrt-indent-find-file-hook)
-  (add-hook 'find-file-hook
-			'(lambda()
-			   (measure-time "Guessing indentation" (dtrt-indent-find-file-hook))
-			   ))
+;;  (add-hook 'find-file-hook
+;;			'(lambda()
+;;			   (measure-time "Guessing indentation" (dtrt-indent-find-file-hook))
+;;			   ))
   )
 
 (add-hooks 'load-dtrt-indent-mode
