@@ -1,6 +1,8 @@
 #!/bin/bash
 
-usage="$(basename "$0") [-h] [-s | -k | -l | -p | -a ssh-key] -- Handle docker ssh agent
+
+print_usage() {
+	usage="$(basename "$0") [-h] [-s | -k | -l | -p | -a ssh-key] -- Handle docker ssh agent
 
 where:
     -s  start agent
@@ -11,9 +13,11 @@ where:
     -i  show identities
     -h  show this help text
 "
+	echo "$usage"
+}
 
 if [ "$#" -eq "0" ]; then
-	echo "$usage"
+	print_usage
 fi
 
 if [ -z "$DOCKER_SSH_AGENT_SOCK_DIR" ]; then
@@ -131,7 +135,7 @@ while getopts ":sklphia:" opt; do
 			fi
 			;;
 		h)
-			echo "$usage"
+			print_usage
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
