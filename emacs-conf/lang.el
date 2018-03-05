@@ -96,13 +96,9 @@ header"
 ;;;;;;;;;;;;;;;;;;;;;
 (defun load-dtrt-indent-mode ()
   (setq dtrt-indent-verbosity 3)
-  (dtrt-indent-mode)
-  (remove-hook 'find-file-hook 'dtrt-indent-find-file-hook)
-;;  (add-hook 'find-file-hook
-;;			'(lambda()
-;;			   (measure-time "Guessing indentation" (dtrt-indent-find-file-hook))
-;;			   ))
-  )
+  (safe-wrap
+   (dtrt-indent-mode)
+   (message "Failed to load dtrt-indent-mode")))
 
 (add-hooks 'load-dtrt-indent-mode
 		   '(python-mode-hook

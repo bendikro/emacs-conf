@@ -55,6 +55,21 @@
 	  (ignore-errors
 		(funcall fn)))))
 
+(defmacro safe-wrap (fn &rest clean-up)
+  "Funtion that runs code and catches errors. In case of error, run
+  the clean-up code.
+  Example: (safe-wrap (error \"Hello\") (message \"Error occured...\"))
+"
+  `(unwind-protect
+	   (let (retval)
+		 (condition-case ex
+			 (setq retval (progn ,fn))
+		   ('error
+			(message (format "Caught exception: [%s]" ex))
+			(setq retval (cons 'exception (list ex)))))
+		 retval)
+	 ,@clean-up))
+
 ;; Add function for multiple hooks
 (defun add-hooks (function hooks)
   (mapc (lambda (hook)
