@@ -3,7 +3,7 @@
 EMACS_HOME=${EMACS_HOME:-$HOME}
 
 
-declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash"
+declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash" "color_prompt.sh"
 					   "tmux_completion.sh"
 					   "zfs-completion.bash"
 					   "vagrant-completion.bash"
