@@ -14,15 +14,7 @@
 		   (message "Error loading file \"%s\": %s" filename
 					(error-message-string err))
 		 (progn
-		   (signal
-			(error "%s\n%s" (error-message-string err)
-				   (format "To hide this message, add the following to '%s':\n%s"
-						   "init-local.el"
-						   (format "(defcustom %s t
-  \"Show warning if file fails to load\"
-  :group 'safeloadfiles
-  :type 'boolean))"
-								   safe-load-varname)))
-			(cdr err)
-			))))
-	 nil)))
+		   (message "Error when loading %s" (format "%s" (error-message-string err)))
+		   (lambda () )
+		   )
+		 )))))
