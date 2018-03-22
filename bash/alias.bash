@@ -27,7 +27,7 @@ alias drun="docker run"
 alias dstop="docker stop"
 
 
-
+function setup_key_bindings {
 # Only apply when we have a proper terminal
 case "$TERM" in
     xterm*|rxvt*|screen*)
@@ -42,6 +42,15 @@ case "$TERM" in
     stty -ctlecho
     ;;
 esac
+}
+
+
+# Only setup key bindings when interactive
+case $- in
+    *i*) setup_key_bindings;;
+      *) ;;
+esac
+
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
