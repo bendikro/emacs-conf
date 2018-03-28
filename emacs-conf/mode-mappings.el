@@ -49,6 +49,9 @@
 ;; Python mode for .py files
 ;;(add-to-autoload "python-mode" '("\\.py$"))
 
+;; Makefile2 (cmake)
+(add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
+
 ;; Markdown
 (add-to-autoload "markdown-mode" '("\\.markdown$" "\\.md$"))
 
