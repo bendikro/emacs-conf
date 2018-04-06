@@ -11,7 +11,7 @@ alias cgrep='grep --include="*.c" --include="*.h"'
 alias ccgrep='grep --include="*.c" --include="*.h" --include="*.cpp" --include="*.hpp"'
 alias cppgrep='grep --include="*.cpp" --include="*.hpp"'
 alias pygrep='grep --include="*.py"'
-alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask"'
+alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask" --exclude-dir="\.git"'
 
 alias tmuxdeluge='ssh freebsd -t "tmux attach -t deluge || tmux new-session -s deluge"'
 
