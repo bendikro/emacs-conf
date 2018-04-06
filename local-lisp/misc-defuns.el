@@ -66,9 +66,9 @@
 			 (setq retval (progn ,fn))
 		   ('error
 			(message (format "Caught exception: [%s]" ex))
-			(setq retval (cons 'exception (list ex)))))
-		 retval)
-	 ,@clean-up))
+			(setq retval (cons 'exception (list ex)))
+			,@clean-up))
+		 retval)))
 
 ;; Add function for multiple hooks
 (defun add-hooks (function hooks)
