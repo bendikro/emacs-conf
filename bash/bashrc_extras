@@ -2,8 +2,8 @@
 
 EMACS_HOME=${EMACS_HOME:-$HOME}
 
-declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash"
-					   "color_prompt.sh" "load_completions.bash")
+declare -a bash_files=("funcs.bash" "load_completions.bash"
+					   "extras_local.bash" "alias.bash" "color_prompt.sh" "git.bash")
 
 
 for f in "${bash_files[@]}"

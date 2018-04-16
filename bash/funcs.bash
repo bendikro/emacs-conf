@@ -19,28 +19,6 @@ function get_sessionname_func {
 	echo -n "[ $o ]"
 }
 
-function grep_kill() {
-	ret=`ps aux | grep $1 | grep -v -e "grep"`
-	ret_count=`ps aux | grep -v -e "grep" | grep -c $1`
-
-	kill_signal="-15"
-	if [ ! -z "$2" ]; then
-		kill_signal=$2
-	fi
-
-	if [ "$ret_count" = 0 ]; then
-		echo "No matches found for expression $1:"
-	elif [ "$ret_count" = 1 ]; then
-		process_array=($ret);
-		echo "Killing pid: ${process_array[1]} with signal $kill_signal";
-		kill $kill_signal ${process_array[1]};
-	else
-		echo "Too many matches ($ret_count) for expression $1:"
-		printf "%b" "$ret\n"
-	fi
-}
-
-
 pathadd () {
 	if ! echo "$PATH" | /bin/grep -Eq "(^|:)$1($|:)" ; then
 		if [ "$2" = "after" ] ; then
