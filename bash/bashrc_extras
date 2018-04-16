@@ -2,21 +2,15 @@
 
 EMACS_HOME=${EMACS_HOME:-$HOME}
 
+declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash"
+					   "color_prompt.sh" "load_completions.bash")
 
-declare -a bash_files=("funcs.bash" "git.bash" "extras_local.bash" "alias.bash" "color_prompt.sh"
-					   "tmux_completion.sh"
-					   "zfs-completion.bash"
-					   "vagrant-completion.bash"
-					   "vboxmanage-completion.bash"
-					   "supervisorctl-completion.bash"
-					   "docker-compose-completion.bash")
 
-for i in "${bash_files[@]}"
+for f in "${bash_files[@]}"
 do
-	if [ -f "$EMACS_HOME/.emacs.d/bash/$i" ]; then
-		. $EMACS_HOME/.emacs.d/bash/$i
+	if [ -f "$EMACS_HOME/.emacs.d/bash/$f" ]; then
+		. $EMACS_HOME/.emacs.d/bash/$f
 	fi
-
 done
 
 # Enable 256 colors
@@ -27,16 +21,6 @@ export EDITOR=emacs
 
 # Add the bin dir to PATH
 pathadd $EMACS_HOME/.emacs.d/bin/ after
-
-OS=`uname`
-
-if [[ "$OS" == 'FreeBSD' ]]; then
-    source /usr/local/share/bash-completion/bash_completion.sh
-fi
-
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
 
 # virtualenvwrapper location on FreeBSD
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
