@@ -68,11 +68,12 @@
 (pymacs-load "pyfuncs")
 (global-set-key [f7] 'pyfuncs-break-on-whitespace)
 
-(add-hook 'python-mode-hook
-		  '(lambda()
-			 ;;(message "setup-python - python-mode-hook")
-		  ))
 
-;;(add-hook 'python-mode-hook
-;;		  (lambda ()
-;;			(define-key python-mode-map "\r" 'newline-and-indent)))
+;; Enable jedi mode for python
+(defun setup-jedi-mode ()
+  (setq jedi:use-shortcuts t)
+  (setq jedi:setup-keys t)
+  (jedi:setup)
+  )
+
+(add-hooks 'setup-jedi-mode '(python-mode-hook))

@@ -11,6 +11,7 @@
 (depends-on "flycheck-color-mode-line")
 (depends-on "pallet")
 (depends-on "yasnippet")
+(depends-on "editorconfig")
 
 ;; Utils
 (depends-on "ggtags")
@@ -30,6 +31,7 @@
 (depends-on "python-mode")
 (depends-on "python-pep8")
 (depends-on "python-pylint")
+(depends-on "jedi-mode")
 
 ;; LaTeX
 (depends-on "auctex")
