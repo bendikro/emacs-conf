@@ -64,6 +64,10 @@
 	;; ;; Misc
 	;; ;;;;;;;;;;;;;;;
 
+	;; Move to beginning/end of buffer
+	(global-set-key (kbd "C-c C-b") 'beginning-of-buffer)
+	(global-set-key (kbd "C-c C-e") 'end-of-buffer)
+
 	;; These are disabled by default, so enable
 	(put 'upcase-region 'disabled nil)
 	(put 'downcase-region 'disabled nil)
@@ -77,7 +81,7 @@
 	(global-set-key [f5] 'revert-buffer-keep-undo)
 
 	;; Toggle between 4 and 8 character tab width
-	(global-set-key (kbd "<f8>") 'tf-toggle-tab-width-setting) ; ' "fix" highlighting
+	(global-set-key (kbd "<f8>") 'tf-toggle-tab-width-setting)
 
 	(global-set-key (kbd "M-#") 'replace-regexp)
 
@@ -112,16 +116,15 @@
 				 (local-set-key (kbd "C-c C-g") #'encapsulate-glossary)))
 	))
 
-
 (add-hook 'after-init-load-hook
 		  (lambda ()
 			(do-key-bindings)))
+
 
 ;; keys to set for programming modes
 (defun set-programming-keys ()
   (local-set-key (kbd "C-c C-c") 'comment-or-uncomment-line-or-region)
 )
-
 
 (add-hooks 'set-programming-keys
 		   '(python-mode-hook
@@ -131,6 +134,7 @@
 			 makefile-mode-hook
 			 sh-mode-hook
 			 yaml-mode-hook
+			 css-mode-hook
 			 conf-mode-hook
 			 jinja2-mode-hook
 			 rockerfile-mode-hook
