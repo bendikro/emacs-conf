@@ -118,7 +118,15 @@ add_config('.config/gtk-3.0/gtk.css',
 TerminalWindow .notebook tab:active {
     background-color: #b6bccb;
 }
-""", search_pattern="TerminalWindow .notebook tab:active", create_if_not_exists="Ubuntu" in os_line)
+
+terminal-window .notebook tab:active {
+    background-color: #b6bccb;
+}
+
+.terminator-terminal-window notebook header tab {
+   background-color: shade(@bg_color, 0.8)
+}
+""", search_pattern="terminal-window .notebook tab:active", create_if_not_exists="Ubuntu" in os_line)
 
 add_config('.config/htop/htoprc',
 """# Beware! This file is rewritten by htop when settings are changed in the interface.
