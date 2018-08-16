@@ -84,9 +84,9 @@ def execute(args):
 
     if args.verbose:
         if not args.until_fail:
-            cprint('[V] Repeating command %d times: "%s"' % (args.count, args.command), 'green')
+            cprint('[V] Repeating command %d times: "%s"' % (args.count, args.command), color='green')
         else:
-            cprint('[V] Repeating command until failure: "%s"' % (args.command), 'green')
+            cprint('[V] Repeating command until failure: "%s"' % (args.command), color='green')
         print()
 
     count = 0
@@ -94,7 +94,7 @@ def execute(args):
     while True:
         count += 1
         if args.verbose > 1:
-            print_log("%d command execution: " % count, end='')
+            print_log("%d command execution: " % count, end='\n')
             sys.stdout.flush()
 
         start_cmd = time.time()
@@ -130,7 +130,7 @@ def execute(args):
 
 
     if error_ret is not 0:
-        cprint("\nCommand exited with status '%s' on run %d " % (error_ret, count), 'red')
+        cprint("\nCommand exited with status '%s' on run %d " % (error_ret, count), color='red')
 
     end = time.time()
 

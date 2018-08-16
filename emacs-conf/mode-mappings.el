@@ -113,9 +113,5 @@
 (add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
 
-(add-hook 'js-mode-hook
-		  '(lambda()
-			 (setq-default indent-tabs-mode nil)
-			 ))
 
 ;(autoload 'gpicker "gpicker" "Gpicker mode" t)

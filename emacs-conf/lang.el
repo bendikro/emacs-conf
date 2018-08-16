@@ -80,6 +80,11 @@ header"
 ;; If you want Emacs to defer loading the JDE until you open a java file
 (setq defer-loading-jde t)
 
+;;;;;;;;;;;;;;;;;;;;;
+;;;; Javascript
+;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'js-mode-hook
+		  '(lambda() (setq-default indent-tabs-mode nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Markdown
