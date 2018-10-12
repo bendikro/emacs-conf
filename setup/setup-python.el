@@ -73,7 +73,8 @@
 (defun setup-jedi-mode ()
   (setq jedi:use-shortcuts t)
   (setq jedi:setup-keys t)
-  (jedi:setup)
-  )
+  (safe-wrap
+   (jedi:setup)
+   (message "Failed to setup Jedi mode for python")))
 
 (add-hooks 'setup-jedi-mode '(python-mode-hook))
