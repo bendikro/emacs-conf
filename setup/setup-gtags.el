@@ -10,23 +10,20 @@
 
 (add-hook 'gtags-mode-hook
 		  '(lambda()
-			 (message "gtags-mode-hook")
 			 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			 ;; ;;;;;;; Key bindings for gtag
 			 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-			 (global-set-key "\M-," 'ww-next-gtag)      ;; M-; cycles to next result, after doing M-. C-M-. or C-M-,
-			 (global-set-key "\M-*" 'gtags-pop-stack)
-			 (global-set-key "\M-." 'gtags-find-tag2)    ;; M-. finds tag
-
+			 (define-key gtags-mode-map (kbd "M-.") 'gtags-find-tag2)  ;; Go to definition
+			 (define-key gtags-mode-map (kbd "M-*") 'gtags-pop-stack)  ;; Go back to previous location
+			 (define-key gtags-mode-map (kbd "M--") 'gtags-find-rtag)  ;; Find tag references
+			 (define-key gtags-mode-map (kbd "M-,") 'ww-next-gtag)      ;; M-; cycles to next result, after doing M-. C-M-. or C-M-,
 			 ;;(global-set-key [(control meta .)] 'gtags-find-rtag)   ;; C-M-. find all references of tag
 			 ;;(global-set-key [(control meta ,)] 'gtags-find-symbol) ;; C-M-, find all usages of symbol.
 
-			 (global-set-key "\M--" 'gtags-find-rtag)    ;; M-- finds tag references
 
 			 ;; Update TAGS file with F9
-			 (global-set-key (kbd "<f9>") 'gtags-update-current-file)
-
+			 (define-key gtags-mode-map (kbd "<f9>") 'gtags-update-current-file)
 			 ))
 
 ;(autoload 'gtags-mode "gtags" "" t)

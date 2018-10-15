@@ -69,6 +69,20 @@ header"
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c-c++-header))
 
 ;;;;;;;;;;;;;;;;;;;;;
+;;;; Golang
+;;;;;;;;;;;;;;;;;;;;;
+(defun go-mode-mode-setup-hook ()
+  ;;(global-set-key (kbd "M-.") 'godef-jump)
+
+  (define-key go-mode-map (kbd "M-.") 'xref-find-definitions)
+  (define-key go-mode-map (kbd "M-*") 'xref-pop-marker-stack)
+  ;;(define-key go-mode-map (kbd "M--") 'xref-find-references)
+  (define-key go-mode-map (kbd "M--") 'godef-jump)
+  )
+(add-hook 'go-mode-hook 'go-mode-mode-setup-hook)
+
+
+;;;;;;;;;;;;;;;;;;;;;
 ;;;; Java
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Sets the basic indentation for Java source files
