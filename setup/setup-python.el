@@ -77,4 +77,12 @@
    (jedi:setup)
    (message "Failed to setup Jedi mode for python")))
 
-(add-hooks 'setup-jedi-mode '(python-mode-hook))
+
+;; Enable jedi mode for python
+(defun on-python-hook ()
+  (setup-jedi-mode)
+  (require 'yapify-options)
+  (define-key python-mode-map (kbd "C-c C-f") 'yapfify-region)
+  )
+
+(add-hooks 'on-python-hook '(python-mode-hook))

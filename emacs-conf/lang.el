@@ -87,9 +87,9 @@ header"
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Sets the basic indentation for Java source files
 ;; to four spaces.
-(defun my-java-mode-hook ()
+(defun java-mode-setup-hook()
   (setq c-basic-offset 4))
-(add-hook 'java-mode-hook 'my-java-mode-hook)
+(add-hook 'java-mode-hook 'java-mode-setup-hook)
 
 ;; If you want Emacs to defer loading the JDE until you open a java file
 (setq defer-loading-jde t)
