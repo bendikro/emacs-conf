@@ -20,7 +20,7 @@ function get_sessionname_func {
 }
 
 pathadd () {
-	if ! echo "$PATH" | /bin/grep -Eq "(^|:)$1($|:)" ; then
+	if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
 		if [ "$2" = "after" ] ; then
 			PATH="$PATH:$1"
 		else
