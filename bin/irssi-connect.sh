@@ -22,13 +22,10 @@ socat_pid=$!
 
 cleanup()
 {
-	echo "Killing socat: $socat_pid"
+	echo "irssi-connect cleanup! Killing socat: $socat_pid"
 	kill $socat_pid
 }
 
-trap cleanup SIGINT
-trap cleanup SIGHUP
+trap cleanup EXIT
 
 eval "ssh -o ServerAliveInterval=20 $host -p $ssh_port -R $notify_port:localhost:$notify_port -t $ssh_cmd"
-
-cleanup
