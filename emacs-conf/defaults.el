@@ -112,8 +112,13 @@
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
 ;; Enable editorconfig
-(require 'editorconfig)
-(editorconfig-mode 1)
+(if (require 'editorconfig nil 'noerror)
+	(editorconfig-mode 1)
+  (message "editorconfig is not installed!"))
+
+(if (require 'visual-regexp nil 'noerror)
+	(message "Loaded visual-regexp")
+  (message "visual-regexp is not installed!"))
 
 ;; Nic says eval-expression-print-level needs to be set to nil (turned off) so
 ;; that you can always see what's happening.

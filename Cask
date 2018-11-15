@@ -12,6 +12,7 @@
 (depends-on "pallet")
 (depends-on "yasnippet")
 (depends-on "editorconfig")
+(depends-on "visual-regexp")
 
 ;; Problems with magit on < 24.3
 (depends-on "magit")
