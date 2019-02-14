@@ -42,7 +42,7 @@ vagrantssh() {
 # Docker
 
 dbash() {
-	docker exec -i -t $1 script -q -c "/bin/bash"
+	docker exec -i -t $1 /bin/bash
 }
 
 docker-ip() {
