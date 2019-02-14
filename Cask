@@ -22,7 +22,6 @@
 (depends-on "xclip")
 (depends-on "exec-path-from-shell")
 (depends-on "visual-regexp")
-(depends-on "elpy")
 
 ;; File mode
 (depends-on "apache-mode")
@@ -36,6 +35,7 @@
 
 ;; Python
 (depends-on "python-mode")
+(depends-on "elpy")
 (depends-on "python-pep8")
 (depends-on "python-pylint")
 (depends-on "jedi-mode")

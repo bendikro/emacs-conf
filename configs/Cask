@@ -14,7 +14,7 @@
 (depends-on "editorconfig")
 
 ;; Utils
-(depends-on "ggtags")
+(depends-on "ggtags" :git "https://github.com/leoliu/ggtags" :ref "0.8.13")
 (depends-on "xclip")
 (depends-on "exec-path-from-shell")
 (depends-on "visual-regexp")
@@ -29,9 +29,8 @@
 
 ;; Python
 (depends-on "python-mode")
-(depends-on "python-pep8")
-(depends-on "python-pylint")
-(depends-on "jedi-mode")
+(depends-on "python-pep8" :git "https://github.com/emacsmirror/python-pep8")
+(depends-on "python-pylint" :git "https://github.com/emacsmirror/python-pylint")
 
 ;; LaTeX
 (depends-on "auctex")

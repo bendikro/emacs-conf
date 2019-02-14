@@ -61,25 +61,39 @@ HOME = os.path.expanduser('~')
 TARGET_DIRECTORY = os.path.join(HOME, '.emacs.d')
 EM_CASK_CONF = os.environ.get('EM_CASK_CONF', "Cask")
 EM_CONF_REPO = os.environ.get('EM_CONF_REPO', 'https://github.com/bendikro/emacs-conf.git')
-EM_CONF_FORCE = os.environ.get('EM_CONF_FORCE', 'dir') # never/dir/git
+EM_CONF_FORCE = os.environ.get('EM_CONF_FORCE', 'dir') # never/dir/git/ignore
 EM_CONF_SETUP = os.environ.get('EM_CONF_SETUP', 'config') # never/dir/git
 
 class GoError(Exception):
     pass
 
 
-OKGREEN = '\033[32m'
-FAIL = '\033[31m'
+YELLOWC = '\033[33m'
+GREENC = '\033[32m'
+CYANC = '\033[36m'
+REDC = '\033[31m'
 ENDC = '\033[0m'
 
 
 def success(s):
-    print(OKGREEN + s + ENDC)
+    print(GREENC + s + ENDC)
     sys.exit(0)
 
 
+def info(s):
+    return CYANC + s + ENDC
+
+
+def warning(s):
+    return YELLOWC + s + ENDC
+
+
+def error(s):
+    return REDC + s + ENDC
+
+
 def fail(s):
-    print(FAIL + s + ENDC, file=sys.stderr)
+    print(error(s), file=sys.stderr)
     sys.exit(1)
 
 
@@ -90,8 +104,8 @@ def install_cask(target_directory):
         print(check_output(['python', 'cask.go']))
     except CalledProcessError:
         print('Cask could not be installed.')
-    except OSError as error:
-        if error.errno == errno.ENOENT:
+    except OSError as err:
+        if err.errno == errno.ENOENT:
             raise GoError('git executable not found.  Please install Git')
         else:
             raise
@@ -123,13 +137,19 @@ def install_cask_packages(target_directory, cask_conf_file):
     except shutil.Error:
         pass
     try:
-        print(check_output(['bash', '-c', ". %s; cask install" %
-                            os.path.join(target_directory, "bash/bashrc_extras")],
-                            shell=False))
+        from subprocess import call
+        cmd_args = ['bash', '-c', ". %s; cask install" %
+                            os.path.join(target_directory, "bash/bashrc_extras")]
+        print(info("Executing command: %s" % (cmd_args)))
+        ret = call(cmd_args, shell=False)
+        if ret != 0:
+            print(error("cask install command returned status code: %s" % (ret)))
+            print(warning("Rerunning command cask install..."))
+            print(check_output(cmd_args, shell=False))
     except CalledProcessError as err:
-        print('Error when installng emacs packages with Cask:', err)
-    except OSError as error:
-        if error.errno == errno.ENOENT:
+        print(error('Error when installng emacs packages with Cask: %s' % err))
+    except OSError as err:
+        if err.errno == errno.ENOENT:
             raise GoError('cask executable not found.')
         else:
             raise
@@ -144,6 +164,8 @@ def install_emacs_conf(target_directory):
             print("%s git repo already exists" % target_directory)
             if EM_CONF_FORCE == "git":
                 remove = True
+            if EM_CONF_FORCE == "ignore":
+                return
             else:
                 raise GoError('Aborting installation. Is emacs config already installed?')
         else:
@@ -159,8 +181,8 @@ def install_emacs_conf(target_directory):
         print(check_output(['git', 'clone', EM_CONF_REPO, target_directory]))
     except CalledProcessError:
         raise GoError('Emacs config could not be installed.')
-    except OSError as error:
-        if error.errno == errno.ENOENT:
+    except OSError as err:
+        if err.errno == errno.ENOENT:
             raise GoError('git executable not found.  Please install Git')
         else:
             raise
@@ -174,8 +196,8 @@ def setup_emacs(target_directory):
         print(check_output(args, shell=False))
     except CalledProcessError:
         raise GoError('Emacs packages could not be installed.')
-    except OSError as error:
-        if error.errno == errno.ENOENT:
+    except OSError as err:
+        if err.errno == errno.ENOENT:
             raise GoError('git executable not found.  Please install Git')
         else:
             raise
@@ -188,8 +210,8 @@ def main():
         install_cask(HOME)
         install_cask_packages(TARGET_DIRECTORY, EM_CASK_CONF)
         success("""Successfully installed emacs config!""")
-    except GoError as error:
-        fail('{0!s}'.format(error))
+    except GoError as err:
+        fail('{0!s}'.format(err))
 
 
 if __name__ == '__main__':
