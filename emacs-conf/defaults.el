@@ -38,8 +38,9 @@
 ;; Disable shift selection (Shift+arrow keys)
 (setq shift-select-mode nil)
 
-;; Do not automatically add newline at end of file, but ask
-(setq mode-require-final-newline 'ask)
+;; Do not automatically add newline at end of file
+(setq mode-require-final-newline nil)
+;;(setq mode-require-final-newline 'ask)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    Indentation    ;;;;
@@ -79,6 +80,9 @@
 ;; Show trailing white space
 (setq-default show-trailing-whitespace t)
 (setq-default show-ws-toggle-show-trailing-whitespace t)
+
+;; Remove default text in new buffers
+(setq initial-scratch-message "")
 
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
