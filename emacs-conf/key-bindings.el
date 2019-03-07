@@ -81,7 +81,8 @@
 	(global-set-key [f5] 'revert-buffer-keep-undo)
 
 	;; Toggle between 4 and 8 character tab width
-	(global-set-key (kbd "<f8>") 'tf-toggle-tab-width-setting)
+	(global-set-key (kbd "<f8>") 'toggle-tab-width-setting)
+	(global-set-key (kbd "<f9>") 'toggle-indent-tabs-mode)
 
 	(global-set-key (kbd "M-#") 'replace-regexp)
 

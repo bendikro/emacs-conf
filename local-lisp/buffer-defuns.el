@@ -8,12 +8,18 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
-(defun tf-toggle-tab-width-setting ()
-    "Toggle setting tab widths between 4 and 8"
-    (interactive)
-    (setq tab-width (if (= tab-width 8) 4 8))
-    (setq c-basic-offset tab-width)
-    (redraw-display))
+(defun toggle-tab-width-setting ()
+  "Toggle setting tab widths between 4 and 8"
+  (interactive)
+  (setq tab-width (if (= tab-width 8) 4 8))
+  (setq c-basic-offset tab-width)
+  (redraw-display))
+
+(defun toggle-indent-tabs-mode ()
+  "Toggle setting indent-tabs-mode"
+  (interactive)
+  (setq indent-tabs-mode (if (eq indent-tabs-mode t) nil t))
+  (message "New indent-tabs-mode: %s" indent-tabs-mode))
 
 (defun follow-buffer (&optional buffer)
     "Sets the cursor to the end to make sure the buffer is followed"
