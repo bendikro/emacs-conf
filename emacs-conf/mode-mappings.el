@@ -27,6 +27,8 @@
   (require 'guess-style)
   (guess-style-guess-all)
   (guess-style-info-mode 1)
+  ;; Set the new indent based on python-indent
+  (setup-py-indent python-indent)
   )
 
 ;; LaTeX
@@ -58,6 +60,7 @@
 ;; Dockerfile
 (add-to-autoload "rockerfile-mode" '("Dockerfile"))
 (add-to-autoload "rockerfile-mode" '("Rockerfile"))
+;;(add-hook 'rockerfile-mode-hook 'whitespace-mode 1)
 
 ;; Assembly settings
 (add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))

@@ -1,3 +1,4 @@
+
 (provide 'defaults)
 
 ;; Allow pasting selection outside of Emacs
@@ -41,6 +42,9 @@
 ;; Do not automatically add newline at end of file
 (setq mode-require-final-newline nil)
 ;;(setq mode-require-final-newline 'ask)
+
+;; By default, search is case-insensitive (Toggle with M-c when searching)
+(setq case-fold-search t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    Indentation    ;;;;

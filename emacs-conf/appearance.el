@@ -1,5 +1,12 @@
 (provide 'appearance)
 
+;; initial window
+(setq initial-frame-alist
+      '(
+        (width . 132) ; character
+        (height . 54) ; lines
+        ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;      Color settings     ;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -5,11 +5,12 @@
 ;;;;;;;;;;;;;;;;;;;;;
 
 ;; Set python tab width to 4 && Only spaces
-(defun py-indent ()
+(defun setup-py-indent (ident-width)
+  (message "Setting python indent style: %s" ident-width)
   (setq indent-tabs-mode nil)
-  (setq tab-width 4)
-  (setq py-indent-offset 4)
-  (setq python-indent 4)
+  (setq tab-width ident-width)
+  (setq py-indent-offset ident-width)
+  (setq python-indent ident-width)
   (setq py-smart-indentation nil))
 
 (defun python-setup-hook ()
@@ -17,7 +18,7 @@
   (require 'python-pylint nil 'noerror)
   (require 'python-flake8 nil 'noerror)
   (require 'flycheck nil 'noerror)
-  (py-indent)
+  (setup-py-indent 4)
 )
 (add-hook 'python-mode-hook 'python-setup-hook)
 
