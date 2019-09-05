@@ -10,6 +10,8 @@
 (require 'color-theme-solarized)
 ;;(color-theme-solarized)
 
+;; Suppress warning about color-theme being obsolete
+(setq color-theme-obsolete nil)
 
 (defun color-theme-bro ()
   "Color theme by root, created 2015-02-22."
