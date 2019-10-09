@@ -32,7 +32,7 @@
 (setq c-offsets-alist
       '((substatement-open . 0)))
 
-(defun my-build-tab-stop-list (width)
+(defun c-mode-build-tab-stop-list (width)
   (let ((num-tab-stops (/ 80 width))
 		(counter 1)
 		(ls nil))
@@ -42,15 +42,13 @@
 	(set (make-local-variable 'tab-stop-list) (nreverse ls))))
 
 ;; Fix indent in c-mode
-(defun my-c-mode-common-hook ()
+(defun c-mode-common-setup-hook ()
   (setq tab-width 4) ;; change this to taste, this is what K&R uses :)
-  (my-build-tab-stop-list tab-width)
+  (c-mode-build-tab-stop-list tab-width)
   (setq c-default-style "bsd")
   (setq c-basic-offset tab-width)
 )
-
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
+(add-hook 'c-mode-common-hook 'c-mode-common-setup-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; C++
@@ -98,12 +96,28 @@ header"
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Javascript
 ;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'js-mode-hook
-		  '(lambda() (setq-default indent-tabs-mode nil)))
+
+(defun js-mode-mode-setup-hook ()
+  (setq-default indent-tabs-mode nil)
+  (define-key js-mode-map (kbd "C-c C-c") 'comment-line)
+  )
+(add-hook 'js-mode-hook 'js-mode-mode-setup-hook)
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;;; Lisp
+;;;;;;;;;;;;;;;;;;;;;
+
+(defun lisp-mode-mode-setup-hook ()
+  (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'comment-line)
+  )
+(add-hook 'emacs-lisp-mode-hook 'lisp-mode-mode-setup-hook)
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Markdown
 ;;;;;;;;;;;;;;;;;;;;;
+
 (defun markdown-setup-hook ()
   ;; These are bound to reordering lists in markdown mode.
   (define-key markdown-mode-map (kbd "M-<up>") nil)
