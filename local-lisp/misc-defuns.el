@@ -25,11 +25,13 @@
 
 (defun startup-with-messages-buffer ()
   (interactive)
-  (split-window-horizontally)
-  (next-multiframe-window)
-  (switch-to-buffer (get-buffer-create "*Messages*"))
-  (next-multiframe-window)
-  )
+  ;; If Messages buffer is not shown in a window, split window, and show it
+  (unless (get-buffer-window "*Messages*")
+	 (split-window-horizontally)
+	 (next-multiframe-window)
+	 (switch-to-buffer (get-buffer-create "*Messages*"))
+	 (next-multiframe-window)
+	 ))
 
 (defun messages ()
   (interactive)

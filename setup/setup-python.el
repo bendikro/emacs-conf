@@ -67,6 +67,7 @@
 
 (pymacs-load "pyfuncs")
 (global-set-key [f7] 'pyfuncs-break-on-whitespace)
+(global-set-key [f4] 'pyfuncs-convert-attr-to-dict-looup)
 
 
 ;; Enable jedi mode for python

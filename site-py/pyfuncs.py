@@ -11,6 +11,21 @@ def break_on_whitespace():
     lisp.insert('\n'.join(words))
 
 
+def convert_attr_to_dict_looup():
+    """
+    Convert highlighted region from:
+    item.attr.elem
+    to item['attr']['elem']
+    """
+    start, end = lisp.point(), lisp.mark(True)
+    subs = lisp.buffer_substring(start, end)
+    elems = subs.split('.')
+
+    result = elems[0] + ".".join(["['%s']" % elem for elem in elems[1:]])
+    lisp.delete_region(start, end)
+    lisp.insert(result)
+
+
 def byte_compile_el_files():
     dirs = [".emacs.d/", ".emacs.d/site-lisp/",
             ".emacs.d/setup/", ".emacs.d/defuns/",
@@ -60,3 +75,4 @@ interactions[break_on_whitespace] = ''
 interactions[byte_compile_el_files] = ''
 interactions[delete_elc_files] = ''
 interactions[read_glossaries] = ''
+interactions[convert_attr_to_dict_looup] = ''
