@@ -18,7 +18,7 @@
 	(define-key input-decode-map [M-backspace] nil)
 
 	;; ALT-del
-	(define-key input-decode-map "\e[3;3~" [M-del]) ; Make it works in tmux and screen
+	(define-key input-decode-map "\e[3;3~" [M-del]) ; Make it works in screen
 	(global-set-key [M-del] 'delete-word-no-copy) ;; Required for no-window mode
 	(global-set-key (kbd "M-<delete>") 'delete-word-no-copy)  ;; Required for window mode
 
@@ -26,7 +26,7 @@
 	(global-set-key (kbd "M-<DEL>") 'backward-delete-word-no-copy)
 
 	;; CTRL-del delete word
-	(define-key input-decode-map "\e[3;5~" [C-del]) ; Make in work in tmux and screen
+	(define-key input-decode-map "\e[3;5~" [C-del]) ; Make in work in screen
 	(global-set-key [C-del] 'kill-word)
 	;; -------------------
 
@@ -43,15 +43,15 @@
 	(global-set-key [S-left]  'backward-whitespace)
 
 	;; ;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;; ;; Fix for screen / tmux
+	;; ;; Fix for screen
 
-	;; Fix CTRL + arrow keys inside screen/tmux
+	;; Fix CTRL + arrow keys inside screen
 	(define-key input-decode-map "\e[1;5A" [C-up])
 	(define-key input-decode-map "\e[1;5B" [C-down])
 	(define-key input-decode-map "\e[1;5C" [C-right])
 	(define-key input-decode-map "\e[1;5D" [C-left])
 
-	;; Fix ALT + arrow keys inside screen/tmux
+	;; Fix ALT + arrow keys inside screen
 	(define-key input-decode-map "\e[1;3A" [M-up])
 	(define-key input-decode-map "\e[1;3B" [M-down])
 	(define-key input-decode-map "\e[1;3C" [M-right])
