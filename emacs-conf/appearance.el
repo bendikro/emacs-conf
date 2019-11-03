@@ -22,5 +22,15 @@
 ;; Font height
 (set-face-attribute 'default nil :height 120)
 
+;; Set custom theme bro
+(setq frame-background-mode 'dark)
+(setq custom-safe-themes t)
+
+;; Add emacs-conf/themes to load path
+(add-to-list 'custom-theme-load-path
+			 (concat (file-name-as-directory user-home-dir) ".emacs.d/emacs-conf/themes"))
+
 (add-hook 'after-init-load-hook
-		  (require-safe "color-theme-bro.el"))
+		  (lambda ()
+			(load-theme 'bro t)
+			))

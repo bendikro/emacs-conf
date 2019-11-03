@@ -4,14 +4,17 @@
 (source marmalade)
 (source org)
 
+;(depends-on "browse-kill-ring")
 (depends-on "cask")
-(depends-on "color-theme")
-(depends-on "color-theme-solarized")
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
 (depends-on "pallet")
 (depends-on "yasnippet")
 (depends-on "editorconfig")
+;(depends-on "visual-regexp")
+
+;; Problems with magit on < 24.3
+;(depends-on "magit")
 
 ;; Utils
 (depends-on "ggtags" :git "https://github.com/leoliu/ggtags" :ref "0.8.13")
@@ -24,13 +27,18 @@
 (depends-on "go-mode")
 (depends-on "yaml-mode")
 (depends-on "psgml") ;; XML, HTML, markup langs ++
+;(depends-on "markdown-mode")
 (depends-on "dockerfile-mode")
 (depends-on "jinja2-mode")
+;(depends-on "dtrt-indent")
 
 ;; Python
 (depends-on "python-mode")
 (depends-on "python-pep8" :git "https://github.com/emacsmirror/python-pep8")
 (depends-on "python-pylint" :git "https://github.com/emacsmirror/python-pylint")
+;(depends-on "elpy")
+;(depends-on "jedi-mode")
+;(depends-on "yapfify")
 
 ;; LaTeX
 (depends-on "auctex")

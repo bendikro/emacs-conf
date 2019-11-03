@@ -5,8 +5,6 @@
 
 (depends-on "browse-kill-ring")
 (depends-on "cask")
-(depends-on "color-theme")
-(depends-on "color-theme-solarized")
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
 (depends-on "pallet")
@@ -35,9 +33,9 @@
 
 ;; Python
 (depends-on "python-mode")
-(depends-on "elpy")
 (depends-on "python-pep8")
 (depends-on "python-pylint")
+(depends-on "elpy")
 (depends-on "jedi-mode")
 (depends-on "yapfify")
 

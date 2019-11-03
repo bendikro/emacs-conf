@@ -104,9 +104,10 @@ def install_cask(target_directory):
         print(check_output(['python', 'cask.go']))
     except CalledProcessError:
         print('Cask could not be installed.')
+
     except OSError as err:
         if err.errno == errno.ENOENT:
-            raise GoError('git executable not found.  Please install Git')
+            raise GoError('curl executable not found. Please install curl')
         else:
             raise
     finally:
@@ -181,9 +182,10 @@ def install_emacs_conf(target_directory):
         print(check_output(['git', 'clone', EM_CONF_REPO, target_directory]))
     except CalledProcessError:
         raise GoError('Emacs config could not be installed.')
+
     except OSError as err:
         if err.errno == errno.ENOENT:
-            raise GoError('git executable not found.  Please install Git')
+            raise GoError('git executable not found. Please install Git')
         else:
             raise
 
@@ -196,9 +198,10 @@ def setup_emacs(target_directory):
         print(check_output(args, shell=False))
     except CalledProcessError:
         raise GoError('Emacs packages could not be installed.')
+
     except OSError as err:
         if err.errno == errno.ENOENT:
-            raise GoError('git executable not found.  Please install Git')
+            raise GoError('python executable not found. Please install python')
         else:
             raise
 
