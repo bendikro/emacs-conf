@@ -56,22 +56,24 @@
 ;         (ac-ropemacs-initialize)
 ;         (ac-ropemacs-setup)))
 
+(when (bound-and-true-p pymacs-enabled) ;; Note that using single-quote causes error
+  (message "Pymacs enabled. Disable by setting pymacs-enabled to nil")
 
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
+  (autoload 'pymacs-apply "pymacs")
+  (autoload 'pymacs-call "pymacs")
+  (autoload 'pymacs-eval "pymacs" nil t)
+  (autoload 'pymacs-exec "pymacs" nil t)
+  (autoload 'pymacs-load "pymacs" nil t)
+  (autoload 'pymacs-autoload "pymacs")
 
-(setq site-py-dir (expand-file-name "site-py" emacs-config-basedir))
-(eval-after-load "pymacs"
-  '(add-to-list 'pymacs-load-path site-py-dir))
+  (setq site-py-dir (expand-file-name "site-py" emacs-config-basedir))
+  (eval-after-load "pymacs"
+	'(add-to-list 'pymacs-load-path site-py-dir))
 
-(pymacs-load "pyfuncs")
-(global-set-key [f7] 'pyfuncs-break-on-whitespace)
-(global-set-key [f4] 'pyfuncs-convert-attr-to-dict-looup)
-
+  (pymacs-load "pyfuncs")
+  (global-set-key [f7] 'pyfuncs-break-on-whitespace)
+  (global-set-key [f4] 'pyfuncs-convert-attr-to-dict-looup)
+  )
 
 ;; Enable jedi mode for python
 (defun setup-jedi-mode ()

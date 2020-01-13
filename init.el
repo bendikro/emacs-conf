@@ -23,6 +23,7 @@
 (setq debug-on-error t)
 ;; Default to user home dir if not already set
 (defvar user-home-dir (getenv "HOME"))
+(defvar pymacs-enabled 1)
 
 (setq cask-load-file (concat (file-name-as-directory user-home-dir) ".cask/cask.el"))
 ; Get the base directory of the emacs config
