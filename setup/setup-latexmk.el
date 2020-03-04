@@ -1,5 +1,4 @@
 (provide 'setup-latexmk)
-(require 'auctex-latexmk)
 
 (defcustom resize-compile-window-width 90
        "*The width of the compile window. -1 to disable resizing"
@@ -43,6 +42,7 @@
 
 (add-hook 'LaTeX-mode-hook
 		  '(lambda()
+			 (require 'auctex-latexmk)
 			 (auctex-latexmk-setup)
 			 (require 'setup-latexmk)
 			 (setup-custom-latexmk-cmd)))
