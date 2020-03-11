@@ -1,21 +1,5 @@
 (provide 'mode-mappings)
 
-(defmacro create-safe-loader-func ()
-  (let ((funsymbol (intern (concat "safe-load-mode-" mode))))
-	`(defun ,funsymbol () (interactive)
-	   (if (not (eq ',func nil))
-		   (,func))
-	   (message "Loading mode: %s" ,mode)
-	   (if (condition-case nil (require (intern ,mode)) (error nil))
-		 (,(intern mode)); Enabling mode if available
-		 (message "'%s' not available" ,mode))
-	   )))
-
-(defun add-to-autoload (mode extensions &optional func)
-  (create-safe-loader-func)
-  (dolist (ext extensions)
-	(add-to-list 'auto-mode-alist (cons ext (intern (concat "safe-load-mode-" mode))))))
-
 ;(defun custom-TeX-command-master (orig-fun &rest args)
 ;       (message "TeX-command-master called with args %S" args)
 ;       (let ((res (apply orig-fun args)))
@@ -40,81 +24,91 @@
 ;  (advice-add 'TeX-command-master :around #'custom-TeX-command-master)
   )
 
-(add-to-autoload "tex-mode" '("\\.tex$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$") 'setup-latex-environment)
-
 ;; Emacs lisp
-(add-to-autoload "emacs-lisp-mode" '("\\.Carton$"))
+(use-package emacs-lisp-mode
+  :mode "\\.Carton$")
 
-;; Set C-mode for Cuda files
-(add-to-autoload "c-mode" '("\\.cu$" "\\.stp$"))
-
-;; Python mode for .py files
-;;(add-to-autoload "python-mode" '("\\.py$"))
-
-;; Makefile2 (cmake)
-(add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
-
-;; Markdown
-(add-to-autoload "markdown-mode" '("\\.markdown$" "\\.md$"))
-
-;; Dockerfile
-(add-to-autoload "rockerfile-mode" '("Dockerfile"))
-(add-to-autoload "rockerfile-mode" '("Rockerfile"))
 ;;(add-hook 'rockerfile-mode-hook 'whitespace-mode 1)
 
+
+;; Set C-mode for Cuda files
+(use-package c-mode
+  :mode ("\\.cu$" "\\.stp$"))
+
+;; Makefile2 (cmake)
+(use-package makefile-mode
+  :mode "Makefile2")
+
 ;; Assembly settings
-(add-to-autoload "asm-mode" '("\\.s$" "\\.S$" ))
-(setq asm-comment-char ?#)
+(use-package asm-mode
+  :mode ("\\.s$" "\\.S$")
+  :config (setq asm-comment-char ?#))
 
 ;; PHP settings
-(add-to-autoload "php-mode" '("\\.php$"))
+(use-package php-mode
+  :mode "\\.php$")
 
 ;; HTML
-(add-to-autoload "html-mode" '("\\.html$" "\\.tag$" "\\.vm$"))
-
-;; org-mode
-(add-to-autoload "org-mode" '("\\.org$"))
+(use-package sgml-mode
+  :mode (("\\.html\\'" . html-mode)
+         ("\\.tag\\'" . html-mode)
+		 ("\\.vm\\'" . html-mode)))
 
 ;; go-mode
-(add-to-autoload "go-mode" '("\\.go$"))
+(use-package go-mode
+  :mode "\\.go$")
+
+;; Dockerfile (site-lisp)
+(use-package rockerfile-mode
+  :mode (("Dockerfile" . rockerfile-mode)
+         ("Rockerfile" . rockerfile-mode)))
+
+;; jinja2-mode
+(use-package jinja2-mode
+  :mode "\\.j2$")
+
+(use-package tex-mode
+  :mode ("\\.tex$" "\\.cbx$" "\\.bbx$" "\\.tikz$" "\\.dtx$")
+  :config (setup-latex-environment))
+
+;; Markdown
+(use-package markdown-mode
+  :mode ("\\.markdown\\'" "\\.md\\'"))
 
 ;; yaml-mode
-(add-to-autoload "yaml-mode" '("\\.yml$" "\\.yaml$"))
+(use-package yaml-mode
+  :mode ("\\.yml$" "\\.yaml$"))
+
+;; org-mode
+(use-package org-mode
+  :mode "\\.org$")
 
 ;; Apache config
-(add-to-autoload "apache-mode" '("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'" "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
+(use-package apache-mode
+  :mode ("\\.htaccess\\'" "httpd\\.conf\\'" "srm\\.conf\\'"
+		 "access\\.conf\\'" "sites-\\(available\\|enabled\\)/"))
+
+;; rtf-mode (site-lisp)
+(use-package rtf-mode
+  :mode "\\.rtf$")
+
+;; conf-mode
+(use-package conf-mode
+  :mode ("\\.ini$" ".gitignore$" ".gitconfig$"))
+
+(use-package sh-mode
+  :mode "\\.bashrc\\'")
+
+;; (site-lisp/giteditmsg-mode.el)
+(use-package giteditmsg-mode
+  :mode "COMMIT_EDITMSG\\'")
+
+;; systemd config files
+(use-package conf-unix-mode
+  :mode ("\\.service\\'" "\\.timer\\'" "\\.target\\'" "\\.mount\\'"
+		 "\\.automount\\'" "\\.slice\\'" "\\.socket\\'" "\\.path\\'"
+		 "\\.netdev\\'" "\\.network\\'" "\\.link\\'" "\\.automount\\'"))
 
 ;; ps-ccrypt
 (unless (require 'ps-ccrypt nil 'noerror)
   (message "ps-ccrypt not installed!"))
-
-;; rtf-mode
-(add-to-autoload "rtf-mode" '("\\.rtf$"))
-
-;; conf-mode
-(add-to-autoload "conf-mode" '("\\.ini$" ".gitignore$" ".gitconfig$"))
-
-;; jinja2-mode
-(add-to-autoload "jinja2-mode" '("\\.j2$"))
-
-(add-to-list 'auto-mode-alist '("\\.bashrc\\'" . sh-mode))
-
-(require 'giteditmsg-mode)
-(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . giteditmsg-mode))
-
-;; systemd config files
-(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.target\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.mount\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.slice\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.socket\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.path\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.netdev\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.network\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
-(add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
-
-
-;(autoload 'gpicker "gpicker" "Gpicker mode" t)

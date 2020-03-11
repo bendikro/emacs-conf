@@ -77,8 +77,9 @@
 
 ;; Enable jedi mode for python
 (defun setup-jedi-mode ()
+  (setq jedi:tooltip-method nil)
   (setq jedi:use-shortcuts t)
-  (setq jedi:setup-keys t)
+  ;;(setq jedi:setup-keys t)
   (safe-wrap
    (jedi:setup)
    (message "Failed to setup Jedi mode for python")))

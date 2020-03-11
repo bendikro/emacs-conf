@@ -1,6 +1,5 @@
 (source gnu)
 (source melpa)
-;;(source marmalade)
 (source org)
 
 (package "emacs-conf" "0" "Python packages required for emacs-conf")
@@ -44,3 +43,6 @@
 ;; LaTeX
 (depends-on "auctex" :git "https://git.savannah.gnu.org/git/auctex.git" :ref "release_12_2")
 (depends-on "auto-complete")
+
+;; Lang
+(depends-on "php-mode")
