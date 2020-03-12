@@ -1,8 +1,12 @@
+;; This cask files is the main version of the main Cask file
 (source gnu)
 (source melpa)
 (source org)
 
 (package "emacs-conf" "0" "Python packages required for emacs-conf")
+
+;; Latest signature key
+(depends-on "gnu-elpa-keyring-update")
 
 (depends-on "browse-kill-ring")
 (depends-on "cask")
@@ -11,7 +15,6 @@
 (depends-on "pallet")
 (depends-on "yasnippet")
 (depends-on "editorconfig")
-(depends-on "visual-regexp")
 
 ;; Problems with magit on < 24.3
 (depends-on "magit")
@@ -32,6 +35,7 @@
 (depends-on "dockerfile-mode")
 (depends-on "jinja2-mode")
 (depends-on "dtrt-indent")
+(depends-on "toml-mode")
 
 ;; Python
 (depends-on "python-mode")
