@@ -125,6 +125,12 @@ header"
 )
 (add-hook 'markdown-mode-hook 'markdown-setup-hook)
 
+(defun html-mode-mode-setup-hook ()
+  (define-key html-mode-map (kbd "C-c C-c") 'comment-line)
+  )
+(add-hook 'html-mode-hook 'html-mode-mode-setup-hook)
+
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; dtrt-indent
 ;;;;;;;;;;;;;;;;;;;;;
