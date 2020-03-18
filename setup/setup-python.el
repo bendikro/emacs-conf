@@ -17,45 +17,6 @@
 (require 'python-flake8 nil 'noerror)
 (require 'flycheck nil 'noerror)
 
-;; python
-;(add-font-lock-numbers 'python-mode)
-
-
-;(defmacro after (mode &rest body)
-;  `(eval-after-load ,mode
-;     '(progn ,@body)))
-;
-;(after 'auto-complete-config
-;       (ac-config-default)
-;       (when (file-exists-p (expand-file-name "~/.emacs.d/elisp/Pymacs"))
-;         (ac-ropemacs-initialize)
-;         (ac-ropemacs-setup)))
-
-
-;(defun python-config-python ()
-;  "Configure python.el to defaults of using python."
-;  (interactive)
-;  (setq python-shell-virtualenv-path "venv"
-;        python-shell-interpreter "python"
-;        python-shell-prompt-regexp ">>> "
-;        python-shell-prompt-output-regexp ""
-;        ;; python-shell-setup-codes '(python-shell-completion-setup-code python-ffap-setup-code python-eldoc-setup-code)
-;        python-shell-completion-module-string-code ""
-;        python-shell-completion-string-code "';'.join(__COMPLETER_all_completions('''%s'''))
-;"))
-;
-;(after 'python (python-config-ipython))
-
-;(defmacro after (mode &rest body)
-;  `(eval-after-load ,mode
-;     '(progn ,@body)))
-;
-;(after 'auto-complete-config
-;       (ac-config-default)
-;       (when (file-exists-p (expand-file-name "/Users/dcurtis/.emacs.d/elisp/Pymacs"))
-;         (ac-ropemacs-initialize)
-;         (ac-ropemacs-setup)))
-
 (when (bound-and-true-p pymacs-enabled) ;; Note that using single-quote causes error
   (message "Pymacs enabled. Disable by setting pymacs-enabled to nil")
 
@@ -77,6 +38,7 @@
 
 ;; Enable jedi mode for python
 (defun setup-jedi-mode ()
+  (interactive)
   (setq jedi:tooltip-method nil)
   (setq jedi:use-shortcuts t)
   ;;(setq jedi:setup-keys t)
@@ -87,9 +49,24 @@
 
 ;; Enable jedi mode for python
 (defun on-python-hook ()
-  (setup-jedi-mode)
+  ;;(setup-jedi-mode)
   (require 'yapify-options)
   (define-key python-mode-map (kbd "C-c C-f") 'yapfify-region)
   )
 
 (add-hooks 'on-python-hook '(python-mode-hook))
+
+(defvar jedi:install-pip-packages-command
+  `("pip" "install" "jedi" "epc"))
+
+(defun jedi-install-pip-packages ()
+  "Install python packages required to run jedi server"
+  (interactive)
+  (setq resolved-command (jedi:server-pool--resolve-command jedi:install-pip-packages-command))
+  (message "Installing pip packages: %s" resolved-command)
+  (setq output
+		(substring
+		 (shell-command-to-string (format "%s" resolved-command))
+		 0 -1))
+  (message "Command output: %s" output)
+  )
