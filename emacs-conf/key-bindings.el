@@ -103,6 +103,8 @@
 	(global-set-key (kbd "C-c <C-up>") (ignore-error-wrapper 'windmove-up))
 	(global-set-key (kbd "C-c <C-down>") (ignore-error-wrapper 'windmove-down))
 
+	(global-set-key (kbd "C-q") 'fill-sentence)
+
 	;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;; Mode specific bindings
 	;;;;;;;;;;;;;;;;;;;;;;;;;;

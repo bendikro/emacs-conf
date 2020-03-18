@@ -84,3 +84,15 @@
 	 ,@body
 	 (message "%s took %.06f seconds" ,comment (float-time (time-since time)))
 	 ))
+
+
+(defun fill-sentence()
+  "Works like fill-paragraph but starts from the current sentence"
+  (interactive)
+  (save-excursion
+    (or (eq (point) (point-max)) (forward-char))
+	(back-to-indentation)
+    (indent-relative t)
+	(let ((beg (point)))
+	  (forward-paragraph)
+	  (fill-region-as-paragraph beg (point)))))
