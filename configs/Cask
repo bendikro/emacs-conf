@@ -36,6 +36,7 @@
 (depends-on "jinja2-mode")
 ;(depends-on "dtrt-indent")
 (depends-on "toml-mode")
+(depends-on "json-mode")
 
 ;; Python
 (depends-on "python-mode")
