@@ -38,7 +38,7 @@
 	(global-set-key [M-right] 'move-end-of-line)
 	(global-set-key [M-left]  'move-beginning-of-line)
 
-	;; Bind Meta-arrow left/right to beginning/end of line
+	;; Bind Shift-arrow left/right to beginning/end of line
 	(global-set-key [S-right] 'forward-whitespace)
 	(global-set-key [S-left]  'backward-whitespace)
 

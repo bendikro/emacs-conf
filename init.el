@@ -121,6 +121,7 @@
 (require 'setup-smooth-scrolling)
 (require 'setup-whitespace)
 (require 'setup-markdown)
+(require 'setup-origami)
 (require 'key-bindings)
 
 (setq emacs-user-session-store-dir

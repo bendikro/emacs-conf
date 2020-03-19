@@ -39,6 +39,7 @@
 ;(depends-on "dtrt-indent")
 (depends-on "toml-mode")
 (depends-on "json-mode")
+(depends-on "origami") ;; Collapse code
 
 ;; Python
 (depends-on "python-mode")
