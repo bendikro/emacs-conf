@@ -8,6 +8,8 @@
 ;; Latest signature key
 (depends-on "gnu-elpa-keyring-update")
 
+(depends-on "use-package")
+
 (depends-on "browse-kill-ring")
 (depends-on "cask")
 (depends-on "flycheck")
