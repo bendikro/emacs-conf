@@ -32,6 +32,9 @@ if [ -d $EMACS_HOME/.cask/bin ]; then
 	pathadd $EMACS_HOME/.cask/bin
 fi
 
+# Pymacs
+export PYMACS_PYTHON=python3
+
 # PYENV
 if [[ $EUID -ne 0 ]] && [ -d "$EMACS_HOME/.pyenv" ] ; then
    export PYENV_ROOT="$EMACS_HOME/.pyenv"
