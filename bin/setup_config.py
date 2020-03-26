@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from __future__ import print_function
 
 import os
@@ -26,8 +26,15 @@ def check_output_copy(*popenargs, **kwargs):
 
 try:
     from subprocess import check_output
+
+    if sys.version_info >= (3,0):
+        # On python3 check_output returns bytes type
+        def check_output_py3(args, *argv, **kwargs):
+            return check_output(args, **kwargs).decode("utf-8")
+
+        check_proc_output = check_output_py3
 except:
-    check_output = check_output_copy
+    check_proc_output = check_output_copy
 
 
 def add_to_config(conf):
@@ -51,7 +58,7 @@ def add_to_config(conf):
 
 
 home = os.path.expanduser("~")
-os_line = check_output(["uname", "-a"])
+os_line = check_proc_output(["uname", "-a"])
 
 emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~")).rstrip('/')
 
