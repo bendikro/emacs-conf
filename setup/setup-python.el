@@ -39,6 +39,7 @@
 ;; Enable jedi mode for python
 (defun setup-jedi-mode ()
   (interactive)
+  (message "Setting up Jedi mode")
   (setq jedi:tooltip-method nil)
   (setq jedi:use-shortcuts t)
   ;;(setq jedi:setup-keys t)
@@ -46,10 +47,21 @@
    (jedi:setup)
    (message "Failed to setup Jedi mode for python")))
 
+(defun load-jedi-mode-if-in-venv ()
+  (let ((venv (getenv "VIRTUAL_ENV")))
+	(when venv
+		(progn
+		  (message "Active virtual environment: %s" venv)
+		  (message "Loading jedi-mode")
+		  (setup-jedi-mode)
+		  )
+		)
+	)
+  )
 
 ;; Enable jedi mode for python
 (defun on-python-hook ()
-  ;;(setup-jedi-mode)
+  (load-jedi-mode-if-in-venv)
   (require 'yapify-options)
   (define-key python-mode-map (kbd "C-c C-f") 'yapfify-region)
   )
