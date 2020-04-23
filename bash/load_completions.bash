@@ -19,4 +19,6 @@ fi
 # Due to lazy loading, git has to be loaded explicitly here
 # If not loaded here, the git completion in .emacs.d/bash/bash_completion/
 # prevents the global git completion from being loaded
-_completion_loader git
+if [[ "$OS" != 'FreeBSD' ]]; then
+	_completion_loader git
+fi
