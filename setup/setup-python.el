@@ -1,7 +1,9 @@
 (provide 'setup-python)
 
-;; Disable eldoc automatically opening *Python Help* buffer
-(global-eldoc-mode -1)
+;; Ignore error when python-mode is unavailable
+(ignore-errors
+  ;; Disable eldoc automatically opening *Python Help* buffer
+  (global-eldoc-mode -1))
 
 ;; Add site-py dir to PYTHONPATH
 (setenv "PYTHONPATH"
