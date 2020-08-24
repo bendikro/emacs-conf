@@ -2,7 +2,7 @@
 alias cl='printf "\033c"' # Clear screen and history
 alias gkill="grep_kill"
 alias nl='newlines'
-alias sbsh='source ~/.bashrc'
+alias rlbrc='source ~/.bashrc'
 alias em='emacs -nw'
 alias emacs='XMODIFIERS= emacs'
 
