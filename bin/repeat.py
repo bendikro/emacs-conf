@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import sys
+import signal
 import subprocess
 import time
 
@@ -21,6 +22,7 @@ except:
 
 import datetime
 from datetime import timedelta
+
 
 def str_to_timedelta(time_val):
     """
@@ -65,12 +67,10 @@ def str_to_timedelta(time_val):
     args.update({unit_to_time.get(groups['unit'], 'seconds'): float(groups['duration'])})
     return timedelta(**args)
 
-#def get_formatted_timedelta(td):
-#    return td.strftime("%H:%M:%S.%f").rstrip('0')
-
 
 def print_log(msg, **args):
     print("[%s] %s" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")[:-3], msg), **args)
+
 
 def get_formatted_time_elapsed(sec_start, sec_end=None):
     if sec_end is None:
@@ -78,9 +78,14 @@ def get_formatted_time_elapsed(sec_start, sec_end=None):
     return "%2f" % (sec_end - sec_start)
 
 
+begin = None
+count = 0
+
+
 def execute(args):
+    global begin, count
     wait = str_to_timedelta(args.wait)
-    start = time.time()
+    begin = time.time()
 
     if args.verbose:
         if not args.until_fail:
@@ -98,19 +103,28 @@ def execute(args):
             sys.stdout.flush()
 
         start_cmd = time.time()
-        ret = subprocess.call(
+        proc = subprocess.Popen(
             args.command,
-            stderr=subprocess.STDOUT,
-            shell=True)
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True
+        )
+
+        for i, line in enumerate(iter(proc.stdout.readline, b'')):
+            print(line.decode().strip())
+
+        while proc.poll() is None:
+            time.sleep(.1)
+
         end_cmd = time.time()
 
         if args.fail_exit_value:
-            if ret in args.fail_exit_value:
+            if proc.returncode in args.fail_exit_value:
                 error_ret = ret
                 break
         else:
-            if ret != 0:
-                error_ret = ret
+            if proc.returncode != 0:
+                error_ret = proc.returncode
                 break
 
         if args.time:
@@ -126,7 +140,7 @@ def execute(args):
 
         if args.time:
             if args.verbose > 1:
-                print_log("Time elapsed: %s" % get_formatted_time_elapsed(start))
+                print_log("Time elapsed: %s" % get_formatted_time_elapsed(begin))
 
 
     if error_ret is not 0:
@@ -138,19 +152,28 @@ def execute(args):
         print_log("Total executions: %s" % count)
 
     if args.time:
-        print("Time elapsed: %s seconds" % get_formatted_time_elapsed(start))
+        print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin))
 
     return error_ret
+
+
+def _signal_handler(*args) -> None:
+    print()
+    print("Aborted after successful runs: %d" % (count))
+    print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin))
+    sys.exit()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Repeat shell command')
     parser.add_argument('-c', '--count', default=2, type=int, help='Times to repeat the command. Default: %(default)s')
-    parser.add_argument('-w', '--wait', default='0s', type=str, help='Wait for given number of seconds between each call. Default: %(default)s')
+    parser.add_argument('-w', '--wait', default='0s', type=str,
+                        help='Wait for given number of seconds between each call. Default: %(default)s')
     parser.add_argument('-t', '--time', action='store_true', help='Print total time elapsed')
     parser.add_argument('-u', '--until-fail', action='store_true', help='Repeat command until it fails')
     parser.add_argument('-f', '--fail-exit-value', type=int, action='append', help='Exit values considered as failure')
     parser.add_argument('-v', '--verbose', default=1, type=int, help='Be verbose. (0-2). Default: %(default)s')
     parser.add_argument('command', help='The command to execute')
     args = parser.parse_args()
+    signal.signal(signal.SIGINT, _signal_handler)
     sys.exit(execute(args))
