@@ -117,6 +117,14 @@
 				 (local-unset-key (kbd "C-c C-f"))
 				 (local-set-key (kbd "C-c C-f") 'follow-auctex-compile-buffer)
 				 (local-set-key (kbd "C-c C-g") #'encapsulate-glossary)))
+
+	;;(require 'visual-regexp)
+	(require 'visual-regexp-steroids)
+	(define-key global-map (kbd "C-c e") 'vr/replace)
+	(define-key global-map (kbd "C-c q") 'vr/query-replace)
+
+	(define-key global-map (kbd "C-M-r") 'vr/isearch-backward)
+	(define-key global-map (kbd "C-M-s") 'vr/isearch-forward)
 	))
 
 (add-hook 'after-init-load-hook

@@ -26,6 +26,7 @@
 (depends-on "xclip" :git "https://github.com/emacsmirror/xclip")
 (depends-on "exec-path-from-shell")
 (depends-on "visual-regexp")
+(depends-on "visual-regexp-steroids")
 (depends-on "rainbow-mode")
 
 ;; File mode

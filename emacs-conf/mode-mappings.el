@@ -26,7 +26,7 @@
 
 ;; Emacs lisp
 (use-package emacs-lisp-mode
-  :mode "\\.Carton$")
+  :mode "\\.Carton$" "Cask")
 
 ;;(add-hook 'rockerfile-mode-hook 'whitespace-mode 1)
 
