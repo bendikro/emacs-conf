@@ -33,7 +33,8 @@
 (depends-on "apache-mode")
 (depends-on "go-mode")
 (depends-on "yaml-mode")
-(depends-on "psgml" :git "https://git.code.sf.net/p/psgml/code" :ref "v1.3.2") ;; XML, HTML, markup langs ++
+;;(depends-on "psgml" :git "https://git.code.sf.net/p/psgml/code" :ref "v1.3.2") ;; XML, HTML, markup langs ++
+(depends-on "psgml")
 
 (depends-on "markdown-mode")
 (depends-on "dockerfile-mode")
