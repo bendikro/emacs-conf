@@ -49,6 +49,23 @@ docker-ip() {
 	docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
 }
 
+######################
+# Clean python files
+
+rmpyc() {
+	DIR=.
+	if [[ -n "$1" ]]; then
+		DIR=$1
+	fi
+	echo "Clearing pyton files from directory: $DIR"
+	set -x
+	find $DIR -type d -name "__pycache__" -exec rm -rf {} +
+	find $DIR -type f -name '*.py[co]' -delete
+	set +x
+}
+
+########################
+# Setup bash completion
 completions_dir=/usr/share/bash-completion/completions
 
 if [ ! -d "$completions_dir" ]; then
