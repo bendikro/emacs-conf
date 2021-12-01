@@ -19,7 +19,7 @@ function get_sessionname_func {
 	echo -n "[ $o ]"
 }
 
-pathadd () {
+function pathadd () {
 	if ! echo "$PATH" | grep -Eq "(^|:)$1($|:)" ; then
 		if [ "$2" = "after" ] ; then
 			PATH="$PATH:$1"
@@ -33,7 +33,7 @@ pathadd () {
 # Vagrant
 
 
-vagrantssh() {
+function vagrantssh() {
 	vagrant ssh `vagrant global-status | grep $1 | awk '{split($0,a," "); print a[1]}'`
 }
 
@@ -41,18 +41,18 @@ vagrantssh() {
 ##########
 # Docker
 
-dbash() {
+function dbash() {
 	docker exec -i -t $1 /bin/bash
 }
 
-docker-ip() {
+function docker-ip() {
 	docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
 }
 
 ######################
 # Clean python files
 
-rmpyc() {
+function rmpyc() {
 	DIR=.
 	if [[ -n "$1" ]]; then
 		DIR=$1
