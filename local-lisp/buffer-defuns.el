@@ -95,10 +95,10 @@
     (if (bufferp new-buffer-name)
 		(kill-buffer new-buffer-name))
     (call-process
-     "python"
+     "python3"
      nil
      new-buffer-name nil
      "-c"
-     "import ast; import json; import sys; x=ast.literal_eval(sys.argv[1]); print json.dumps(x,indent=4)"
+     "import ast; import json; import sys; x=ast.literal_eval(sys.argv[1]); print(json.dumps(x,indent=4))"
      selection)
     (pop-to-buffer new-buffer-name)))
