@@ -12,7 +12,7 @@ for filename in $(find $EMACS_HOME/.emacs.d/bash/bash_completion/ -type f); do
 	. $filename
 done
 
-if [ -f /etc/bash_completion ]; then
+if [ -f /usr/share/bash-completion/bash_completion ]; then
 	. /etc/bash_completion
 fi
 

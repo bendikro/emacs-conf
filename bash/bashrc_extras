@@ -3,7 +3,8 @@
 EMACS_HOME=${EMACS_HOME:-$HOME}
 
 declare -a bash_files=("funcs.bash" "load_completions.bash"
-					   "extras_local.bash" "alias.bash" "color_prompt.sh" "git.bash")
+					   "extras_local.bash" "alias.bash"
+					   "color_prompt.sh" "git.bash" "python.bash")
 
 
 for f in "${bash_files[@]}"
@@ -22,22 +23,7 @@ export EDITOR=emacs
 # Add the bin dir to PATH
 pathadd $EMACS_HOME/.emacs.d/bin/ after
 
-# virtualenvwrapper location on FreeBSD
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-    . /usr/local/bin/virtualenvwrapper.sh
-fi
-
 # Add the cask bin to PATH
 if [ -d $EMACS_HOME/.cask/bin ]; then
 	pathadd $EMACS_HOME/.cask/bin
-fi
-
-# Pymacs
-export PYMACS_PYTHON=python3
-
-# PYENV
-if [ -d "$EMACS_HOME/.pyenv" ] ; then
-   export PYENV_ROOT="$EMACS_HOME/.pyenv"
-   pathadd $PYENV_ROOT/bin
-   eval "$(pyenv init -)"
 fi
