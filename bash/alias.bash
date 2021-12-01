@@ -18,7 +18,7 @@ alias tmuxdeluge='ssh freebsd -t "tmux attach -t deluge || tmux new-session -s d
 alias suspend='dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.Suspend boolean:true'
 
 alias bsd="ssh freebsd"
-alias rmpyc='find . -name "*.pyc" -exec rm -rf {} \;'
+alias rmpyc='echo "Use command py3clean"'
 
 # Docker
 alias dps="docker ps"
