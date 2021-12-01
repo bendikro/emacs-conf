@@ -11,7 +11,7 @@ def break_on_whitespace():
     lisp.insert('\n'.join(words))
 
 
-def convert_attr_to_dict_looup():
+def convert_attr_to_dict_loop():
     """
     Convert highlighted region from:
     item.attr.elem
@@ -22,6 +22,19 @@ def convert_attr_to_dict_looup():
     elems = subs.split('.')
 
     result = elems[0] + ".".join(["['%s']" % elem for elem in elems[1:]])
+    lisp.delete_region(start, end)
+    lisp.insert(result)
+
+
+def dict_prettify_region():
+    """
+    Convert highlighted region dict content to prettified dict
+    """
+    import json, ast
+    start, end = lisp.point(), lisp.mark(True)
+    region = lisp.buffer_substring(start, end)
+    data_dict = ast.literal_eval(region)
+    result = json.dumps(data_dict, indent=2)
     lisp.delete_region(start, end)
     lisp.insert(result)
 
@@ -75,4 +88,5 @@ interactions[break_on_whitespace] = ''
 interactions[byte_compile_el_files] = ''
 interactions[delete_elc_files] = ''
 interactions[read_glossaries] = ''
-interactions[convert_attr_to_dict_looup] = ''
+interactions[convert_attr_to_dict_loop] = ''
+interactions[dict_prettify_region] = ''

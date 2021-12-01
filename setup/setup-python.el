@@ -34,8 +34,10 @@
 	'(add-to-list 'pymacs-load-path site-py-dir))
 
   (pymacs-load "pyfuncs")
+  ;; These funcions are the function names in site-py/pyfuncs.py
+  ;; prefixed with 'pyfuncs-' and undercore replaced with dash
   (global-set-key [f7] 'pyfuncs-break-on-whitespace)
-  (global-set-key [f4] 'pyfuncs-convert-attr-to-dict-looup)
+  (global-set-key [f4] 'pyfuncs-convert-attr-to-dict-loop)
   )
 
 ;; Enable jedi mode for python
@@ -84,3 +86,7 @@
 		 0 -1))
   (message "Command output: %s" output)
   )
+
+(defun dict-pretty-print()
+  (interactive)
+  (pyfuncs-dict-prettify-region))
