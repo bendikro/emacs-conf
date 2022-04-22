@@ -42,6 +42,7 @@
 (depends-on "dtrt-indent")
 (depends-on "toml-mode")
 (depends-on "json-mode")
+(depends-on "nhexl-mode")
 (depends-on "nginx-mode")
 (depends-on "origami") ;; Collapse code
 
