@@ -29,6 +29,11 @@ function pathadd () {
 	fi
 }
 
+function genpw() {
+	local pw_len="${1:-10}"
+	date +%s | sha256sum | base64 | head -c $pw_len ; echo
+}
+
 ##########
 # Vagrant
 
