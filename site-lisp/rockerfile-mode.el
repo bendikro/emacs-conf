@@ -15,7 +15,7 @@
   `(,(cons (rx
 			;;(or line-start "onbuild ")
 			(or (and line-start (zero-or-more space))  "onbuild ")
-               (group (or "from" "maintainer" "run" "cmd" "expose" "env" "arg"
+               (group (or "from" "maintainer" "run" "shell" "cmd" "expose" "env" "arg"
                           "add" "copy" "entrypoint" "volume" "user" "workdir" "onbuild"
                           "label" "mount" "tag" "export" "import" "push" "attach" "healthcheck"))
                word-boundary)
