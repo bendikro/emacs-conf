@@ -31,7 +31,8 @@ function pathadd () {
 
 function genpw() {
 	local pw_len="${1:-10}"
-	date +%s | sha256sum | base64 | head -c $pw_len ; echo
+	#date +%s | sha256sum | base64 | head -c $pw_len ; echo
+	</dev/urandom tr -dc 'A-Za-z0-9@#$%&_+=' | head -c $pw_len ; echo
 }
 
 ##########
