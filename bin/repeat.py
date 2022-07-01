@@ -94,6 +94,11 @@ def execute(args):
             cprint('[V] Repeating command until failure: "%s"' % (args.command), color='green')
         print()
 
+
+    env = os.environ.copy()
+    if 'pytest ' in args.command:
+        env['PYTEST_ADDOPTS'] ='--color=yes'
+
     count = 0
     error_ret = 0
     while True:
@@ -107,7 +112,8 @@ def execute(args):
             args.command,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            shell=True
+            shell=True,
+            env=env
         )
 
         for i, line in enumerate(iter(proc.stdout.readline, b'')):
