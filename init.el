@@ -26,6 +26,7 @@
 (defvar pymacs-enabled 1)
 
 (setq cask-load-file (concat (file-name-as-directory user-home-dir) ".cask/cask.el"))
+(message "cask-load-file: %s" cask-load-file)
 ; Get the base directory of the emacs config
 (setq emacs-config-basedir (file-name-directory user-init-file))
 (message "user-init-file: %s" user-init-file)
@@ -53,18 +54,6 @@
 
 (setq flymake-run-in-place nil) ; nice default when using tramp
 
-;; Package Manager
-;; See ~Cask~ file for its configuration
-;; https://github.com/cask/cask
-(when (>= emacs-major-version 24)
-  (if (require 'cask cask-load-file 'noerror)
-	  (cask-initialize )
-	(message "cask is not installed!")))
-
-;; Keeps ~Cask~ file in sync with the packages
-;; that you install/uninstall via ~M-x list-packages~
-;; https://github.com/rdallasgray/pallet
-(require 'pallet nil 'noerror)
 
 ;; Settings for currently logged in user
 ;(setq user-settings-dir
@@ -76,8 +65,44 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-(defun get-ext (file-name)
-  (car (cdr (split-string file-name "\\."))))
+(setq emacs-user-session-store-dir
+	  (expand-file-name (concat (file-name-as-directory emacs-config-session-store-dir) user-login-name)))
+
+(setq custom-file (expand-file-name "custom.el" emacs-user-session-store-dir))
+(message "Using custom-file: %s" custom-file)
+
+(if (file-readable-p custom-file)
+    (progn
+      (message "Loading custom: %s" custom-file)
+      (load custom-file)))
+
+;; Package Manager CASK
+;; See ~Cask~ file for its configuration
+;; https://github.com/cask/cask
+
+;; Avoid the pesky warning during startup:
+;; Warning (package): Unnecessary call to ‘package-initialize’ in init file
+(setq warning-suppress-log-types '((package reinitialization)))
+
+(when (>= emacs-major-version 24)
+  (if (require 'cask cask-load-file 'noerror)
+	  (progn
+		(message "Loaded Cask version: %s" (cask-version))
+		;; cask-initialize was deprecated and renamed to cask--initialize
+		;; Unsure about how to make cask work without it, so load
+		;; cask--initialize is available, else cask-initialize
+		(if (fboundp 'cask--initialize)
+			(progn
+			  (message "Initializing cask with cask--initialize")
+			  (cask--initialize)
+			  )
+		  (progn
+			(message "Initializing cask with cask-initialize")
+			(cask-initialize)
+			)
+		  )
+		)
+	(message "cask is not installed!")))
 
 ;; Load all files in the dir
 (defun load_libs (dir)
@@ -124,8 +149,6 @@
 (require 'setup-origami)
 (require 'key-bindings)
 
-(setq emacs-user-session-store-dir
-	  (expand-file-name (concat (file-name-as-directory emacs-config-session-store-dir) user-login-name)))
 
 (when (string= (getenv "EMACS_NO_BACKUP") nil)
   (setq user-backup-dir (expand-file-name (concat (file-name-as-directory emacs-user-session-store-dir) "backups/")))
@@ -152,12 +175,6 @@
 ;; Conclude init by setting up specifics for the current user
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
-
-(setq custom-file (expand-file-name "custom.el" emacs-user-session-store-dir))
-(message "Using custom-file: %s" custom-file)
-
-(if (file-readable-p custom-file)
-	(load custom-file))
 
 (run-hooks 'after-init-load-hook)
 

@@ -97,7 +97,7 @@
   :mode ("\\.ini$" ".gitignore$" ".gitconfig$"))
 
 (use-package sh-mode
-  :mode "\\.bashrc\\'")
+  :mode ("\\.bashrc$\\'" "\\.sh$"))
 
 ;; (site-lisp/giteditmsg-mode.el)
 (use-package giteditmsg-mode

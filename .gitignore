@@ -8,3 +8,4 @@ init-local.el
 .cask/
 /session-store/
 elpa
+Cask

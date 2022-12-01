@@ -1,5 +1,12 @@
 (provide 'lang)
 
+;; Fix indent in sh-mode
+(defun sh-mode-setup ()
+  (setq sh-indentation 2)
+  (setq indent-tabs-mode nil)
+)
+(add-hook 'sh-mode-hook 'sh-mode-setup)
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;;;; Python
 ;;;;;;;;;;;;;;;;;;;;;

@@ -1,55 +1,55 @@
-;; This cask files is a limited version of the main Cask file (Should work with emacs <= 24)
+;; HEADER
 (source gnu)
 (source melpa)
 (source org)
 
-(package "emacs-conf limited" "0" "Python packages required for emacs-conf with limited packages")
+(package "emacs-conf" "0" "Python packages required for emacs-conf")
 
 ;; Latest signature key
 (depends-on "gnu-elpa-keyring-update")
 
 (depends-on "use-package")
 
-;(depends-on "browse-kill-ring")
-(depends-on "cask")
+(depends-on "browse-kill-ring")
 (depends-on "flycheck")
 (depends-on "flycheck-color-mode-line")
-(depends-on "pallet")
 (depends-on "yasnippet")
 (depends-on "editorconfig")
-
-;; Problems with magit on < 24.3
-;(depends-on "magit")
+(depends-on "magit")
 
 ;; Utils
-(depends-on "ggtags" :git "https://github.com/leoliu/ggtags" :ref "0.8.13")
+(depends-on "ggtags")
 (depends-on "xclip" :git "https://github.com/emacsmirror/xclip")
 (depends-on "exec-path-from-shell")
 (depends-on "visual-regexp")
+(depends-on "visual-regexp-steroids")
+(depends-on "rainbow-mode")
 
-;; File mode
+;;;; File mode
 (depends-on "apache-mode")
 (depends-on "go-mode")
 (depends-on "yaml-mode")
-(depends-on "psgml" :git "https://git.code.sf.net/p/psgml/code" :ref "v1.3.2") ;; XML, HTML, markup langs ++
+(depends-on "psgml") ;; XML, HTML, markup langs ++
+(depends-on "rust-mode")
 
-;(depends-on "markdown-mode")
+(depends-on "markdown-mode")
 (depends-on "dockerfile-mode")
 (depends-on "jinja2-mode")
-;(depends-on "dtrt-indent")
+(depends-on "dtrt-indent")
 (depends-on "toml-mode")
 (depends-on "json-mode")
+(depends-on "nhexl-mode")
+(depends-on "nginx-mode")
 (depends-on "origami") ;; Collapse code
 
 ;; Python
 (depends-on "python-mode")
-(depends-on "python-pylint" :git "https://github.com/emacsmirror/python-pylint")
-;(depends-on "elpy")
-;(depends-on "jedi-mode")
-;(depends-on "yapfify")
+(depends-on "elpy")
+(depends-on "jedi")
+(depends-on "yapfify")
 
-;; LaTeX
-(depends-on "auctex" :git "https://git.savannah.gnu.org/git/auctex.git" :ref "release_12_2")
+;;;; LaTeX
+(depends-on "auctex")
 (depends-on "auto-complete")
 
 ;; Lang
