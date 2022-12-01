@@ -1,6 +1,6 @@
 (defvar flycheck-now-mode-hook nil)
 
-(defvar flyceck-mode-map
+(defvar flycheck-mode-map
   (let ((m (make-sparse-keymap)))
     (define-key m (kbd "C-g") 'normal-mode)
     (define-key m (kbd "C-n") 'flycheck-next-error)
@@ -8,10 +8,11 @@
     m))
 
 (define-minor-mode flycheck-now-mode
+  "Flycheck mode"
   :initial-value nil
   :lighter " Flycheck"
-  :keymap flyceck-mode-map
-  :group 'flyceck-now
+  :keymap flycheck-mode-map
+  :group 'flycheck-now
   (flycheck-mode)
   )
 
@@ -22,4 +23,4 @@ If buffer-or-name is nil return current buffer's mode."
   (setq-default major-mode 'flycheck-now-mode)
   )
 
-(provide 'flyceck-now)
+(provide 'flycheck-now)

@@ -9,6 +9,7 @@
     m))
 
 (define-minor-mode resize-mode
+  "Resize mode"
   :initial-value nil
   :lighter " Resize"
   :keymap resize-mode-map
