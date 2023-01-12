@@ -51,7 +51,6 @@ elif [ "$CASK_TYPE" == "Ubuntu_current_emacs"  ]; then
     $SED_CMD -i -E -r '/markdown-mode/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i '\|markdown-mode|a (depends-on "markdown-mode" :git "https://github.com/jrblevin/markdown-mode" :ref "v2.5")' $CASK_FILE
 
-    $SED_CMD -i -E -r '/dtrt-indent/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i -E -r '/elpy/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i -E -r '/jedi/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i -E -r '/yapfify/ s/^(.*)$/;;\1/g' $CASK_FILE
