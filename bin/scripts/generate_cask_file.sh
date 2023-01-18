@@ -32,6 +32,10 @@ echo "Using sed binary: $SED_CMD"
 EMACS_MAJOR_VERSION=$(emacs --version | awk -F " " 'NR==1 {print $3}' | cut -d '.' -f 1)
 echo "emacs_version: $EMACS_MAJOR_VERSION"
 
+EMACS_MINOR_VERSION=$(emacs --version | awk -F " " 'NR==1 {print $3}' | cut -d '.' -f 2)
+
+EMACS_CASK_VERSION_DIR="$EMACS_MAJOR_VERSION.$EMACS_MINOR_VERSION"
+
 if [ "$CASK_TYPE" == "Ubuntu"  ]; then
   $SED_CMD -i -E -r '/HEADER/ s/^.*$/;; This cask file is Ubuntu/g' $CASK_FILE
 
@@ -39,26 +43,27 @@ if [ "$CASK_TYPE" == "Ubuntu"  ]; then
 elif [ "$CASK_TYPE" == "Ubuntu_current_emacs"  ]; then
 
   if [ "$EMACS_MAJOR_VERSION" == "25"  ]; then
+
+    mkdir -p $HOME/.emacs.d/.cask/$EMACS_CASK_VERSION_DIR/elpa/gnupg && chmod 700 $HOME/.emacs.d/.cask/$EMACS_CASK_VERSION_DIR/elpa/gnupg
+    # Update the gpg keys for packages
+    gpg --keyserver hkp://keyserver.ubuntu.com  --homedir $HOME/.emacs.d/.cask/$EMACS_CASK_VERSION_DIR/elpa/gnupg --recv-keys 066DAFCB81E42C40
+
     $SED_CMD -i -E -r "/HEADER/ s/^.*$/;; This cask file is for Ubuntu with emacs version $EMACS_MAJOR_VERSION/g" $CASK_FILE
 
-    $SED_CMD -i -E -r '/gnu-elpa-keyring-update/ s/^(.*)$/;;\1/g' $CASK_FILE
-
-    $SED_CMD -i -E -r '/auctex/ s/^(.*)$/;;\1/g' $CASK_FILE
+    #$SED_CMD -i -E -r '/auctex/ s/^(.*)$/;;\1/g' $CASK_FILE
     #$SED_CMD -i '\|auctex|a (depends-on "auctex" :git "https://git.savannah.gnu.org/git/auctex.git" :ref "release_12_2")' $CASK_FILE
-
-    $SED_CMD -i -E -r '/browse-kill-ring/ s/^(.*)$/;;\1/g' $CASK_FILE
 
     $SED_CMD -i -E -r '/markdown-mode/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i '\|markdown-mode|a (depends-on "markdown-mode" :git "https://github.com/jrblevin/markdown-mode" :ref "v2.5")' $CASK_FILE
 
-    $SED_CMD -i -E -r '/elpy/ s/^(.*)$/;;\1/g' $CASK_FILE
-    $SED_CMD -i -E -r '/jedi/ s/^(.*)$/;;\1/g' $CASK_FILE
-    $SED_CMD -i -E -r '/yapfify/ s/^(.*)$/;;\1/g' $CASK_FILE
-    $SED_CMD -i -E -r '/nhexl-mode/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i -E -r '/go-mode/ s/^(.*)$/;;\1/g' $CASK_FILE # Requires 26
-    $SED_CMD -i -E -r '/rainbow-mode/ s/^(.*)$/;;\1/g' $CASK_FILE
-    $SED_CMD -i -E -r '/editorconfig/ s/^(.*)$/;;\1/g' $CASK_FILE
-    $SED_CMD -i -E -r '/magit/ s/^(.*)$/;;\1/g' $CASK_FILE
+    $SED_CMD -i '\|go-mode|a (depends-on "go-mode" :git "https://github.com/dominikh/go-mode.el" :ref "v1.5.0")' $CASK_FILE
+
+    $SED_CMD -i -E -r '/editorconfig/ s/^(.*)$/;;\1/g' $CASK_FILE # Requires 26
+    $SED_CMD -i '\|editorconfig|a (depends-on "editorconfig" :git "https://github.com/editorconfig/editorconfig-emacs" :ref "v0.9.1")' $CASK_FILE
+
+    # Magit 3 requires new compat
+    $SED_CMD -i '\|magit|a (depends-on "compat" :git "https://github.com/emacs-compat/compat" :ref "29.1.1.0")' $CASK_FILE
 
     $SED_CMD -i -E -r '/ggtags/ s/^(.*)$/;;\1/g' $CASK_FILE
     $SED_CMD -i '\|ggtags|a (depends-on "ggtags" :git "https://github.com/leoliu/ggtags" :ref "0.8.13")' $CASK_FILE
