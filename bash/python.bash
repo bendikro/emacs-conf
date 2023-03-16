@@ -9,7 +9,7 @@ if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh ]; then
 fi
 
 # Pymacs
-export PYMACS_PYTHON=python3
+export PYMACS_PYTHON=${PYMACS_PYTHON:-python3}
 
 # PYENV
 if [ -d "$EMACS_HOME/.pyenv" ] ; then
