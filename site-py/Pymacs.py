@@ -43,15 +43,14 @@ def io_errors_with_signals():
 
 
 def is_python3():
-    import sys
     return sys.version_info[0] == 3
 
 
 if is_python3():
-    import collections
+    from collections.abc import Callable
 
     def callable(value):
-        return isinstance(value, collections.Callable)
+        return isinstance(value, Callable)
 
     basestring = str
     from imp import reload
