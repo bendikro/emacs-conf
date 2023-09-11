@@ -54,3 +54,4 @@
 
 ;; Lang
 (depends-on "php-mode")
+(depends-on "salt-mode")
