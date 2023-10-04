@@ -6,10 +6,10 @@
 (require 'gtags)
 
 ; Autoload gtags-mode on c-mode
-(add-hook 'c-mode-hook '(lambda () (gtags-mode 1) ))
+(add-hook 'c-mode-hook #'(lambda () (gtags-mode 1) ))
 
 (add-hook 'gtags-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			 ;; ;;;;;;; Key bindings for gtag
 			 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

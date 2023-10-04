@@ -104,7 +104,7 @@ Otherwise, signal an error.  The error message is the first line of the output."
     end (or end (length string)))
   (while (and (> end 0)
           (member (aref string (1- end)) bag))
-    (decf end))
+    (cl-decf end))
   (subseq string start end))
 
 (defun set-writable()
@@ -141,7 +141,7 @@ Make the buffer writable as well."
 ;(add-hook 'before-save-hook 'sudo-before-save-hook)
 
 (defun create-if-no-exists (dirs)
-  (loop for d in dirs do
+  (cl-loop for d in dirs do
 		(if (not (file-exists-p d))
 			(progn
 			  ;(message "Not exists: %s" d)

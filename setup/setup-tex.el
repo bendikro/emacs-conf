@@ -2,12 +2,12 @@
 
 ;(add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (setq TeX-error-overview-open-after-TeX-run t)))
 
 ;; Auto-complete
 (add-hook 'auto-complete-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (define-key ac-completing-map "\e" 'ac-stop)
 			 (yas-minor-mode)
 			 (yas-minor-mode-on)
@@ -15,7 +15,7 @@
 			 (setq ac-auto-start nil)))
 
 (add-hook 'TeX-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (message "run-hooks: %s" after-init-load-hook)
 			 (global-set-key (kbd "C-c C-g") #'encapsulate-glossary)
 			 (run-hooks 'after-init-load-hook)

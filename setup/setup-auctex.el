@@ -1,5 +1,5 @@
 (add-hook 'TeX-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (require 'reftex-cite)
 			 (require 'bibtex)
 			 (require 'flymake)
@@ -8,7 +8,7 @@
 
 (add-hook
  'TeX-mode-hook
- '(lambda()
+ #'(lambda()
 	(global-set-key (kbd "\t") 'TeX-complete-symbol) ; ' "fix" highlighting
 	;; Completion for the bib-item entries in citen/citenp
 	(setq TeX-complete-list
@@ -123,7 +123,7 @@
 
 
 (add-hook 'reftex-load-hook
-		  '(lambda()
+		  #'(lambda()
 			 (setq reftex-bibliography-commands
 				   '("addbibresource" "bibliography" "nobibliography"))))
 
@@ -143,7 +143,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'TeX-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 'turn-on-reftex
 			 'flyspell-mode nil
 			 ;; Autosave before compiling

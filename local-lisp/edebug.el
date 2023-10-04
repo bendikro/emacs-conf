@@ -24,7 +24,7 @@
 
 ;; define a key
 (add-hook 'edebug-setup-hook
-		  '(lambda() (define-key edebug-mode-map "A" 'edebug-elisp-add-to-watch)))
+		  #'(lambda() (define-key edebug-mode-map "A" 'edebug-elisp-add-to-watch)))
 
 (defmacro stop-here (fn)
   "Call edebug here. FN is assumed to be a symbol of the function you are in."

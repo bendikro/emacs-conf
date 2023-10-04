@@ -2,11 +2,11 @@
 
 (when (require 'ggtags nil 'noerror)
   ;; Autoload ggtags-mode on c++-mode-hook
-  (add-hook 'c++-mode-hook '(lambda () (ggtags-mode 1) ))
+  (add-hook 'c++-mode-hook #'(lambda () (ggtags-mode 1) ))
   )
 
 (add-hook 'ggtags-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 ;; ggtags
 			 (define-key ggtags-mode-map (kbd "M-,") 'ggtags-find-tag-continue)
 			 ;;(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)

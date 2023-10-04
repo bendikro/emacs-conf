@@ -18,7 +18,7 @@
   "Extra keyword highlighting specification for `emacs-lisp-mode'.")
 
 (add-hook 'emacs-lisp-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (font-lock-add-keywords 'emacs-lisp-mode extra-elisp-font-lock-keywords)
 			 ))
 

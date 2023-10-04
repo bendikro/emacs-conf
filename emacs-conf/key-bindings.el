@@ -109,11 +109,11 @@
 	;; Mode specific bindings
 	;;;;;;;;;;;;;;;;;;;;;;;;;;
 	(add-hook 'python-mode-hook
-			  '(lambda() (global-set-key (kbd "C-c f") #'flycheck-now-mode)))
+			  #'(lambda() (global-set-key (kbd "C-c f") #'flycheck-now-mode)))
 
 	;; Handle key bindings for following compile buffer
 	(add-hook 'TeX-mode-hook
-			  '(lambda()
+			  #'(lambda()
 				 (local-unset-key (kbd "C-c C-f"))
 				 (local-set-key (kbd "C-c C-f") 'follow-auctex-compile-buffer)
 				 (local-set-key (kbd "C-c C-g") #'encapsulate-glossary)))

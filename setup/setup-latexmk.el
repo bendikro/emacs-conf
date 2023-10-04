@@ -41,7 +41,7 @@
 ;;							  ))
 
 (add-hook 'LaTeX-mode-hook
-		  '(lambda()
+		  #'(lambda()
 			 (require 'auctex-latexmk)
 			 (auctex-latexmk-setup)
 			 (require 'setup-latexmk)
@@ -51,7 +51,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AucTeX configurations ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'LaTeX-mode-hook '(lambda ()
+(add-hook 'LaTeX-mode-hook #'(lambda ()
 							(setq TeX-PDF-mode t)
 							(setq TeX-interactive-mode t)
 							(setq TeX-source-correlate-mode t)
@@ -72,7 +72,7 @@
 	  (delete-window (get-buffer-window (get-buffer (TeX-process-buffer-name "main"))))
 	))
 
-(add-hook 'LaTeX-mode-hook '(lambda ()
+(add-hook 'LaTeX-mode-hook #'(lambda ()
 							  (local-set-key (kbd "C-c C-d")
 											 'demolish-tex-compile-buffer)
 							  (local-set-key (kbd "C-c C-r") 'resize-mode)
