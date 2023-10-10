@@ -208,7 +208,17 @@ DEFAULT_DESKTOP_CONFIGS = ['.profile', '.bash_profile', '.config/gtk-3.0/gtk.css
 
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser()
+    import textwrap
+
+    parser = argparse.ArgumentParser(
+        prog="Linux config setup",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent('''\
+        Environment variables:
+            EMACS_HOME:
+                Set to the path of the .emacs.d parent directory if it isn't "~/".
+                This will write the file ~/.emacs which loads EMACS_HOME/.emacs.d/init.el
+         '''))
 
     configs_to_write = DEFAULT_SERVER_CONFIGS
 
