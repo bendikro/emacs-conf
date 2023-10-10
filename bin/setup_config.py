@@ -38,6 +38,9 @@ except:
 
 
 def add_to_config(conf):
+    """
+    Create or update the config files
+    """
     print("Updating '%s'" % conf['filepath'])
     if os.path.isfile(conf['filepath']) and conf['pattern']:
         with open(conf['filepath'], 'r') as f:
@@ -57,19 +60,21 @@ def add_to_config(conf):
         f.write(conf['config'])
 
 
-home = os.path.expanduser("~")
+tilde_home = os.path.expanduser("~")
 os_line = check_proc_output(["uname", "-a"])
 
-emacs_home = os.environ.get('EMACS_HOME', os.path.expanduser("~")).rstrip('/')
+emacs_home = os.environ.get('EMACS_HOME', tilde_home).rstrip('/')
+
+print("Using emacs_home: '%s'" % emacs_home)
 
 conf_d = {"emacs_home": emacs_home,
-          "home": home}
+          "tilde_home": tilde_home}
 
 configs = {}
 
 def add_config(name, config, filepath=None, search_pattern=None, create_if_not_exists=True):
     if not filepath:
-        filepath = os.path.join(home, name)
+        filepath = os.path.join(tilde_home, name)
     configs[name] = {'filepath':  filepath, 'pattern': search_pattern, 'config': config % conf_d,
                      'create_if_not_exists': create_if_not_exists}
 
@@ -105,7 +110,7 @@ if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
     . %(emacs_home)s/.emacs.d/bash/bashrc_extras
 fi
 
-. %(home)s/.bashrc
+. %(tilde_home)s/.bashrc
 
 """, search_pattern="/.emacs.d/bash/bashrc_extras")
 
@@ -134,6 +139,7 @@ terminal-window .notebook tab:active {
    background-color: shade(@bg_color, 0.8)
 }
 """, search_pattern="terminal-window .notebook tab:active", create_if_not_exists="Ubuntu" in os_line)
+
 
 add_config('.config/htop/htoprc',
 """# Beware! This file is rewritten by htop when settings are changed in the interface.
@@ -183,33 +189,48 @@ add_config('.config/terminator/config',
 """, search_pattern="custom_command", create_if_not_exists="Ubuntu" in os_line)
 
 
-print("emacs_home: '%s'" % emacs_home)
-print("os.path.expanduser: '%s'" % os.path.expanduser("~"))
-
-if emacs_home != os.path.expanduser("~"):
+if emacs_home != tilde_home:
+    print("EMACS_HOME (%s) and tilde_home (%s) differ. Adding .emacs file" % (emacs_home, tilde_home))
     add_config('.emacs',
 """
 ;; Use load emacs config from %(emacs_home)s
 (setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
 (defvar user-home-dir "%(emacs_home)s")
 (setq user-emacs-directory "%(emacs_home)s/.emacs.d/")
-(defvar user-writable-dir "%(home)s/.emacs.d/")
+(defvar user-writable-dir "%(emacs_home)s/.emacs.d/")
 (load-file "%(emacs_home)s/.emacs.d/init.el")
 """, search_pattern="# Use load emacs config from")
 
 
+DEFAULT_SERVER_CONFIGS = ['.tmux.conf', '.bashrc', '.inputrc', '.gitconfig', '.config/htop/htoprc']
+DEFAULT_DESKTOP_CONFIGS = ['.profile', '.bash_profile', '.config/gtk-3.0/gtk.css', '.config/terminator/config']
+
+
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
 
-    if not ('config' in sys.argv or 'tmux' in sys.argv):
-        print("Valid arguments are 'config' and 'tmux'. Specify env EMACS_HOME to change the location of .emacs.d. Default to HOME.")
-        sys.exit()
+    configs_to_write = DEFAULT_SERVER_CONFIGS
 
-    if 'tmux' in sys.argv:
-        tpm = os.path.join(home, ".tmux/plugins/tpm")
+    parser.add_argument('--tmux-plugins', action='store_true', help="Clone the tmux plugins repo")
+    parser.add_argument('--configs', dest='configs', help='Comma seperated list of configs to write. Default: "{}"'.format(", ".join(configs_to_write)))
+    parser.add_argument('--desktop', action='store_true', help='Add the desktop configs: "%s"' % (", ".join(DEFAULT_DESKTOP_CONFIGS)))
+
+    args = parser.parse_args()
+
+    if args.desktop:
+        configs_to_write += DEFAULT_DESKTOP_CONFIGS
+    if args.configs:
+        configs_to_write = [val.strip() for val in args.configs.split(',')]
+
+    if args.tmux_plugins:
+        tpm = os.path.join(tilde_home, ".tmux/plugins/tpm")
         if not os.path.isdir(tpm):
             os.makedirs(tpm)
             subprocess.call("git clone https://github.com/tmux-plugins/tpm %s" % tpm, shell=True)
 
-    if 'config' in sys.argv:
-        for conf_k in configs:
+    for conf_k in configs_to_write:
+        try:
             add_to_config(configs[conf_k])
+        except KeyError as err:
+            print("Invalid config file:", err)
