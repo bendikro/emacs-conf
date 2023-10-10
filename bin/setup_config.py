@@ -202,7 +202,7 @@ if emacs_home != tilde_home:
 """, search_pattern="# Use load emacs config from")
 
 
-DEFAULT_SERVER_CONFIGS = ['.tmux.conf', '.bashrc', '.inputrc', '.gitconfig', '.config/htop/htoprc']
+DEFAULT_SERVER_CONFIGS = ['.tmux.conf', '.bashrc', '.gitconfig', '.config/htop/htoprc']
 DEFAULT_DESKTOP_CONFIGS = ['.profile', '.bash_profile', '.config/gtk-3.0/gtk.css', '.config/terminator/config']
 
 
@@ -215,11 +215,14 @@ if __name__ == '__main__':
     parser.add_argument('--tmux-plugins', action='store_true', help="Clone the tmux plugins repo")
     parser.add_argument('--configs', dest='configs', help='Comma seperated list of configs to write. Default: "{}"'.format(", ".join(configs_to_write)))
     parser.add_argument('--desktop', action='store_true', help='Add the desktop configs: "%s"' % (", ".join(DEFAULT_DESKTOP_CONFIGS)))
+    parser.add_argument('--inputrc', action='store_true', help='Add .inputrc file')
 
     args = parser.parse_args()
 
     if args.desktop:
         configs_to_write += DEFAULT_DESKTOP_CONFIGS
+    if args.inputrc:
+        configs_to_write += ['.inputrc']
     if args.configs:
         configs_to_write = [val.strip() for val in args.configs.split(',')]
 
