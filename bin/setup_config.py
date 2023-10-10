@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import print_function
 
+import argparse
 import os
 import re
 import subprocess
 import sys
+import textwrap
 
 
 def check_output_copy(*popenargs, **kwargs):
@@ -72,134 +74,149 @@ conf_d = {"emacs_home": emacs_home,
 
 configs = {}
 
-def add_config(name, config, filepath=None, search_pattern=None, create_if_not_exists=True):
+def add_config(name, config, user_home, filepath=None, search_pattern=None, create_if_not_exists=True, clean_left_indent=True):
+    if clean_left_indent:
+        # Remove space indentation common for all lines
+        config = textwrap.dedent(config)
+
     if not filepath:
-        filepath = os.path.join(tilde_home, name)
+        filepath = os.path.join(user_home, name)
     configs[name] = {'filepath':  filepath, 'pattern': search_pattern, 'config': config % conf_d,
                      'create_if_not_exists': create_if_not_exists}
 
-add_config('.tmux.conf',
-"""
-TMUX_CONF_DIR=%(emacs_home)s/.emacs.d/configs/tmux
-source-file $TMUX_CONF_DIR/tmux.conf
-""", search_pattern="TMUX_CONF_DIR")
+def setup_config_files(user_home):
+    add_config('.tmux.conf',
+    """
+    TMUX_CONF_DIR=%(emacs_home)s/.emacs.d/configs/tmux
+    source-file $TMUX_CONF_DIR/tmux.conf
+    """, user_home, search_pattern="TMUX_CONF_DIR")
 
-add_config('.profile',
-"""
-# Add pymacs to PYTHONPATH
-if [ -f %(emacs_home)s/.emacs.d/bash/pypath_pymacs ]; then
-    . %(emacs_home)s/.emacs.d/bash/pypath_pymacs
-fi
-""", search_pattern="# Add pymacs to PYTHONPATH")
+    add_config('.profile',
+    """
+    # Add pymacs to PYTHONPATH
+    if [ -f %(emacs_home)s/.emacs.d/bash/pypath_pymacs ]; then
+        . %(emacs_home)s/.emacs.d/bash/pypath_pymacs
+    fi
+    """, user_home, search_pattern="# Add pymacs to PYTHONPATH")
 
-add_config('.bashrc',
-"""
-EMACS_HOME=%(emacs_home)s
+    add_config('.bashrc',
+    """
+    EMACS_HOME=%(emacs_home)s
 
-if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
-    . %(emacs_home)s/.emacs.d/bash/bashrc_extras
-fi
-""", search_pattern="/.emacs.d/bash/bashrc_extras")
+    if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
+        . %(emacs_home)s/.emacs.d/bash/bashrc_extras
+    fi
+    """, user_home, search_pattern="/.emacs.d/bash/bashrc_extras")
 
-add_config('.bash_profile',
-"""
-# Needed for tmux
-EMACS_HOME=%(emacs_home)s
+    add_config('.bash_profile',
+    """
+    # Needed for tmux
+    EMACS_HOME=%(emacs_home)s
 
-if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
-    . %(emacs_home)s/.emacs.d/bash/bashrc_extras
-fi
+    if [ -f %(emacs_home)s/.emacs.d/bash/bashrc_extras ]; then
+        . %(emacs_home)s/.emacs.d/bash/bashrc_extras
+    fi
 
-. %(tilde_home)s/.bashrc
+    . %(tilde_home)s/.bashrc
 
-""", search_pattern="/.emacs.d/bash/bashrc_extras")
+    """, user_home, search_pattern="/.emacs.d/bash/bashrc_extras")
 
-add_config('.inputrc',
-"""
-$include %(emacs_home)s/.emacs.d/configs/inputrc
-""", search_pattern="/.emacs.d/configs/inputrc")
+    add_config('.inputrc',
+    """
+    $include %(emacs_home)s/.emacs.d/configs/inputrc
+    """, user_home, search_pattern="/.emacs.d/configs/inputrc")
 
-add_config('.gitconfig',
-"""
-[include]
-     path = %(emacs_home)s/.emacs.d/configs/gitconfig
-""", search_pattern="/.emacs.d/configs/gitconfig")
+    add_config('.gitconfig',
+    """
+    [include]
+         path = %(emacs_home)s/.emacs.d/configs/gitconfig
+    """, user_home, search_pattern="/.emacs.d/configs/gitconfig")
 
-add_config('.config/gtk-3.0/gtk.css',
-"""
-TerminalWindow .notebook tab:active {
-    background-color: #b6bccb;
-}
+    # Thisis a special file only written when a custom user home is given with --user-home
+    add_config('load_configs',
+    f"""
+    # This file is meant to be sourced manaully
+    . {user_home}/.bashrc
+    alias tmux='tmux -f {user_home}/.tmux.conf'
+    export GIT_CONFIG={user_home}/.gitconfig
+    """, user_home, search_pattern="# This file is meant to be sourced manaully")
 
-terminal-window .notebook tab:active {
-    background-color: #b6bccb;
-}
+    add_config('.config/gtk-3.0/gtk.css',
+    """
+    TerminalWindow .notebook tab:active {
+        background-color: #b6bccb;
+    }
 
-.terminator-terminal-window notebook header tab {
-   background-color: shade(@bg_color, 0.8)
-}
-""", search_pattern="terminal-window .notebook tab:active", create_if_not_exists="Ubuntu" in os_line)
+    terminal-window .notebook tab:active {
+        background-color: #b6bccb;
+    }
 
-
-add_config('.config/htop/htoprc',
-"""# Beware! This file is rewritten by htop when settings are changed in the interface.
-# The parser is also very primitive, and not human-friendly.
-fields=0 48 17 18 38 39 40 2 46 47 49 109 110 1
-sort_key=46
-sort_direction=1
-hide_threads=0
-hide_kernel_threads=1
-hide_userland_threads=0
-shadow_other_users=0
-show_thread_names=0
-show_program_path=0
-highlight_base_name=0
-highlight_megabytes=1
-highlight_threads=1
-tree_view=0
-header_margin=1
-detailed_cpu_time=0
-cpu_count_from_zero=0
-update_process_names=0
-account_guest_in_cpu_meter=0
-color_scheme=0
-delay=15
-left_meters=LeftCPUs Memory Swap
-left_meter_modes=1 1 1
-right_meters=RightCPUs Tasks LoadAverage Uptime
-right_meter_modes=1 2 2 2
-""")
-
-add_config('.config/terminator/config',
-"""[global_config]
-[keybindings]
-  broadcast_group = <Primary><Alt>g
-  go_down = <Primary><Shift><Alt>Down
-  go_right = <Primary><Shift><Alt>Right
-  go_up = <Primary><Shift><Alt>Up
-  resize_left = ISO_Level3_Shift
-  resize_right = ISO_Level3_Shift
-[profiles]
-  [[default]]
-    background_image = None
-    scroll_on_output = False
-    scrollback_lines = 30000
-	custom_command = TERM=xterm-256color bash -l
-    use_custom_command = True
-""", search_pattern="custom_command", create_if_not_exists="Ubuntu" in os_line)
+    .terminator-terminal-window notebook header tab {
+       background-color: shade(@bg_color, 0.8)
+    }
+    """, user_home, search_pattern="terminal-window .notebook tab:active", create_if_not_exists="Ubuntu" in os_line)
 
 
-if emacs_home != tilde_home:
-    print("EMACS_HOME (%s) and tilde_home (%s) differ. Adding .emacs file" % (emacs_home, tilde_home))
-    add_config('.emacs',
-"""
-;; Use load emacs config from %(emacs_home)s
-(setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
-(defvar user-home-dir "%(emacs_home)s")
-(setq user-emacs-directory "%(emacs_home)s/.emacs.d/")
-(defvar user-writable-dir "%(emacs_home)s/.emacs.d/")
-(load-file "%(emacs_home)s/.emacs.d/init.el")
-""", search_pattern="# Use load emacs config from")
+    add_config('.config/htop/htoprc',
+    """
+    # Beware! This file is rewritten by htop when settings are changed in the interface.
+    # The parser is also very primitive, and not human-friendly.
+    fields=0 48 17 18 38 39 40 2 46 47 49 109 110 1
+    sort_key=46
+    sort_direction=1
+    hide_threads=0
+    hide_kernel_threads=1
+    hide_userland_threads=0
+    shadow_other_users=0
+    show_thread_names=0
+    show_program_path=0
+    highlight_base_name=0
+    highlight_megabytes=1
+    highlight_threads=1
+    tree_view=0
+    header_margin=1
+    detailed_cpu_time=0
+    cpu_count_from_zero=0
+    update_process_names=0
+    account_guest_in_cpu_meter=0
+    color_scheme=0
+    delay=15
+    left_meters=LeftCPUs Memory Swap
+    left_meter_modes=1 1 1
+    right_meters=RightCPUs Tasks LoadAverage Uptime
+    right_meter_modes=1 2 2 2
+    """, user_home)
+
+    add_config('.config/terminator/config',
+    """
+    [global_config]
+    [keybindings]
+      broadcast_group = <Primary><Alt>g
+      go_down = <Primary><Shift><Alt>Down
+      go_right = <Primary><Shift><Alt>Right
+      go_up = <Primary><Shift><Alt>Up
+      resize_left = ISO_Level3_Shift
+      resize_right = ISO_Level3_Shift
+    [profiles]
+      [[default]]
+        background_image = None
+        scroll_on_output = False
+        scrollback_lines = 30000
+        custom_command = TERM=xterm-256color bash -l
+        use_custom_command = True
+    """, user_home, search_pattern="custom_command", create_if_not_exists="Ubuntu" in os_line)
+
+    if emacs_home != tilde_home:
+        print("EMACS_HOME (%s) and tilde_home (%s) differ. Adding .emacs file" % (emacs_home, tilde_home))
+        add_config('.emacs',
+    """
+    ;; Use load emacs config from %(emacs_home)s
+    (setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
+    (defvar user-home-dir "%(emacs_home)s")
+    (setq user-emacs-directory "%(emacs_home)s/.emacs.d/")
+    (defvar user-writable-dir "%(emacs_home)s/.emacs.d/")
+    (load-file "%(emacs_home)s/.emacs.d/init.el")
+    """, user_home, search_pattern="# Use load emacs config from")
 
 
 DEFAULT_SERVER_CONFIGS = ['.tmux.conf', '.bashrc', '.gitconfig', '.config/htop/htoprc']
@@ -207,8 +224,12 @@ DEFAULT_DESKTOP_CONFIGS = ['.profile', '.bash_profile', '.config/gtk-3.0/gtk.css
 
 
 if __name__ == '__main__':
-    import argparse
-    import textwrap
+    def readable_dir(path):
+        if not os.path.isdir(path):
+            raise argparse.ArgumentError("{0} is not a valid path".format(path))
+        if not os.access(path, os.R_OK):
+            raise argparse.ArgumentError("{0} is not a readable dir".format(path))
+        return path
 
     parser = argparse.ArgumentParser(
         prog="Linux config setup",
@@ -226,6 +247,8 @@ if __name__ == '__main__':
     parser.add_argument('--configs', dest='configs', help='Comma seperated list of configs to write. Default: "{}"'.format(", ".join(configs_to_write)))
     parser.add_argument('--desktop', action='store_true', help='Add the desktop configs: "%s"' % (", ".join(DEFAULT_DESKTOP_CONFIGS)))
     parser.add_argument('--inputrc', action='store_true', help='Add .inputrc file')
+    parser.add_argument('--user-home', type=readable_dir, default=tilde_home,
+                        help="Use this directory as the user's home dir where all the files will be written. Default: %(default)s")
 
     args = parser.parse_args()
 
@@ -241,6 +264,11 @@ if __name__ == '__main__':
         if not os.path.isdir(tpm):
             os.makedirs(tpm)
             subprocess.call("git clone https://github.com/tmux-plugins/tpm %s" % tpm, shell=True)
+
+    if args.user_home != tilde_home:
+        configs_to_write += ['load_configs']
+
+    setup_config_files(os.path.realpath(args.user_home))
 
     for conf_k in configs_to_write:
         try:
