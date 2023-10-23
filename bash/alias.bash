@@ -1,6 +1,5 @@
 # Clear screen properly
 alias cl='printf "\033c"' # Clear screen and history
-alias gkill="grep_kill"
 alias nl='newlines'
 alias rlbrc='source ~/.bashrc'
 alias em='emacs -nw'
@@ -12,12 +11,6 @@ alias ccgrep='grep --include="*.c" --include="*.h" --include="*.cpp" --include="
 alias cppgrep='grep --include="*.cpp" --include="*.hpp"'
 alias pygrep='grep --include="*.py"'
 alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask*" --exclude-dir="session-store" --exclude-dir="\.git"  --exclude-dir="\.python-environments"'
-
-alias tmuxdeluge='ssh freebsd -t "tmux attach -t deluge || tmux new-session -s deluge"'
-
-alias suspend='dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.Suspend boolean:true'
-
-alias bsd="ssh freebsd"
 
 # Docker
 alias dps="docker ps"
