@@ -130,6 +130,9 @@ def setup_config_files(user_home):
     """
     [include]
          path = %(emacs_home)s/.emacs.d/configs/gitconfig
+
+    [include]
+         path = %(emacs_home)s/.emacs.d/configs/gitconfig.local
     """, user_home, search_pattern="/.emacs.d/configs/gitconfig")
 
     # Thisis a special file only written when a custom user home is given with --user-home
