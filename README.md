@@ -4,7 +4,7 @@
 ### Setup loading custom configs
 
 ```
-~/.emacs.d$ ./bin/setup_config.py config tmux
+~/.emacs.d$ ./bin/setup_config.py [--desktop]
 ```
 
 #### Tmux
