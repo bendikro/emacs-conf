@@ -1,6 +1,6 @@
 backups
 auto-save-list
-bash/extras_local.bash
+bash/*.local
 init-local.el
 *~
 *.elc
