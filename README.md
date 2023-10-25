@@ -32,7 +32,7 @@ curl -fsSkL https://raw.githubusercontent.com/bendikro/emacs-conf/master/install
 ## Setup emacs for a user using another users install
 
 ```
-EMACS_HOME=/home/otheruser /home/otheruser/.emacs.d/bin/setup_config.py config tmux
+EMACS_HOME=/home/otheruser /home/otheruser/.emacs.d/bin/setup_config.py [--desktop]
 ```
 
 ## Support for golang tags
