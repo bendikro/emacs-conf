@@ -84,7 +84,7 @@ def add_config(name, config, user_home, filepath=None, search_pattern=None, crea
     configs[name] = {'filepath':  filepath, 'pattern': search_pattern, 'config': config % conf_d,
                      'create_if_not_exists': create_if_not_exists}
 
-def setup_config_files(user_home):
+def setup_config_files(user_home, bashrc_name: str):
     add_config('.tmux.conf',
     """
     TMUX_CONF_DIR=%(emacs_home)s/.emacs.d/configs/tmux
@@ -99,7 +99,7 @@ def setup_config_files(user_home):
     fi
     """, user_home, search_pattern="# Add pymacs to PYTHONPATH")
 
-    add_config('.bashrc',
+    add_config(bashrc_name,
     """
     EMACS_HOME=%(emacs_home)s
 
@@ -135,7 +135,7 @@ def setup_config_files(user_home):
          path = %(emacs_home)s/.emacs.d/configs/gitconfig.local
     """, user_home, search_pattern="/.emacs.d/configs/gitconfig")
 
-    # Thisis a special file only written when a custom user home is given with --user-home
+    # This is a special file only written when a custom user home is given with --user-home
     add_config('load_configs',
     f"""
     # This file is meant to be sourced manaully
@@ -209,9 +209,7 @@ def setup_config_files(user_home):
         use_custom_command = True
     """, user_home, search_pattern="custom_command", create_if_not_exists="Ubuntu" in os_line)
 
-    if emacs_home != tilde_home:
-        print("EMACS_HOME (%s) and tilde_home (%s) differ. Adding .emacs file" % (emacs_home, tilde_home))
-        add_config('.emacs',
+    add_config('.emacs',
     """
     ;; Use load emacs config from %(emacs_home)s
     (setq user-init-file "%(emacs_home)s/.emacs.d/init.el")
@@ -250,10 +248,15 @@ if __name__ == '__main__':
     parser.add_argument('--configs', dest='configs', help='Comma seperated list of configs to write. Default: "{}"'.format(", ".join(configs_to_write)))
     parser.add_argument('--desktop', action='store_true', help='Add the desktop configs: "%s"' % (", ".join(DEFAULT_DESKTOP_CONFIGS)))
     parser.add_argument('--inputrc', action='store_true', help='Add .inputrc file')
+    parser.add_argument('--bashrc-filename', default='.bashrc', help='The bashrc filename. Default: %(default)s')
     parser.add_argument('--user-home', type=readable_dir, default=tilde_home,
                         help="Use this directory as the user's home dir where all the files will be written. Default: %(default)s")
 
     args = parser.parse_args()
+
+    if args.bashrc_filename != '.bashrc':
+        bashrc_index = configs_to_write.index('.bashrc')
+        configs_to_write[bashrc_index] = args.bashrc_filename
 
     if args.desktop:
         configs_to_write += DEFAULT_DESKTOP_CONFIGS
@@ -261,6 +264,10 @@ if __name__ == '__main__':
         configs_to_write += ['.inputrc']
     if args.configs:
         configs_to_write = [val.strip() for val in args.configs.split(',')]
+
+    if emacs_home != tilde_home:
+        print("EMACS_HOME (%s) and tilde_home (%s) differ. Adding .emacs file" % (emacs_home, tilde_home))
+        configs_to_write += ['.emacs']
 
     if args.tmux_plugins:
         tpm = os.path.join(tilde_home, ".tmux/plugins/tpm")
@@ -271,7 +278,7 @@ if __name__ == '__main__':
     if args.user_home != tilde_home:
         configs_to_write += ['load_configs']
 
-    setup_config_files(os.path.realpath(args.user_home))
+    setup_config_files(os.path.realpath(args.user_home), args.bashrc_filename)
 
     for conf_k in configs_to_write:
         try:
