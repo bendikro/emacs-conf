@@ -1,11 +1,12 @@
-# virtualenvwrapper location on FreeBSD
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-    . /usr/local/bin/virtualenvwrapper.sh
-fi
 
-# virtualenvwrapper location on Ubuntu 18/20
-if [ -f /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh ]; then
-    . /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
+if [ -f "${VIRTUALENVWRAPPER_SCRIPT}" ]; then
+  . ${VIRTUALENVWRAPPER_SCRIPT}
+elif [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  # virtualenvwrapper location on FreeBSD
+  . /usr/local/bin/virtualenvwrapper.sh
+elif [ -f /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh ]; then
+  # virtualenvwrapper location on Ubuntu 18/20
+  . /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
 fi
 
 # Pymacs
