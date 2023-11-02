@@ -67,7 +67,7 @@
 (setq column-number-mode t)
 
 ;; Show lines numbers on left side of text
-(global-linum-mode t)
+(global-display-line-numbers-mode t)
 (setq linum-format "%4d ")
 
 ;; Lines should be 80 characters wide, not 72

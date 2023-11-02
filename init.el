@@ -15,7 +15,6 @@
 
 ;; uptimes
 (setq emacs-load-start-time (current-time))
-(global-linum-mode t)
 
 ;; No splash screen please
 (setq inhibit-startup-message t)
