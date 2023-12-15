@@ -41,6 +41,7 @@
 (depends-on "nhexl-mode")
 (depends-on "nginx-mode")
 (depends-on "origami") ;; Collapse code
+(depends-on "hcl-mode")
 
 ;; Python
 (depends-on "python-mode")
