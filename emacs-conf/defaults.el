@@ -119,6 +119,9 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
+;; vdiff: Enable show inline changes (highlight words that have changed in lines)
+(setq vdiff-auto-refine t)
+
 ;; Enable editorconfig
 (if (require 'editorconfig nil 'noerror)
 	(editorconfig-mode 1)
