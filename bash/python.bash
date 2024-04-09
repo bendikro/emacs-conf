@@ -14,7 +14,10 @@ export PYMACS_PYTHON=${PYMACS_PYTHON:-python3}
 
 # PYENV
 if [ -d "$EMACS_HOME/.pyenv" ] ; then
-   export PYENV_ROOT="$EMACS_HOME/.pyenv"
-   pathadd $PYENV_ROOT/bin
-   eval "$(pyenv init -)"
+  export PYENV_ROOT="$EMACS_HOME/.pyenv"
+  pathadd $PYENV_ROOT/bin
+  eval "$(pyenv init -)"
+  if [ -d "$EMACS_HOME/.pyenv/plugins/pyenv-virtualenv" ] ; then
+    eval "$(pyenv virtualenv-init -)"
+  fi
 fi
