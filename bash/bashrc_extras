@@ -23,6 +23,11 @@ export EDITOR=emacs
 # Add the bin dir to PATH
 pathadd $EMACS_HOME/.emacs.d/bin/ after
 
+# Add $HOME/bin dir to PATH
+if [ -d $HOME/bin ]; then
+	pathadd $HOME/bin
+fi
+
 # Add the cask bin to PATH
 if [ -d $EMACS_HOME/.cask/bin ]; then
 	pathadd $EMACS_HOME/.cask/bin
