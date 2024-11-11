@@ -13,8 +13,19 @@
 (defvar after-init-load-hook nil
   "Call hooks after loading package")
 
-;; uptimes
-(setq emacs-load-start-time (current-time))
+;; Startup optimization
+(setq gc-cons-threshold-original gc-cons-threshold)
+(setq gc-cons-threshold (* 1024 1024 70))
+(add-hook 'window-setup-hook
+          (lambda ()
+			(setq gc-cons-threshold gc-cons-threshold-original)
+            (let ((curtime (current-time)))
+              (message "Times: init: %.02fs total: %.02fs gc-done: %d"
+                       (float-time (time-subtract after-init-time
+												  before-init-time))
+                       (float-time (time-subtract curtime before-init-time))
+                       gcs-done)))
+          90)
 
 ;; No splash screen please
 (setq inhibit-startup-message t)
@@ -176,8 +187,5 @@
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
 (run-hooks 'after-init-load-hook)
-
-(message "Emacs startup time: %f seconds."
-         (float-time (time-since emacs-load-start-time)))
 
 ;;(startup-with-messages-buffer)
