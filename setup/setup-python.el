@@ -49,7 +49,12 @@
   ;;(setq jedi:setup-keys t)
   (safe-wrap
    (jedi:setup)
-   (message "Failed to setup Jedi mode for python")))
+   (message "Failed to setup Jedi mode for python"))
+
+  ;; Already predefined
+  ;;(define-key jedi-mode-map (kbd "M-.") 'jedi:goto-definition)
+  (define-key jedi-mode-map (kbd "M-*") 'jedi:goto-definition-pop-marker)
+  )
 
 (defun load-jedi-mode-if-in-venv ()
   (let ((venv (getenv "VIRTUAL_ENV")))
