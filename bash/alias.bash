@@ -10,7 +10,7 @@ alias cgrep='grep --include="*.c" --include="*.h"'
 alias ccgrep='grep --include="*.c" --include="*.h" --include="*.cpp" --include="*.hpp"'
 alias cppgrep='grep --include="*.cpp" --include="*.hpp"'
 alias pygrep='grep --include="*.py"'
-alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask*" --exclude-dir="session-store" --exclude-dir="\.git"  --exclude-dir="\.python-environments"'
+alias emgrep='grep --exclude-dir="backups" --exclude-dir="\.cask*" --exclude-dir="session-store" --exclude-dir="\.git"  --exclude-dir="\.python-environments" --exclude="*.eln"'
 
 # Docker
 alias dps="docker ps"
