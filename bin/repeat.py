@@ -1,27 +1,22 @@
 #!/usr/bin/env python
-from __future__ import print_function
-
 import argparse
 import logging
 import os
 import re
 import sys
 import signal
+import selectors
 import subprocess
 import time
+import datetime
 
 try:
     from termcolor import colored, cprint
-    termcolor = True
 except:
-    termcolor = False
     def cprint(*arg, **kwargs):
         print(*arg)
     def colored(text, color):
         return text
-
-import datetime
-from datetime import timedelta
 
 
 def str_to_timedelta(time_val):
@@ -65,7 +60,7 @@ def str_to_timedelta(time_val):
                         'd': 'days'
                         }
     args.update({unit_to_time.get(groups['unit'], 'seconds'): float(groups['duration'])})
-    return timedelta(**args)
+    return datetime.timedelta(**args)
 
 
 def print_log(msg, **args):
@@ -78,14 +73,14 @@ def get_formatted_time_elapsed(sec_start, sec_end=None):
     return "%2f" % (sec_end - sec_start)
 
 
-begin = None
-count = 0
+begin_time = None
+exec_count = 0
 
 
 def execute(args):
-    global begin, count
+    global begin_time, exec_count
     wait = str_to_timedelta(args.wait)
-    begin = time.time()
+    begin_time = time.time()
 
     if args.verbose:
         if not args.until_fail:
@@ -99,12 +94,12 @@ def execute(args):
     if 'pytest ' in args.command:
         env['PYTEST_ADDOPTS'] ='--color=yes'
 
-    count = 0
+    exec_count = 0
     error_ret = 0
     while True:
-        count += 1
+        exec_count += 1
         if args.verbose > 1:
-            print_log("%d command execution: " % count, end='\n')
+            print_log("%d command execution: " % exec_count, end='\n')
             sys.stdout.flush()
 
         start_cmd = time.time()
@@ -116,13 +111,38 @@ def execute(args):
             env=env
         )
 
-        for i, line in enumerate(iter(proc.stdout.readline, b'')):
-            print(line.decode().strip())
+        sel = selectors.DefaultSelector()
+
+        sel.register(proc.stdout, selectors.EVENT_READ)
+        sel.register(proc.stderr, selectors.EVENT_READ)
+
+        def read_output(selector):
+            descriptors = list(selector.get_map().keys())
+            while descriptors:
+                for key, _ in selector.select():
+                    data = key.fileobj.read()
+                    if not data:
+                        if key.fileobj.name in descriptors:
+                            descriptors.remove(key.fileobj.name)
+                        continue
+                    data = data.decode()
+                    prefix = ""
+                    if args.prefix_output:
+                        prefix = "[STDOUT] " if key.fileobj.name == proc.stdout.name else "[STDERR] "
+
+                    # Add the prefix on each line
+                    data = data.replace('\n', f'\n{prefix}')
+                    if key.fileobj.name == proc.stdout.name:
+                        print(f"{data}", end="", flush=True)
+                    else:
+                        print(f"{data}", end="", flush=True, file=sys.stderr)
+
+        read_output(sel)
 
         while proc.poll() is None:
             time.sleep(.1)
 
-        end_cmd = time.time()
+        cmd_end_time = time.time()
 
         if args.fail_exit_value:
             if proc.returncode in args.fail_exit_value:
@@ -134,9 +154,9 @@ def execute(args):
                 break
 
         if args.time:
-            print_log("Execution time: %s" % get_formatted_time_elapsed(start_cmd, sec_end=end_cmd))
+            print_log("Execution time: %s" % get_formatted_time_elapsed(start_cmd, sec_end=cmd_end_time))
 
-        if not args.until_fail and args.count and count == args.count:
+        if not args.until_fail and args.count and exec_count == args.count:
             break
 
         if wait:
@@ -146,27 +166,27 @@ def execute(args):
 
         if args.time:
             if args.verbose > 1:
-                print_log("Time elapsed: %s" % get_formatted_time_elapsed(begin))
+                print_log("Time elapsed: %s" % get_formatted_time_elapsed(begin_time))
 
 
     if error_ret != 0:
-        cprint("\nCommand exited with status '%s' on run %d " % (error_ret, count), color='red')
+        cprint("\nCommand exited with status '%s' on run %d " % (error_ret, exec_count), color='red')
 
     end = time.time()
 
     if args.verbose > 1:
-        print_log("Total executions: %s" % count)
+        print_log("Total executions: %s" % exec_count)
 
     if args.time:
-        print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin))
+        print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin_time))
 
     return error_ret
 
 
 def _signal_handler(*args) -> None:
     print()
-    print("Aborted after successful runs: %d" % (count))
-    print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin))
+    print("Aborted after successful runs: %d" % (exec_count))
+    print("Time elapsed: %s seconds" % get_formatted_time_elapsed(begin_time))
     sys.exit()
 
 
@@ -178,6 +198,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--time', action='store_true', help='Print total time elapsed')
     parser.add_argument('-u', '--until-fail', action='store_true', help='Repeat command until it fails')
     parser.add_argument('-f', '--fail-exit-value', type=int, action='append', help='Exit values considered as failure')
+    parser.add_argument('-p', '--prefix-output', action='store_true', help='Prefix the output indicating file descriptor')
     parser.add_argument('-v', '--verbose', default=1, type=int, help='Be verbose. (0-2). Default: %(default)s')
     parser.add_argument('command', help='The command to execute')
     args = parser.parse_args()
