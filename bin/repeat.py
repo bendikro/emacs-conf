@@ -149,7 +149,7 @@ def execute(args):
                 print_log("Time elapsed: %s" % get_formatted_time_elapsed(begin))
 
 
-    if error_ret is not 0:
+    if error_ret != 0:
         cprint("\nCommand exited with status '%s' on run %d " % (error_ret, count), color='red')
 
     end = time.time()
