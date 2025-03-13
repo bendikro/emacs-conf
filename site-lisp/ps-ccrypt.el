@@ -468,7 +468,7 @@ There should be no more than seven characters after the final `/'."
   :type 'string
   :group 'ps-ccrypt)
 
-(defvar ps-ccrypt-temp-name-table (make-vector 31 nil))
+(defvar ps-ccrypt-temp-name-table (make-vector 31 0))
 
 (defun ps-ccrypt-make-temp-name (&optional local-copy)
   "This routine will return the name of a new file."
