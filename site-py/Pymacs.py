@@ -53,7 +53,13 @@ if is_python3():
         return isinstance(value, Callable)
 
     basestring = str
-    from imp import reload
+    try:
+        # imp has been replaced by importlib in python3.12
+        from importlib import reload
+    except ModuleNotFoundError:
+        # If not available, assume we have an older python version
+        from imp import reload
+
 else:
     __metaclass__ = type
 
