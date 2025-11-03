@@ -55,6 +55,11 @@ function docker-ip() {
 	docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
 }
 
+function ssh-keydel() {
+	ssh-keygen -f ~/.ssh/known_hosts -R "$@"
+}
+
+
 ######################
 # Clean python files
 
