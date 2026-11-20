@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;;; auto-complete-auctex.el --- auto-completion for auctex
 
 ;; Copyright (C) 2012 Christopher Monsanto

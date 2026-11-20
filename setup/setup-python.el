@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-python)
 
 ;; Ignore error when python-mode is unavailable

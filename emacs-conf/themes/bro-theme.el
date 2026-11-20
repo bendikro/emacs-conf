@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (deftheme bro
   "Bro's custom theme created 2019-11-02.")
 

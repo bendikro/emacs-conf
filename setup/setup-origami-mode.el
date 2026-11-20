@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-origami)
 
 (add-hook 'origami-mode-hook

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; ifind-mode.el -- A minor mode based on isearch, for interactively finding
 ;;; files in the workspace.
 

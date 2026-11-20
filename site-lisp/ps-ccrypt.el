@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; ps-ccrypt.el --- reading/writing/loading encrypted files
 
 ;; Copyright (C) 1993, 1994, 1995, 1997  Free Software Foundation, Inc.

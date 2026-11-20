@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (defvar resize-mode-map
   (let ((m (make-sparse-keymap)))
     (define-key m (kbd "C-g") 'normal-mode)

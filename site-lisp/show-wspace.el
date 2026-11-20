@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;;; show-wspace.el --- Highlight whitespace of various kinds.
 ;;
 ;; Filename: show-wspace.el

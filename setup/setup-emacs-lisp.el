@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (eval-when (compile load eval)
   (defvar extra-elisp-primitive-keywords
 	'(

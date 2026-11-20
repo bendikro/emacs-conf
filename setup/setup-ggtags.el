@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-ggtags)
 
 (when (require 'ggtags nil 'noerror)

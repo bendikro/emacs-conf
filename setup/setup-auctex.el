@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (add-hook 'TeX-mode-hook
 		  #'(lambda()
 			 (require 'reftex-cite)

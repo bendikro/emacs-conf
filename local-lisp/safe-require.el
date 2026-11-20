@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defgroup safeloadfiles nil
   "Group for files in safeload files group."
   :group 'convenience)

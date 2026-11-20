@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-markdown)
 
 (add-hook 'markdown-mode-hook

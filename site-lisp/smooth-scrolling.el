@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; smooth-scrolling.el
 ;; $Id: smooth-scrolling.el,v 1.8 2007/09/11 23:38:09 adam Exp $
 ;; Adam Spiers <emacs-ss@adamspiers.org>
@@ -177,10 +179,3 @@ lines of the bottom of the window."
          (1+ (- smooth-scroll-margin lines-from-window-bottom))))))))
 ;;;_ + provide
 (provide 'smooth-scrolling)
-
-;;;_* Local emacs variables
-
-;;Local variables:
-;;allout-layout: (0 : -1 0)
-;;mode: allout
-;;End:

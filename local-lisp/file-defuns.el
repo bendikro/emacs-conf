@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; Defuns for working with files
 
 (defun rename-current-buffer-file ()

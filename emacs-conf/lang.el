@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (provide 'lang)
 
 ;; Fix indent in sh-mode

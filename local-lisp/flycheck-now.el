@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defvar flycheck-now-mode-hook nil)
 
 (defvar flycheck-mode-map

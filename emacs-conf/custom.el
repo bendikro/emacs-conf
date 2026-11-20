@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; No longer used
 
 (custom-set-variables

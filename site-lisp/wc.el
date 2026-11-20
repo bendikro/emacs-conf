@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; wc.el --- count words
 
 ;; Version: 0.1

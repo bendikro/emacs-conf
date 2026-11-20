@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (provide 'appearance)
 
 ;; initial window

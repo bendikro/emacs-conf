@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; we are using eldoc-current-symbol from eldoc
 ;;(require 'eldoc)
 

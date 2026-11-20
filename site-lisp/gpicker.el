@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;;; gpicker.el --- gpicker integration for Emacs
 
 ;; Copyright (C) 2008 Aliaksey Kandratsenka

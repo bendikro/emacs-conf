@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; yapfify.el --- (automatically) format python buffers using YAPF.
 
 ;; Copyright (C) 2016 Joris Engbers

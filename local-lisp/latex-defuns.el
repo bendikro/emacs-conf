@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 
 (defun encapsulate-glossary ()
     "Toggle setting tab widths between 4 and 8"

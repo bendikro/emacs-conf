@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (require 'dockerfile-mode)
 
 (defgroup rockerfile nil

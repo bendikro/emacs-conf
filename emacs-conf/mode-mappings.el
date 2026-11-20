@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (provide 'mode-mappings)
 
 ;(defun custom-TeX-command-master (orig-fun &rest args)

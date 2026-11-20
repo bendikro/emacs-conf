@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; Modify with M-x set-variable package-menu-column-width
 (defcustom package-menu-column-width 35
   "Width of the package column."

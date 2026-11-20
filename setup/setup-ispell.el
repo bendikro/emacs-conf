@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-ispell)
 
 (require 'ispell)

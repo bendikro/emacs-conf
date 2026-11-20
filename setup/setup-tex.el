@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-tex)
 
 ;(add-hook 'LaTeX-mode-hook 'text-mode-hook 'turn-on-auto-fill)

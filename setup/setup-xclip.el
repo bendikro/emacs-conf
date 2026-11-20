@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (if (require 'xclip nil 'noerror)
 	(message "xclip found")
   (message "Failed to load xclip"))

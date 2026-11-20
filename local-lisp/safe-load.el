@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;
 ;     File:   /u3/ccmproc2/emacs/safe-load.el  (939 bytes)
 ;     Date:   Tue Dec  1 09:26:25 1992

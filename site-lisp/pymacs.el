@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; pymacs.el --- Interface between Emacs Lisp and Python
 
 ;; Copyright © 2001-2003, 2012, 2013 Progiciels Bourbeau-Pinard inc.

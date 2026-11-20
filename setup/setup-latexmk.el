@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (provide 'setup-latexmk)
 
 (defcustom resize-compile-window-width 90

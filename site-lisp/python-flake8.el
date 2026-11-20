@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; python-flake8.el --- Thin wrapper around python-pylint to run flake8
 
 ;; Copyright (C) 2011  Andi Albrecht

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; Buffer-related defuns
 
 (defun untabify-buffer ()

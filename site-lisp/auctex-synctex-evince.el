@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; This is originally from
 ;; http://ubuntuforums.org/showthread.php?s=618526e60dfcf25e6413439603fa08ad&t=1716268&page=2.
 ;; Thanks to user "florenzen". I've included the fixes for Ubuntu 11.10

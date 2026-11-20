@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 
 ;(setq my-color-themes (list 'color-theme-dark-laptop
 ;							'color-theme-billw
